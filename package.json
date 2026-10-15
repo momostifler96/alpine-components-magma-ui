@@ -1,0 +1,67 @@
+{
+    "name": "@momoledev/alpine-magma-ui-component",
+    "version": "1.0.0",
+    "description": "Composants Alpine.js sans dépendance pour Magma : sélecteurs (local, distant, multiple, indicatif téléphonique), modale, tiroirs, accordéon, onglets, pagination, notifications.",
+    "keywords": [
+        "alpine",
+        "alpinejs",
+        "livewire",
+        "components",
+        "select",
+        "combobox",
+        "modal",
+        "toast",
+        "design-system"
+    ],
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": [
+        "./dist/magma-ui.global.js"
+    ],
+    "main": "./dist/magma-ui.esm.js",
+    "module": "./dist/magma-ui.esm.js",
+    "style": "./dist/magma-ui.css",
+    "unpkg": "./dist/magma-ui.global.js",
+    "jsdelivr": "./dist/magma-ui.global.js",
+    "exports": {
+        ".": {
+            "import": "./src/index.js",
+            "default": "./src/index.js"
+        },
+        "./dist": {
+            "import": "./dist/magma-ui.esm.js",
+            "default": "./dist/magma-ui.esm.js"
+        },
+        "./global": "./dist/magma-ui.global.js",
+        "./css": "./dist/magma-ui.css",
+        "./components/*": "./src/components/*.js",
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "src",
+        "dist",
+        "docs",
+        "README.md",
+        "CHANGELOG.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "node scripts/build.mjs",
+        "prepublishOnly": "node scripts/build.mjs"
+    },
+    "peerDependencies": {
+        "alpinejs": "^3.12.0"
+    },
+    "peerDependenciesMeta": {
+        "alpinejs": {
+            "optional": true
+        }
+    },
+    "dependencies": {},
+    "engines": {
+        "node": ">=18"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
