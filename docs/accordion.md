@@ -7,7 +7,7 @@ Une seule section ouverte à la fois.
 ```html
 <div class="magma-accordion" x-data="magmaAccordion({ open: 0 })">
     <template x-for="(item, index) in items" :key="item.id">
-        <div class="magma-accordion__item" :class="isOpen(index) && 'is-open'">
+        <div class="magma-accordion__item" :class="isOpen(index) ? 'is-open' : ''">
             <button type="button" class="magma-accordion__trigger" @click="toggle(index)"
                     :aria-expanded="isOpen(index)">
                 <span x-text="item.title"></span>

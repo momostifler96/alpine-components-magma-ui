@@ -21,7 +21,7 @@ Compteur, saut direct et numéros de page calculés.
 
         <template x-for="item in pages" :key="item">
             <button type="button" class="magma-pagination__page"
-                    :class="page === item && 'is-active'"
+                    :class="page === item ? 'is-active' : ''"
                     @click="goTo(item)" x-text="item"></button>
         </template>
 

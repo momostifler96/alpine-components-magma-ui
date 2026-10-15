@@ -6,7 +6,7 @@ Bascule binaire : mode test et production, activation d'une option.
 
 ```html
 <button type="button" class="magma-switch" x-data="magmaSwitch({ on: true })"
-        :class="on && 'is-on'" @click="toggle()"
+        :class="on ? 'is-on' : ''" @click="toggle()"
         role="switch" :aria-checked="on" aria-label="Mode test">
     <span class="magma-switch__dot"></span>
 </button>

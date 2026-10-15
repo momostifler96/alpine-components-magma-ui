@@ -14,7 +14,7 @@ Même mécanique que [`magmaSelect`](select.md), avec une sélection cumulative.
         ],
     })"
     @click.outside="close()"
-    :class="open && 'is-open'">
+    :class="open ? 'is-open' : ''">
 
     <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()" :aria-expanded="open">
         <span class="magma-select__value" x-text="label"></span>
@@ -35,7 +35,7 @@ Même mécanique que [`magmaSelect`](select.md), avec une sélection cumulative.
             <template x-for="option in visibleOptions" :key="option.value">
                 <li>
                     <button type="button" class="magma-select__option" role="option"
-                            :class="isSelected(option.value) && 'is-selected'"
+                            :class="isSelected(option.value) ? 'is-selected' : ''"
                             :aria-selected="isSelected(option.value)"
                             @click="choose(option)">
                         <span class="magma-select__name" x-text="option.label"></span>

@@ -8,12 +8,12 @@ navigation à l'intérieur d'une même page.
 ```html
 <div class="magma-tabs" x-data="magmaTabs({ current: 'all' })" role="tablist" aria-label="Filtrer">
     <button type="button" class="magma-tab" role="tab"
-            :class="is('all') && 'is-active'"
+            :class="is('all') ? 'is-active' : ''"
             :aria-selected="is('all')"
             @click="select('all')">Tout</button>
 
     <button type="button" class="magma-tab" role="tab"
-            :class="is('payout') && 'is-active'"
+            :class="is('payout') ? 'is-active' : ''"
             :aria-selected="is('payout')"
             @click="select('payout')">Payout</button>
 </div>

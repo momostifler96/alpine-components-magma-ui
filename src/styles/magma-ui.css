@@ -1,104 +1,110 @@
-/* ==========================================================================
-   Magma UI — feuille de style autonome
-   ==========================================================================
-   Aucune dépendance : ni framework CSS, ni police distante. Les polices sont
-   reprises de l'application hôte via `--magma-font`.
+/* --------------------------------------------------------------------------
+   Magma UI — styles des composants
 
-   Toutes les classes sont préfixées `magma-`, tous les jetons `--magma-`.
-   ========================================================================== */
+   Fichier GÉNÉRÉ par packages/magma-ui/scripts/generate-styles.py à partir de
+   resources/css/new-design.css : l'application est la référence, la
+   bibliothèque en est la transposition exacte sous les noms `magma-`.
+
+   Corriger un style dans l'application, puis :
+       python packages/magma-ui/scripts/generate-styles.py && npm run build
+   -------------------------------------------------------------------------- */
 
 /* --------------------------------------------------------------------------
    1. Jetons
    -------------------------------------------------------------------------- */
 :root {
-    /* Accent ---------------------------------------------------------------- */
     --magma-orange: #ff6602;
     --magma-orange-hover: #e85c00;
     --magma-orange-active: #cc5200;
     --magma-orange-soft: #ffece0;
     --magma-orange-tint: #ffdbc4;
-    --magma-orange-ghost: #fff0e8;
-
-    /* Jaune ----------------------------------------------------------------- */
     --magma-yellow: #ffde54;
     --magma-yellow-soft: #fff0b2;
     --magma-yellow-badge: #ffff99;
-    --magma-yellow-badge-ink: #666600;
     --magma-yellow-ink: #332900;
-
-    /* Vert ------------------------------------------------------------------ */
+    --magma-yellow-badge-ink: #666600;
     --magma-green: #12b312;
     --magma-green-ink: #0a7a0a;
     --magma-green-soft: #e0efe0;
     --magma-green-tint: #edfff7;
     --magma-green-dot: #00bf6f;
-
-    /* Bleu ------------------------------------------------------------------ */
     --magma-blue: #3d3dff;
     --magma-blue-soft: #ebebff;
     --magma-blue-mid: #ccccff;
-
-    /* Rose et rouge --------------------------------------------------------- */
     --magma-pink: #ffccd3;
     --magma-pink-ink: #cc001b;
     --magma-red: #e60023;
-
-    /* Gris ------------------------------------------------------------------ */
     --magma-gray-soft: #e6e6e6;
     --magma-gray-ink: #999999;
-
-    /* Texte ----------------------------------------------------------------- */
     --magma-ink: #000000;
     --magma-title: #1a1a1a;
     --magma-body: #404040;
     --magma-muted: #808080;
     --magma-placeholder: #bcbcbc;
-
-    /* Surfaces -------------------------------------------------------------- */
-    --magma-surface: #ffffff;
     --magma-page: #fafafa;
+    --magma-surface: #ffffff;
     --magma-line: #e6e6e6;
     --magma-line-soft: #f2f2f2;
-
-    /* Contrastes et effets -------------------------------------------------- */
-    --magma-on-accent: #ffffff;
-    --magma-on-dark: #ffffff;
-    --magma-overlay: rgba(26, 26, 26, 0.45);
-    --magma-scrollbar: #d7d7d7;
-    --magma-focus-ring: rgba(255, 102, 2, 0.18);
-    --magma-accent-glow: rgba(255, 102, 2, 0.28);
-    --magma-accent-halo: rgba(255, 102, 2, 0.12);
-
-    /* Typographie ----------------------------------------------------------- */
-    --magma-font: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --magma-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-
-    /* Rayons ---------------------------------------------------------------- */
+    --magma-field-border: #e6e6e6;
+    --magma-sidebar-w: 288px;
+    --magma-sidebar-w-collapsed: 80px;
+    --magma-topbar-h: 83px;
+    --magma-form-element-height: 45px;
+    --magma-gutter: 20px;
+    --magma-pad: 20px;
+    --magma-pad-top: 22px;
+    --magma-pad-right: 24px;
+    --magma-content-w: 1340px;
     --magma-r-sm: 8px;
     --magma-r-md: 12px;
     --magma-r-lg: 16px;
     --magma-r-xl: 20px;
     --magma-r-pill: 999px;
-
-    /* Élévations ------------------------------------------------------------ */
+    --magma-shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.04);
     --magma-shadow-sm: 0 2px 8px rgba(16, 24, 40, 0.05);
     --magma-shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08);
     --magma-shadow-lg: 0 24px 64px rgba(16, 24, 40, 0.14);
-
-    /* Mouvement ------------------------------------------------------------- */
+    --magma-focus-ring: 0 0 0 3px rgba(255, 102, 2, 0.18);
     --magma-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
     --magma-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --magma-t-fast: 140ms;
+    --magma-t: 220ms;
+    --magma-t-slow: 420ms;
+
+    /* Ajouts propres à la bibliothèque. */
+    --magma-focus-ring: rgba(255, 102, 2, 0.18);
+    --magma-orange-ghost: #fff0e8;
+    --magma-on-accent: #ffffff;
+    --magma-on-dark: #ffffff;
+    --magma-overlay: rgba(26, 26, 26, 0.45);
+    --magma-scrollbar: #d7d7d7;
+    --magma-accent-glow: rgba(255, 102, 2, 0.28);
+    --magma-accent-halo: rgba(255, 102, 2, 0.12);
+    --magma-font: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --magma-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
     --magma-fast: 140ms;
     --magma-base: 220ms;
     --magma-slow: 420ms;
-
-    /* Largeur des panneaux déroulants --------------------------------------- */
     --magma-menu-width: min(324px, calc(100vw - 48px));
+    --magma-menu-min-width: 0px;
 }
 
 /* --------------------------------------------------------------------------
-   2. Base minimale
+   2. Base : typographie et remises à zéro
    -------------------------------------------------------------------------- */
+/* Typographie héritée par les composants. */
+[class^="magma-"],
+[class*=" magma-"] {
+    font-family: var(--magma-font);
+    color: var(--magma-body);
+    font-size: 15px;
+    line-height: 1.45;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Conteneur facultatif : il fixe le contexte typographique d'un groupe. */
 .magma-root,
 [data-magma] {
     font-family: var(--magma-font);
@@ -108,17 +114,25 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.magma-root *,
-.magma-root *::before,
-.magma-root *::after,
-[data-magma] *,
-[data-magma] *::before,
-[data-magma] *::after {
-    box-sizing: border-box;
+/*
+ * Remises à zéro locales : l'application hôte n'a rien à neutraliser avant
+ * d'utiliser un composant. Chaque sélecteur vise l'élément lui-même quand il
+ * porte la classe (`<button class="magma-btn">`) autant que ses descendants,
+ * et `:where()` le laisse à spécificité nulle.
+ */
+:where(h1[class^="magma-"], h1[class*=" magma-"], h2[class^="magma-"], h2[class*=" magma-"],
+       h3[class^="magma-"], h3[class*=" magma-"], h4[class^="magma-"], h4[class*=" magma-"],
+       h5[class^="magma-"], h5[class*=" magma-"], p[class^="magma-"], p[class*=" magma-"],
+       figure[class^="magma-"], figure[class*=" magma-"],
+       [class^="magma-"] h1, [class*=" magma-"] h1, [class^="magma-"] h2, [class*=" magma-"] h2,
+       [class^="magma-"] h3, [class*=" magma-"] h3, [class^="magma-"] h4, [class*=" magma-"] h4,
+       [class^="magma-"] h5, [class*=" magma-"] h5, [class^="magma-"] p, [class*=" magma-"] p,
+       [class^="magma-"] figure, [class*=" magma-"] figure) {
+    margin: 0;
 }
 
-.magma-root :where(button),
-[data-magma] :where(button) {
+:where(button[class^="magma-"], button[class*=" magma-"],
+       [class^="magma-"] button, [class*=" magma-"] button) {
     font: inherit;
     color: inherit;
     border: 0;
@@ -126,15 +140,37 @@
     cursor: pointer;
 }
 
-.magma-root :where(input, textarea),
-[data-magma] :where(input, textarea) {
+:where(input[class^="magma-"], input[class*=" magma-"], select[class^="magma-"], select[class*=" magma-"],
+       textarea[class^="magma-"], textarea[class*=" magma-"],
+       [class^="magma-"] input, [class*=" magma-"] input,
+       [class^="magma-"] select, [class*=" magma-"] select,
+       [class^="magma-"] textarea, [class*=" magma-"] textarea) {
     font: inherit;
     color: inherit;
 }
 
-.magma-root :where([x-cloak]),
-[data-magma] :where([x-cloak]) {
+:where(img[class^="magma-"], img[class*=" magma-"], [class^="magma-"] img, [class*=" magma-"] img) {
+    display: block;
+    max-width: 100%;
+}
+
+:where(svg[class^="magma-"], svg[class*=" magma-"], [class^="magma-"] svg, [class*=" magma-"] svg) {
+    display: block;
+    flex: none;
+}
+
+:where([x-cloak][class^="magma-"], [x-cloak][class*=" magma-"],
+       [class^="magma-"] [x-cloak], [class*=" magma-"] [x-cloak]) {
     display: none !important;
+}
+
+/*
+ * Calcul de largeur : les panneaux flottants se positionnent au pixel à partir
+ * de `border-box`. Un padding hérité en `content-box` les décalerait.
+ */
+[class^="magma-"],
+[class*=" magma-"] {
+    box-sizing: border-box;
 }
 
 /* Éléments décoratifs ------------------------------------------------------ */
@@ -147,6 +183,7 @@
     display: block;
     flex: none;
     border-radius: 3px;
+    overflow: hidden;
 }
 
 .magma-sr {
@@ -162,110 +199,431 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Boutons
+   3. Composants — transposition des styles de l'application
    -------------------------------------------------------------------------- */
+.magma-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.magma-scroll::-webkit-scrollbar-thumb {
+    background: #d7d7d7;
+    border-radius: 999px;
+}
+.magma-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.magma-collapse-btn {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--magma-r-sm);
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+    transition: background var(--magma-t-fast) var(--magma-ease), transform var(--magma-t-fast) var(--magma-ease);
+}
+.magma-collapse-btn:hover {
+    background: var(--magma-orange-tint);
+    transform: translateY(-1px);
+}
+.magma-collapse-btn:active {
+    transform: translateY(0) scale(0.96);
+}
+.magma-app.is-collapsed .magma-collapse-btn {
+    position: static;
+    transform: none;
+}
+.magma-app.is-collapsed .magma-collapse-btn:hover {
+    transform: translateY(-1px);
+}
 .magma-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    height: var(--nd-form-element-height);
+    height: var(--magma-form-element-height);
     padding: 0 22px;
     border-radius: var(--magma-r-sm);
     font-size: 15px;
     font-weight: 600;
     white-space: nowrap;
-    transition: background var(--magma-fast) var(--magma-ease), color var(--magma-fast) var(--magma-ease),
-        box-shadow var(--magma-fast) var(--magma-ease), transform var(--magma-fast) var(--magma-ease);
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease),
+    box-shadow var(--magma-t-fast) var(--magma-ease), transform var(--magma-t-fast) var(--magma-ease),
+    border-color var(--magma-t-fast) var(--magma-ease), opacity var(--magma-t-fast) var(--magma-ease);
 }
-
+.magma-btn svg {
+    transition: transform var(--magma-t) var(--magma-ease);
+}
 .magma-btn:active {
     transform: translateY(1px);
 }
-
 .magma-btn:focus-visible {
     outline: none;
-    box-shadow: var(--magma-focus);
+    box-shadow: var(--magma-focus-ring);
 }
-
-.magma-btn svg {
-    transition: transform var(--magma-base) var(--magma-ease);
-}
-
 .magma-btn--primary {
     background: var(--magma-orange);
-    color: var(--magma-on-accent);
+    color: #fff;
 }
-
 .magma-btn--primary:hover {
     background: var(--magma-orange-hover);
-    box-shadow: 0 6px 18px var(--magma-accent-glow);
+    box-shadow: 0 6px 18px rgba(255, 102, 2, 0.28);
 }
-
+.magma-btn--primary:hover svg {
+    transform: translateX(2px);
+}
+.magma-btn--primary:hover .magma-btn__icon-left {
+    transform: translateX(-2px);
+}
 .magma-btn--yellow {
     background: var(--magma-yellow);
     color: var(--magma-yellow-ink);
 }
-
+.magma-btn--yellow:hover {
+    background: #ffd62f;
+    box-shadow: 0 6px 18px rgba(255, 222, 84, 0.45);
+}
 .magma-btn--soft {
     background: var(--magma-orange-soft);
     color: var(--magma-orange);
 }
-
 .magma-btn--soft:hover {
     background: var(--magma-orange-tint);
 }
-
-.magma-btn--neutral {
-    background: var(--magma-line-soft);
-    color: var(--magma-body);
-}
-
-.magma-btn--neutral:hover {
-    background: var(--magma-line);
-}
-
 .magma-btn--ghost {
     background: transparent;
     color: var(--magma-body);
     border: 1px solid var(--magma-line);
 }
-
 .magma-btn--ghost:hover {
     background: var(--magma-line-soft);
     color: var(--magma-ink);
 }
-
+.magma-btn--danger {
+    background: var(--magma-red);
+    color: #fff;
+}
+.magma-btn--danger:hover {
+    background: #c4001e;
+    box-shadow: 0 6px 18px rgba(230, 0, 35, 0.28);
+}
+.magma-btn--danger:hover svg {
+    transform: translateX(2px);
+}
+.magma-btn--neutral {
+    background: var(--magma-line-soft);
+    color: var(--magma-body);
+}
+.magma-btn--neutral:hover {
+    background: var(--magma-line);
+}
+.magma-btn--outline {
+    background: transparent;
+    border: 1px dashed var(--magma-orange);
+    color: var(--magma-orange);
+}
+.magma-btn--outline:hover {
+    background: var(--magma-orange-soft);
+}
+.magma-btn--block {
+    width: 100%;
+}
 .magma-btn--sm {
     height: 40px;
     padding: 0 16px;
     font-size: 14px;
 }
-
-.magma-btn--block {
-    width: 100%;
+.magma-btn--lg {
+    height: 52px;
+    font-size: 15px;
 }
-
-.magma-btn[disabled] {
+.magma-btn--icon {
+    width: 48px;
+    padding: 0;
+}
+.magma-btn[disabled], .magma-btn.is-loading {
     opacity: 0.6;
     pointer-events: none;
 }
-
-.magma-link {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--magma-ink);
-    transition: color var(--magma-fast) var(--magma-ease);
+.magma-btn.is-loading::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    animation: magma-spin 700ms linear infinite;
 }
-
-.magma-link:hover {
+.magma-search {
+    position: relative;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    height: var(--magma-form-element-height);
+    padding: 0 16px;
+    background: var(--magma-surface);
+    border: 1px solid var(--magma-line);
+    border-radius: var(--magma-r-sm);
+    transition: border-color var(--magma-t-fast) var(--magma-ease), box-shadow var(--magma-t-fast) var(--magma-ease);
+}
+.magma-search:focus-within {
+    border-color: var(--magma-orange);
+    box-shadow: var(--magma-focus-ring);
+}
+.magma-search input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: var(--magma-ink);
+}
+.magma-search input::placeholder {
+    color: var(--magma-placeholder);
+}
+.magma-search__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    color: var(--magma-body);
+    transition: color var(--magma-t-fast) var(--magma-ease), transform var(--magma-t) var(--magma-ease);
+}
+.magma-search:hover .magma-search__icon {
     color: var(--magma-orange);
 }
-
-/* --------------------------------------------------------------------------
-   4. Badges
-   -------------------------------------------------------------------------- */
+.magma-search:focus-within .magma-search__icon {
+    color: var(--magma-orange);
+    transform: scale(1.06);
+}
+.magma-search--slim {
+    height: var(--magma-form-element-height);
+}
+.magma-search--standalone {
+    max-width: 532px;
+}
+.magma-btn-group {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 6px;
+}
+.magma-btn-group .magma-btn--soft {
+    padding: 0 18px;
+}
+.magma-btn-group__caret {
+    width: 36px;
+    padding: 0;
+}
+.magma-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+.magma-field__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--magma-body);
+}
+.magma-field__hint {
+    font-size: 13px;
+    color: var(--magma-muted);
+}
+.magma-select {
+    position: relative;
+    min-width: 196px;
+}
+.magma-select__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    height: var(--magma-form-element-height);
+    padding: 0 16px;
+    background: var(--magma-surface);
+    border: 1px solid var(--magma-orange);
+    border-radius: var(--magma-r-sm);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--magma-body);
+    text-align: left;
+    transition: box-shadow var(--magma-t-fast) var(--magma-ease), border-color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-select__trigger:hover {
+    box-shadow: 0 2px 10px rgba(255, 102, 2, 0.12);
+}
+.magma-select__trigger:focus-visible {
+    outline: none;
+    box-shadow: var(--magma-focus-ring);
+}
+.magma-select__trigger svg {
+    color: var(--magma-body);
+    transition: transform var(--magma-t) var(--magma-ease);
+}
+.magma-select.is-open .magma-select__trigger svg {
+    transform: rotate(180deg);
+}
+.magma-select__value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.magma-select__menu {
+    position: absolute;
+    z-index: 25;
+    top: calc(100% + 6px);
+    left: 0;
+    width: var(--magma-menu-width, 100%);
+    min-width: var(--magma-menu-min-width, 0);
+    max-width: calc(100vw - 48px);
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 6px;
+    background: var(--magma-surface);
+    border: 1px solid var(--magma-line);
+    border-radius: var(--magma-r-md);
+    box-shadow: var(--magma-shadow-md);
+}
+.magma-select__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--magma-r-sm);
+    font-size: 14px;
+    color: var(--magma-body);
+    text-align: left;
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-select__option:hover {
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+}
+.magma-select__option.is-selected {
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+    font-weight: 700;
+}
+.magma-chips {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.magma-chip {
+    height: var(--magma-form-element-height);
+    padding: 0 18px;
+    border-radius: var(--magma-r-sm);
+    background: var(--magma-yellow-soft);
+    color: var(--magma-body);
+    font-size: 15px;
+    font-weight: 500;
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease),
+    transform var(--magma-t-fast) var(--magma-ease);
+}
+.magma-chip:hover {
+    background: #ffe489;
+}
+.magma-chip.is-active {
+    background: var(--magma-yellow-ink);
+    color: #fff;
+}
+.magma-chip:active {
+    transform: scale(0.97);
+}
+.magma-table-wrap {
+    overflow-x: auto;
+}
+.magma-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.magma-table thead th {
+    height: 44px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--magma-line);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--magma-ink);
+    text-align: left;
+    white-space: nowrap;
+}
+.magma-table tbody td {
+    height: 68px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--magma-line);
+    font-size: 14px;
+    color: var(--magma-body);
+    vertical-align: middle;
+}
+.magma-table tbody tr {
+    transition: background var(--magma-t-fast) var(--magma-ease);
+}
+.magma-table tbody tr:hover {
+    background: #fffaf6;
+}
+.magma-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+.magma-table--dense thead th, .magma-table--dense tbody td {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.magma-table--dense .magma-entity__title {
+    max-width: 148px;
+}
+.magma-table__cell--strong {
+    font-weight: 700;
+    color: var(--magma-ink);
+    white-space: nowrap;
+}
+.magma-table__cell--amount {
+    font-weight: 700;
+    color: var(--magma-ink);
+    white-space: nowrap;
+}
+.magma-table__cell--amount .magma-table__delta {
+    margin-left: 4px;
+    font-weight: 500;
+    color: var(--magma-muted);
+    font-size: 13px;
+}
+.magma-table__cell--right {
+    text-align: right;
+}
+.magma-table__cell--truncate {
+    max-width: 188px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.magma-table__cell--mono {
+    font-size: 13px;
+    color: var(--magma-muted);
+}
+.magma-table__cell--nowrap {
+    white-space: nowrap;
+}
+.magma-table__cell--link {
+    color: var(--magma-orange);
+    font-weight: 600;
+}
+.magma-table__cell--nowrap {
+    white-space: nowrap;
+}
+.magma-table__cell--link:hover {
+    text-decoration: underline;
+}
+.magma-table__cell--action, .magma-table td:last-child {
+    white-space: nowrap;
+}
 .magma-badge {
     display: inline-flex;
     align-items: center;
@@ -276,122 +634,620 @@
     font-weight: 700;
     white-space: nowrap;
 }
-
 .magma-badge--pending {
     background: var(--magma-yellow-badge);
     color: var(--magma-yellow-badge-ink);
 }
-
 .magma-badge--success {
     background: var(--magma-green);
-    color: var(--magma-on-accent);
+    color: #fff;
 }
-
 .magma-badge--danger {
     background: var(--magma-pink);
     color: var(--magma-pink-ink);
 }
-
 .magma-badge--active {
     background: var(--magma-blue);
-    color: var(--magma-on-accent);
+    color: #fff;
 }
-
 .magma-badge--expired {
-    background: var(--magma-line);
+    background: var(--magma-gray-soft);
     color: var(--magma-gray-ink);
 }
-
-/* --------------------------------------------------------------------------
-   5. Liste déroulante (select, multiselect, indicatif téléphonique)
-   --------------------------------------------------------------------------
-   Structure du panneau :
-     .magma-select__menu     colonne, hauteur bornée, pas de défilement propre
-       .magma-select__search zone de recherche, hauteur fixe
-       .magma-select__list   seule zone défilante
-       .magma-select__foot   pied fixe (charger plus, erreur)
-   C'est ce découpage qui garantit que la recherche reste visible pendant que
-   la liste défile.
-   -------------------------------------------------------------------------- */
-.magma-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 0;
+.magma-badge--role-dev {
+    background: var(--magma-blue-mid);
+    color: var(--magma-blue);
 }
-
-.magma-field__label {
+.magma-badge--role-finance {
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+}
+.magma-badge--role-admin {
+    background: var(--magma-pink);
+    color: var(--magma-pink-ink);
+}
+.magma-badge--role-super {
+    background: var(--magma-green-soft);
+    color: var(--magma-green-ink);
+}
+.magma-pagination {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 16px;
+    font-size: 15px;
+    color: var(--magma-body);
+}
+.magma-pagination__count {
+    font-weight: 500;
+}
+.magma-pagination__count strong {
+    font-weight: 700;
+    color: var(--magma-ink);
+}
+.magma-pagination__nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.magma-pagination__label {
+    color: var(--magma-body);
+}
+.magma-pagination__jump {
+    width: 40px;
+    height: 34px;
+    border: 1px solid var(--magma-line);
+    border-radius: var(--magma-r-sm);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--magma-ink);
+    outline: none;
+    transition: border-color var(--magma-t-fast) var(--magma-ease), box-shadow var(--magma-t-fast) var(--magma-ease);
+}
+.magma-pagination__jump:focus {
+    border-color: var(--magma-orange);
+    box-shadow: var(--magma-focus-ring);
+}
+.magma-pagination__step {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--magma-body);
+    transition: color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-pagination__step:hover {
+    color: var(--magma-orange);
+}
+.magma-pagination__step[disabled] {
+    color: var(--magma-placeholder);
+    pointer-events: none;
+}
+.magma-pagination__page {
+    min-width: 30px;
+    height: 30px;
+    padding: 0 8px;
+    border-radius: var(--magma-r-sm);
+    background: var(--magma-line-soft);
     font-size: 14px;
     font-weight: 600;
     color: var(--magma-body);
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
 }
-
-.magma-field__hint {
+.magma-pagination__page:hover {
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+}
+.magma-pagination__page.is-active {
+    background: #fff0e8;
+    color: var(--magma-orange);
+    box-shadow: inset 0 0 0 1px var(--magma-orange-tint);
+}
+.magma-pagination__dots {
+    color: var(--magma-muted);
+}
+.magma-pagination__next {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--magma-orange);
+    transition: transform var(--magma-t-fast) var(--magma-ease);
+}
+.magma-pagination__next:hover {
+    transform: translateX(2px);
+}
+.magma-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+.magma-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.45);
+    backdrop-filter: blur(2px);
+}
+.magma-modal__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 620px;
+    max-height: calc(100vh - 48px);
+    overflow: hidden;
+    padding: 0;
+    background: var(--magma-surface);
+    border-radius: var(--magma-r-xl);
+    box-shadow: var(--magma-shadow-lg);
+}
+.magma-modal__panel--sm {
+    max-width: 460px;
+}
+.magma-modal__panel--lg {
+    max-width: 860px;
+}
+.magma-modal__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex: none;
+    padding: 32px 32px 0;
+    margin-bottom: 24px;
+}
+.magma-modal__title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    color: var(--magma-ink);
+}
+.magma-modal__subtitle {
+    margin-top: 4px;
     font-size: 13px;
     color: var(--magma-muted);
 }
-
-.magma-select {
-    position: relative;
-    min-width: 196px;
+.magma-modal__close {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--magma-r-sm);
+    color: var(--magma-muted);
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease),
+    transform var(--magma-t-fast) var(--magma-ease);
 }
-
-.magma-select__trigger {
+.magma-modal__close:hover {
+    background: var(--magma-line-soft);
+    color: var(--magma-ink);
+    transform: rotate(90deg);
+}
+.magma-modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 32px;
+}
+.magma-modal__foot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex: none;
+    padding: 0 32px 32px;
+    margin-top: 28px;
+}
+.magma-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--magma-gutter);
+}
+.magma-accordion__group {
+    border-radius: var(--magma-r-md);
+    overflow: hidden;
+}
+.magma-accordion__group-title {
+    display: flex;
+    align-items: center;
+    height: 62px;
+    padding: 0 20px;
+    background: var(--magma-orange);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+}
+.magma-accordion__item {
+    background: var(--magma-surface);
+    border-bottom: 1px solid var(--magma-line);
+}
+.magma-accordion__item:last-child {
+    border-bottom: 0;
+}
+.magma-accordion__trigger {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 16px;
     width: 100%;
-    height: var(--nd-form-element-height);
+    padding: 22px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--magma-ink);
+    text-align: left;
+    transition: color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-accordion__trigger:hover {
+    color: var(--magma-orange);
+}
+.magma-accordion__trigger svg {
+    flex: none;
+    color: var(--magma-body);
+    transition: transform var(--magma-t) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-accordion__trigger:hover svg {
+    color: var(--magma-orange);
+}
+.magma-accordion__item.is-open .magma-accordion__trigger svg {
+    transform: rotate(45deg);
+    color: var(--magma-orange);
+}
+.magma-accordion__panel {
+    padding: 0 20px 22px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--magma-muted);
+}
+.magma-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: var(--magma-form-element-height);
     padding: 0 16px;
     background: var(--magma-surface);
     border: 1px solid var(--magma-orange);
     border-radius: var(--magma-r-sm);
+    transition: box-shadow var(--magma-t-fast) var(--magma-ease), border-color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-input:focus-within {
+    box-shadow: var(--magma-focus-ring);
+}
+.magma-input--plain {
+    border-color: var(--magma-line);
+}
+.magma-input--plain:focus-within {
+    border-color: var(--magma-orange);
+}
+.magma-input__icon {
+    flex: none;
+    color: var(--magma-orange);
+    transition: transform var(--magma-t) var(--magma-ease);
+}
+.magma-input:focus-within .magma-input__icon {
+    transform: scale(1.06);
+}
+.magma-input input, .magma-input select, .magma-input textarea {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
     font-size: 15px;
-    font-weight: 600;
+    color: var(--magma-ink);
+}
+.magma-input input::placeholder, .magma-input textarea::placeholder {
+    color: var(--magma-placeholder);
+}
+.magma-input--textarea {
+    height: auto;
+    padding: 14px 16px;
+}
+.magma-input--textarea textarea {
+    height: 120px;
+    resize: vertical;
+}
+.magma-input__prefix {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding-right: 12px;
+    margin-left: -8px;
+    border-right: 1px solid var(--magma-line);
+    background: var(--magma-orange-soft);
+    border-radius: 6px 0 0 6px;
+    padding-left: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--magma-orange);
+}
+.magma-input__prefix svg {
+    color: var(--magma-orange);
+}
+.magma-input__suffix {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+    transition: background var(--magma-t-fast) var(--magma-ease), transform var(--magma-t-fast) var(--magma-ease);
+}
+.magma-input__suffix:hover {
+    background: var(--magma-orange-tint);
+    transform: scale(1.08);
+}
+.magma-field-error {
+    font-size: 13px;
+    color: var(--magma-red);
+}
+.magma-menu {
+    position: absolute;
+    z-index: 60;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 240px;
+    padding: 8px;
+    background: var(--magma-surface);
+    border: 1px solid var(--magma-line);
+    border-radius: var(--magma-r-md);
+    box-shadow: var(--magma-shadow-md);
+}
+.magma-menu__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--magma-r-sm);
+    font-size: 14px;
     color: var(--magma-body);
     text-align: left;
-    transition: box-shadow var(--magma-fast) var(--magma-ease);
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
 }
-
-.magma-select__trigger:hover {
-    box-shadow: 0 2px 10px var(--magma-accent-halo);
+.magma-menu__item:hover {
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
 }
-
-.magma-select__trigger:focus-visible {
+.magma-menu__item.is-active {
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+    font-weight: 700;
+}
+.magma-menu--left {
+    right: auto;
+    left: 0;
+}
+.magma-menu__sep {
+    height: 1px;
+    margin: 6px 0;
+    background: var(--magma-line);
+}
+.magma-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.magma-tab {
+    height: 38px;
+    padding: 0 16px;
+    border-radius: var(--magma-r-sm);
+    border: 1px solid var(--magma-orange);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--magma-orange);
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-tab:hover {
+    background: var(--magma-orange-soft);
+}
+.magma-tab.is-active {
+    background: var(--magma-orange);
+    color: #fff;
+}
+.magma-progress {
+    position: fixed;
+    z-index: 120;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--magma-orange), var(--magma-yellow));
+    transform-origin: 0 50%;
+    animation: magma-progress 1.4s var(--magma-ease) infinite;
+}
+.magma-toasts {
+    position: fixed;
+    z-index: 110;
+    right: 24px;
+    bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 360px;
+    pointer-events: none;
+}
+.magma-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--magma-surface);
+    border-radius: var(--magma-r-md);
+    box-shadow: var(--magma-shadow-lg);
+    pointer-events: auto;
+    animation: magma-toast-in 260ms var(--magma-ease-out) both;
+}
+.magma-toast.is-leaving {
+    animation: magma-toast-out 200ms var(--magma-ease) forwards;
+    pointer-events: none;
+}
+.magma-toast__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--magma-r-sm);
+}
+.magma-toast__title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--magma-ink);
+}
+.magma-toast__text {
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--magma-muted);
+}
+.magma-toast--success .magma-toast__icon {
+    background: var(--magma-green-soft);
+    color: var(--magma-green-ink);
+}
+.magma-toast--error .magma-toast__icon {
+    background: var(--magma-pink);
+    color: var(--magma-pink-ink);
+}
+.magma-toast--info .magma-toast__icon {
+    background: var(--magma-blue-soft);
+    color: var(--magma-blue);
+}
+.magma-toast--warning .magma-toast__icon {
+    background: var(--magma-yellow-soft);
+    color: var(--magma-yellow-ink);
+}
+.magma-animate-rise {
+    animation: magma-rise var(--magma-t-slow) var(--magma-ease-out) backwards;
+}
+.magma-stagger>* {
+    animation: magma-rise var(--magma-t-slow) var(--magma-ease-out) backwards;
+}
+.magma-stagger>*:nth-child(1) {
+    animation-delay: 20ms;
+}
+.magma-stagger>*:nth-child(2) {
+    animation-delay: 70ms;
+}
+.magma-stagger>*:nth-child(3) {
+    animation-delay: 120ms;
+}
+.magma-stagger>*:nth-child(4) {
+    animation-delay: 170ms;
+}
+.magma-stagger>*:nth-child(5) {
+    animation-delay: 220ms;
+}
+.magma-stagger>*:nth-child(6) {
+    animation-delay: 270ms;
+}
+.magma-stagger>*:nth-child(7) {
+    animation-delay: 320ms;
+}
+.magma-stagger>*:nth-child(8) {
+    animation-delay: 370ms;
+}
+.magma-fade-enter {
+    transition: opacity var(--magma-t) var(--magma-ease), transform var(--magma-t) var(--magma-ease);
+}
+.magma-fade-enter-start {
+    opacity: 0;
+    transform: translateY(-6px);
+}
+.magma-fade-leave {
+    transition: opacity var(--magma-t-fast) var(--magma-ease), transform var(--magma-t-fast) var(--magma-ease);
+}
+.magma-fade-leave-end {
+    opacity: 0;
+    transform: translateY(-6px);
+}
+.magma-zoom-enter {
+    transition: opacity var(--magma-t) var(--magma-ease), transform var(--magma-t) var(--magma-ease-out);
+}
+.magma-zoom-enter-start {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+}
+.magma-zoom-leave {
+    transition: opacity var(--magma-t-fast) var(--magma-ease), transform var(--magma-t-fast) var(--magma-ease);
+}
+.magma-zoom-leave-end {
+    opacity: 0;
+    transform: scale(0.98);
+}
+.magma-collapse-enter {
+    transition: height var(--magma-t) var(--magma-ease), opacity var(--magma-t) var(--magma-ease);
+    overflow: hidden;
+}
+.magma-collapse-leave {
+    transition: height var(--magma-t) var(--magma-ease), opacity var(--magma-t) var(--magma-ease);
+    overflow: hidden;
+}
+@media (max-width: 1200px) {
+.magma-accounts, .magma-modal__panel--lg .magma-accounts {
+    grid-template-columns: minmax(0, 1fr);
+}
+}
+.magma-phone {
+    position: relative;
+    gap: 10px;
+    padding-left: 0;
+    padding-right: 10px;
+}
+.magma-phone__picker {
+    position: relative;
+    flex: none;
+    align-self: stretch;
+}
+.magma-phone__trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+    padding: 0 10px 0 12px;
+    background: var(--magma-orange-soft);
+    border-radius: 7px 0 0 7px;
+    color: var(--magma-orange);
+    font-size: 15px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    transition: background var(--magma-t-fast) var(--magma-ease);
+}
+.magma-phone__trigger:hover {
+    background: var(--magma-orange-tint);
+}
+.magma-phone__trigger:focus-visible {
     outline: none;
-    box-shadow: var(--magma-focus);
+    box-shadow: var(--magma-focus-ring);
 }
-
-.magma-select__trigger svg {
-    transition: transform var(--magma-base) var(--magma-ease);
+.magma-phone__dial {
+    min-width: 40px;
+    text-align: left;
 }
-
-.magma-select.is-open .magma-select__trigger svg {
+.magma-phone__caret {
+    color: var(--magma-orange);
+    transition: transform var(--magma-t) var(--magma-ease);
+}
+.magma-phone__trigger.is-open .magma-phone__caret {
     transform: rotate(180deg);
 }
-
-.magma-select__value {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.magma-select__caret {
-    flex: none;
-    color: var(--magma-body);
-}
-
-.magma-select__menu {
+.magma-phone__menu {
     position: absolute;
     z-index: 45;
     top: calc(100% + 8px);
     left: 0;
     display: flex;
     flex-direction: column;
-    /* `--magma-menu-width` est posé par le composant selon l'option `menuWidth` :
-       largeur du champ, largeur du contenu, ou une valeur explicite. */
-    width: var(--magma-menu-width);
+    width: var(--magma-menu-width, min(324px, calc(100vw - 48px)));
+    min-width: var(--magma-menu-min-width, 0);
     max-width: calc(100vw - 48px);
     max-height: 324px;
     overflow: hidden;
@@ -401,22 +1257,229 @@
     border-radius: var(--magma-r-md);
     box-shadow: var(--magma-shadow-md);
 }
+.magma-phone__search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+    height: 40px;
+    padding: 0 12px;
+    margin-bottom: 6px;
+    border: 1px solid var(--magma-line);
+    border-radius: var(--magma-r-sm);
+    transition: border-color var(--magma-t-fast) var(--magma-ease), box-shadow var(--magma-t-fast) var(--magma-ease);
+}
+.magma-phone__search:focus-within {
+    border-color: var(--magma-orange);
+    box-shadow: var(--magma-focus-ring);
+}
+.magma-phone__search svg {
+    flex: none;
+    color: var(--magma-muted);
+}
+.magma-phone__search input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--magma-ink);
+}
+.magma-phone__search input::placeholder {
+    color: var(--magma-placeholder);
+}
+.magma-phone__list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.magma-phone__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: var(--magma-r-sm);
+    font-size: 14px;
+    text-align: left;
+    transition: background var(--magma-t-fast) var(--magma-ease);
+}
+.magma-phone__option:hover {
+    background: var(--magma-line-soft);
+}
+.magma-phone__option.is-selected {
+    background: var(--magma-orange-soft);
+}
+.magma-phone__name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--magma-ink);
+}
+.magma-phone__code {
+    flex: none;
+    color: var(--magma-muted);
+    font-variant-numeric: tabular-nums;
+}
+.magma-phone__option.is-selected .magma-phone__name {
+    font-weight: 700;
+    color: var(--magma-orange);
+}
+.magma-phone__option.is-selected .magma-phone__code {
+    color: var(--magma-orange);
+    font-weight: 700;
+}
+.magma-phone__check {
+    display: grid;
+    place-items: center;
+    flex: none;
+    color: var(--magma-orange);
+}
+.magma-phone__foot {
+    flex: none;
+    padding-top: 6px;
+}
+.magma-phone__more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 38px;
+    border-radius: var(--magma-r-sm);
+    background: var(--magma-line-soft);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--magma-body);
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-phone__more:hover {
+    background: var(--magma-orange-soft);
+    color: var(--magma-orange);
+}
+.magma-phone__more[disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+}
+.magma-phone__empty {
+    padding: 16px 10px;
+    font-size: 14px;
+    color: var(--magma-muted);
+    text-align: center;
+}
+.magma-menu__item.is-active .magma-lang__code {
+    background: var(--magma-surface);
+    color: var(--magma-orange);
+}
+.magma-phone__state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 10px;
+    font-size: 14px;
+    color: var(--magma-muted);
+    text-align: center;
+}
+.magma-phone__state:empty {
+    display: none;
+}
+.magma-phone__spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    animation: magma-spin 700ms linear infinite;
+}
+.magma-phone__flag {
+    display: grid;
+    place-items: center;
+    flex: none;
+}
+.magma-phone__option.is-active {
+    background: var(--magma-line-soft);
+}
+.magma-phone__state[style*="display: none"] {
+    padding: 0;
+}
 
-/* Variantes de largeur, utilisables sans JavaScript. */
+/* --------------------------------------------------------------------------
+   4. Composants propres à la bibliothèque
+   -------------------------------------------------------------------------- */
+.magma-icon {
+    display: block;
+    flex: none;
+}
+.magma-flag {
+    display: block;
+    flex: none;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.magma-icon {
+    display: block;
+    flex: none;
+}
+.magma-flag {
+    display: block;
+    flex: none;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.magma-icon {
+    display: block;
+    flex: none;
+}
+.magma-flag {
+    display: block;
+    flex: none;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.magma-icon {
+    display: block;
+    flex: none;
+}
+.magma-flag {
+    display: block;
+    flex: none;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.magma-icon {
+    display: block;
+    flex: none;
+}
+.magma-flag {
+    display: block;
+    flex: none;
+    border-radius: 3px;
+}
+.magma-select__caret {
+    flex: none;
+    color: var(--magma-body);
+}
 .magma-select__menu--field {
     width: 100%;
 }
-
 .magma-select__menu--auto {
     width: max-content;
     min-width: 100%;
 }
-
 .magma-select__menu--wide {
     --magma-menu-width: min(380px, calc(100vw - 48px));
 }
-
-/* Zone de recherche : ne défile pas */
 .magma-select__search {
     display: flex;
     align-items: center;
@@ -429,17 +1492,14 @@
     border-radius: var(--magma-r-sm);
     transition: border-color var(--magma-fast) var(--magma-ease), box-shadow var(--magma-fast) var(--magma-ease);
 }
-
 .magma-select__search:focus-within {
     border-color: var(--magma-orange);
-    box-shadow: var(--magma-focus);
+    box-shadow: var(--magma-focus-ring);
 }
-
 .magma-select__search svg {
     flex: none;
     color: var(--magma-muted);
 }
-
 .magma-select__search input {
     flex: 1 1 auto;
     min-width: 0;
@@ -449,12 +1509,9 @@
     font-size: 14px;
     color: var(--magma-ink);
 }
-
 .magma-select__search input::placeholder {
     color: var(--magma-placeholder);
 }
-
-/* Seule cette liste défile */
 .magma-select__list {
     flex: 1 1 auto;
     min-height: 0;
@@ -467,43 +1524,13 @@
     flex-direction: column;
     gap: 2px;
 }
-
 .magma-select__list::-webkit-scrollbar {
     width: 6px;
 }
-
 .magma-select__list::-webkit-scrollbar-thumb {
     background: var(--magma-scrollbar);
     border-radius: 999px;
 }
-
-.magma-select__option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 9px 10px;
-    border-radius: var(--magma-r-sm);
-    font-size: 14px;
-    text-align: left;
-    transition: background var(--magma-fast) var(--magma-ease);
-}
-
-.magma-select__option:hover,
-.magma-select__option.is-active {
-    background: var(--magma-line-soft);
-}
-
-.magma-select__option.is-selected {
-    background: var(--magma-orange-soft);
-}
-
-.magma-select__option.is-selected .magma-select__name,
-.magma-select__option.is-selected .magma-select__meta {
-    color: var(--magma-orange);
-    font-weight: 700;
-}
-
 .magma-select__name {
     flex: 1 1 auto;
     min-width: 0;
@@ -512,26 +1539,21 @@
     white-space: nowrap;
     color: var(--magma-ink);
 }
-
 .magma-select__meta {
     flex: none;
     color: var(--magma-muted);
     font-variant-numeric: tabular-nums;
 }
-
 .magma-select__check {
     display: grid;
     place-items: center;
     flex: none;
     color: var(--magma-orange);
 }
-
-/* Pied fixe : charger plus, état d'erreur */
 .magma-select__foot {
     flex: none;
     padding-top: 6px;
 }
-
 .magma-select__more {
     display: flex;
     align-items: center;
@@ -546,28 +1568,23 @@
     color: var(--magma-body);
     transition: background var(--magma-fast) var(--magma-ease), color var(--magma-fast) var(--magma-ease);
 }
-
 .magma-select__more:hover {
     background: var(--magma-orange-soft);
     color: var(--magma-orange);
 }
-
 .magma-select__more[disabled] {
     opacity: 0.6;
     pointer-events: none;
 }
-
 .magma-select__state {
     padding: 16px 10px;
     font-size: 14px;
     text-align: center;
     color: var(--magma-muted);
 }
-
 .magma-select__state--error {
     color: var(--magma-pink-ink);
 }
-
 .magma-select__spinner {
     width: 16px;
     height: 16px;
@@ -576,84 +1593,6 @@
     border-top-color: transparent;
     animation: magma-spin 700ms linear infinite;
 }
-
-@keyframes magma-spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Champ téléphone ---------------------------------------------------------- */
-.magma-phone {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    height: var(--nd-form-element-height);
-    padding: 0 10px 0 0;
-    background: var(--magma-surface);
-    border: 1px solid var(--magma-orange);
-    border-radius: var(--magma-r-sm);
-    transition: box-shadow var(--magma-fast) var(--magma-ease);
-}
-
-.magma-phone:focus-within {
-    box-shadow: var(--magma-focus);
-}
-
-.magma-phone__picker {
-    position: relative;
-    flex: none;
-    align-self: stretch;
-}
-
-.magma-phone__trigger {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    height: 100%;
-    padding: 0 10px 0 12px;
-    background: var(--magma-orange-soft);
-    border-radius: 7px 0 0 7px;
-    color: var(--magma-orange);
-    font-size: 15px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    transition: background var(--magma-fast) var(--magma-ease);
-}
-
-.magma-phone__trigger:hover {
-    background: var(--magma-orange-tint);
-}
-
-.magma-phone__dial {
-    min-width: 40px;
-    text-align: left;
-}
-
-.magma-phone__caret {
-    transition: transform var(--magma-base) var(--magma-ease);
-}
-
-.magma-phone.is-open .magma-phone__caret {
-    transform: rotate(180deg);
-}
-
-.magma-phone input[type="tel"] {
-    flex: 1 1 auto;
-    min-width: 0;
-    height: 100%;
-    border: 0;
-    outline: none;
-    background: transparent;
-    font-size: 15px;
-    color: var(--magma-ink);
-}
-
-.magma-phone input[type="tel"]::placeholder {
-    color: var(--magma-placeholder);
-}
-
 .magma-phone__clear {
     flex: none;
     display: grid;
@@ -665,392 +1604,61 @@
     color: var(--magma-orange);
     transition: background var(--magma-fast) var(--magma-ease), transform var(--magma-fast) var(--magma-ease);
 }
-
 .magma-phone__clear:hover {
     background: var(--magma-orange-tint);
     transform: scale(1.08);
 }
-
-/* --------------------------------------------------------------------------
-   6. Panneau déroulant
-   -------------------------------------------------------------------------- */
 .magma-dropdown {
     position: relative;
 }
-
-.magma-menu {
-    position: absolute;
-    z-index: 60;
-    top: calc(100% + 10px);
-    right: 0;
-    /* Même mécanique que les sélecteurs : `menuWidth` pilote cette variable. */
-    width: var(--magma-menu-width, auto);
-    min-width: var(--magma-menu-min-width, 240px);
-    padding: 8px;
-    background: var(--magma-surface);
-    border: 1px solid var(--magma-line);
-    border-radius: var(--magma-r-md);
-    box-shadow: var(--magma-shadow-md);
-}
-
-.magma-menu--left {
-    right: auto;
-    left: 0;
-}
-
-.magma-menu__item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 12px 14px;
-    border-radius: var(--magma-r-sm);
-    font-size: 14px;
-    color: var(--magma-body);
-    text-align: left;
-    transition: background var(--magma-fast) var(--magma-ease), color var(--magma-fast) var(--magma-ease);
-}
-
-.magma-menu__item:hover {
-    background: var(--magma-orange-soft);
-    color: var(--magma-orange);
-}
-
-.magma-menu__item.is-active {
-    background: var(--magma-orange-soft);
-    color: var(--magma-orange);
-    font-weight: 700;
-}
-
-.magma-menu__sep {
-    height: 1px;
-    margin: 6px 0;
-    background: var(--magma-line);
-}
-
-/* --------------------------------------------------------------------------
-   7. Fenêtre modale
-   -------------------------------------------------------------------------- */
-.magma-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-}
-
-.magma-modal__backdrop {
-    position: absolute;
-    inset: 0;
-    background: var(--magma-overlay);
-    backdrop-filter: blur(2px);
-}
-
-/*
- * Le panneau est une colonne : l'en-tête et le pied gardent leur place, seul le
- * corps défile. Le panneau lui-même ne défile pas — sinon l'en-tête partirait
- * avec le contenu.
- */
-.magma-modal__panel {
+.magma-switch {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 620px;
-    max-height: calc(100vh - 48px);
-    overflow: hidden;
-    padding: 0;
-    background: var(--magma-surface);
-    border-radius: var(--magma-r-xl);
-    box-shadow: var(--magma-shadow-lg);
-}
-
-.magma-modal__panel--sm {
-    max-width: 460px;
-}
-
-.magma-modal__panel--lg {
-    max-width: 860px;
-}
-
-.magma-modal__head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    flex: none;
-    padding: 32px 32px 0;
-    margin-bottom: 24px;
-}
-
-.magma-modal__title {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -0.4px;
-    color: var(--magma-ink);
-}
-
-.magma-modal__subtitle {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--magma-muted);
-}
-
-.magma-modal__close {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: var(--magma-r-sm);
-    color: var(--magma-muted);
-    transition: background var(--magma-fast) var(--magma-ease), color var(--magma-fast) var(--magma-ease),
-        transform var(--magma-fast) var(--magma-ease);
-}
-
-.magma-modal__close:hover {
-    background: var(--magma-line-soft);
-    color: var(--magma-ink);
-    transform: rotate(90deg);
-}
-
-.magma-modal__body {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    flex: 1 1 auto;
-    /* Seule zone défilante. Les menus déroulants s'en échappent grâce au
-       positionnement flottant (`floating`). */
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: 0 32px;
-}
-
-.magma-modal__foot {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    flex: none;
-    padding: 0 32px 32px;
-    margin-top: 28px;
-}
-
-/* --------------------------------------------------------------------------
-   8. Accordéon
-   -------------------------------------------------------------------------- */
-.magma-accordion {
-    border-radius: var(--magma-r-md);
-    overflow: hidden;
-    background: var(--magma-surface);
-}
-
-.magma-accordion__item {
-    border-bottom: 1px solid var(--magma-line);
-}
-
-.magma-accordion__item:last-child {
-    border-bottom: 0;
-}
-
-.magma-accordion__trigger {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    width: 100%;
-    padding: 22px 20px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--magma-ink);
-    text-align: left;
-    transition: color var(--magma-fast) var(--magma-ease);
-}
-
-.magma-accordion__trigger:hover {
-    color: var(--magma-orange);
-}
-
-.magma-accordion__trigger svg {
-    flex: none;
-    color: var(--magma-body);
-    transition: transform var(--magma-base) var(--magma-ease), color var(--magma-fast) var(--magma-ease);
-}
-
-.magma-accordion__item.is-open .magma-accordion__trigger svg {
-    transform: rotate(45deg);
-    color: var(--magma-orange);
-}
-
-.magma-accordion__panel {
-    padding: 0 20px 22px;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--magma-muted);
-}
-
-/* --------------------------------------------------------------------------
-   9. Onglets
-   -------------------------------------------------------------------------- */
-.magma-tabs {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    width: 46px;
+    height: 26px;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--magma-line);
+    transition: background var(--magma-base) var(--magma-ease);
 }
-
-.magma-tab {
-    height: 38px;
-    padding: 0 16px;
-    border-radius: var(--magma-r-sm);
-    border: 1px solid var(--magma-orange);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--magma-orange);
-    transition: background var(--magma-fast) var(--magma-ease), color var(--magma-fast) var(--magma-ease);
-}
-
-.magma-tab:hover {
-    background: var(--magma-orange-soft);
-}
-
-.magma-tab.is-active {
-    background: var(--magma-orange);
-    color: var(--magma-on-accent);
-}
-
-/* --------------------------------------------------------------------------
-   10. Pagination
-   -------------------------------------------------------------------------- */
-.magma-pagination {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px 16px;
-    font-size: 15px;
-    color: var(--magma-body);
-}
-
-.magma-pagination__count strong {
-    font-weight: 700;
-    color: var(--magma-ink);
-}
-
-.magma-pagination__nav {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.magma-pagination__jump {
-    width: 40px;
-    height: 34px;
-    border: 1px solid var(--magma-line);
-    border-radius: var(--magma-r-sm);
-    text-align: center;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--magma-ink);
-    outline: none;
-    transition: border-color var(--magma-fast) var(--magma-ease), box-shadow var(--magma-fast) var(--magma-ease);
-}
-
-.magma-pagination__jump:focus {
-    border-color: var(--magma-orange);
-    box-shadow: var(--magma-focus);
-}
-
-.magma-pagination__step {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--magma-body);
-    transition: color var(--magma-fast) var(--magma-ease);
-}
-
-.magma-pagination__step:hover {
-    color: var(--magma-orange);
-}
-
-.magma-pagination__step[disabled] {
-    color: var(--magma-placeholder);
-    pointer-events: none;
-}
-
-.magma-pagination__page {
-    min-width: 30px;
-    height: 30px;
-    padding: 0 8px;
-    border-radius: var(--magma-r-sm);
-    background: var(--magma-line-soft);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--magma-body);
-    transition: background var(--magma-fast) var(--magma-ease), color var(--magma-fast) var(--magma-ease);
-}
-
-.magma-pagination__page:hover {
-    background: var(--magma-orange-soft);
-    color: var(--magma-orange);
-}
-
-.magma-pagination__page.is-active {
-    background: var(--magma-orange-ghost);
-    color: var(--magma-orange);
-    box-shadow: inset 0 0 0 1px var(--magma-orange-tint);
-}
-
-.magma-pagination__dots {
-    color: var(--magma-muted);
-}
-
-.magma-pagination__next {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--magma-orange);
-}
-
-/* --------------------------------------------------------------------------
-   11. Notifications flottantes
-   -------------------------------------------------------------------------- */
-.magma-toasts {
-    position: fixed;
-    z-index: 110;
-    right: 24px;
-    bottom: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 360px;
-    pointer-events: none;
-}
-
-.magma-toast {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 16px 18px;
+.magma-switch__dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
     background: var(--magma-surface);
-    border-radius: var(--magma-r-md);
-    box-shadow: var(--magma-shadow-lg);
-    pointer-events: auto;
-
-    /* L'entrée est une animation, pas une transition : elle se joue seule à
-       l'insertion, sans dépendre du moteur de transition d'Alpine (qui ignore
-       les directives portées par les enfants d'un x-for). */
-    animation: magma-toast-in 260ms var(--magma-ease-out) both;
+    transition: transform var(--magma-base) var(--magma-ease);
+}
+.magma-rise {
+    animation: magma-rise var(--magma-slow) var(--magma-ease-out) backwards;
+}
+.magma-spin {
+    animation: magma-spin 700ms linear infinite;
 }
 
-/* Sortie : la fabrique pose `leaving` le temps de l'animation, puis retire la
-   notification du tableau. La durée doit rester alignée sur `leaveDuration`. */
-.magma-toast.is-leaving {
-    animation: magma-toast-out 200ms var(--magma-ease) forwards;
-    pointer-events: none;
+/* --------------------------------------------------------------------------
+   5. Animations
+   -------------------------------------------------------------------------- */
+@keyframes magma-spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
+
+
+@keyframes magma-progress {
+    0% {
+        transform: scaleX(0);
+    }
+    60% {
+        transform: scaleX(0.75);
+    }
+    100% {
+        transform: scaleX(1);
+        opacity: 0;
+    }
+}
+
 
 @keyframes magma-toast-in {
     from {
@@ -1063,6 +1671,7 @@
     }
 }
 
+
 @keyframes magma-toast-out {
     from {
         opacity: 1;
@@ -1074,171 +1683,6 @@
     }
 }
 
-.magma-toast__icon {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: var(--magma-r-sm);
-}
-
-.magma-toast__title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--magma-ink);
-}
-
-.magma-toast__text {
-    margin-top: 2px;
-    font-size: 13px;
-    color: var(--magma-muted);
-}
-
-.magma-toast--success .magma-toast__icon {
-    background: var(--magma-green-soft);
-    color: var(--magma-green);
-}
-
-.magma-toast--error .magma-toast__icon {
-    background: var(--magma-pink);
-    color: var(--magma-pink-ink);
-}
-
-.magma-toast--info .magma-toast__icon {
-    background: var(--magma-blue-soft);
-    color: var(--magma-blue);
-}
-
-.magma-toast--warning .magma-toast__icon {
-    background: var(--magma-yellow-soft);
-    color: var(--magma-yellow-ink);
-}
-
-/* --------------------------------------------------------------------------
-   12. Recherche et interrupteur
-   -------------------------------------------------------------------------- */
-.magma-search {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: var(--nd-form-element-height);
-    padding: 0 16px;
-    background: var(--magma-surface);
-    border: 1px solid var(--magma-line);
-    border-radius: var(--magma-r-sm);
-    transition: border-color var(--magma-fast) var(--magma-ease), box-shadow var(--magma-fast) var(--magma-ease);
-}
-
-.magma-search:focus-within {
-    border-color: var(--magma-orange);
-    box-shadow: var(--magma-focus);
-}
-
-.magma-search input {
-    flex: 1 1 auto;
-    min-width: 0;
-    height: 100%;
-    border: 0;
-    outline: none;
-    background: transparent;
-    font-size: 15px;
-    color: var(--magma-ink);
-}
-
-.magma-search input::placeholder {
-    color: var(--magma-placeholder);
-}
-
-.magma-search__icon {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 24px;
-    height: 24px;
-    color: var(--magma-body);
-    transition: color var(--magma-fast) var(--magma-ease), transform var(--magma-base) var(--magma-ease);
-}
-
-.magma-search:hover .magma-search__icon,
-.magma-search:focus-within .magma-search__icon {
-    color: var(--magma-orange);
-}
-
-.magma-switch {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    width: 46px;
-    height: 26px;
-    padding: 3px;
-    border-radius: 999px;
-    background: var(--magma-line);
-    transition: background var(--magma-base) var(--magma-ease);
-}
-
-.magma-switch.is-on {
-    background: var(--magma-orange);
-}
-
-.magma-switch__dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--magma-surface);
-    transition: transform var(--magma-base) var(--magma-ease);
-}
-
-.magma-switch.is-on .magma-switch__dot {
-    transform: translateX(20px);
-}
-
-/* --------------------------------------------------------------------------
-   13. Transitions partagées
-   -------------------------------------------------------------------------- */
-.magma-fade-enter {
-    transition: opacity var(--magma-base) var(--magma-ease), transform var(--magma-base) var(--magma-ease);
-}
-
-.magma-fade-enter-start {
-    opacity: 0;
-    transform: translateY(-6px);
-}
-
-.magma-fade-leave {
-    transition: opacity var(--magma-fast) var(--magma-ease), transform var(--magma-fast) var(--magma-ease);
-}
-
-.magma-fade-leave-end {
-    opacity: 0;
-    transform: translateY(-6px);
-}
-
-.magma-zoom-enter {
-    transition: opacity var(--magma-base) var(--magma-ease), transform var(--magma-base) var(--magma-ease-out);
-}
-
-.magma-zoom-enter-start {
-    opacity: 0;
-    transform: scale(0.96) translateY(8px);
-}
-
-.magma-zoom-leave {
-    transition: opacity var(--magma-fast) var(--magma-ease), transform var(--magma-fast) var(--magma-ease);
-}
-
-.magma-zoom-leave-end {
-    opacity: 0;
-    transform: scale(0.98);
-}
-
-
-
-
-
-.magma-rise {
-    animation: magma-rise var(--magma-slow) var(--magma-ease-out) backwards;
-}
 
 @keyframes magma-rise {
     from {
@@ -1248,48 +1692,5 @@
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-.magma-spin {
-    animation: magma-spin 700ms linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-    }
-}
-
-/* --------------------------------------------------------------------------
-   14. Adaptations
-   -------------------------------------------------------------------------- */
-@media (max-width: 640px) {
-    .magma-select__menu,
-    .magma-select__menu--wide {
-        width: calc(100vw - 32px);
-        max-height: 60vh;
-    }
-
-    .magma-toasts {
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-        width: auto;
-    }
-
-    .magma-pagination {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-    }
-
-    .magma-pagination__nav {
-        margin-left: 0;
-        flex-wrap: wrap;
     }
 }

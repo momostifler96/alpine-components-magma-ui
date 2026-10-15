@@ -19,7 +19,7 @@ endpoint distant, avec recherche serveur, pagination et « charger plus ».
     })"
     @click.outside="close()"
     @keydown="onKeydown($event)"
-    :class="open && 'is-open'"
+    :class="open ? 'is-open' : ''"
 >
     <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()"
             :aria-expanded="open" aria-haspopup="listbox">
@@ -42,7 +42,7 @@ endpoint distant, avec recherche serveur, pagination et « charger plus ».
             <template x-for="(option, index) in visibleOptions" :key="option.value">
                 <li :data-index="index">
                     <button type="button" class="magma-select__option" role="option"
-                            :class="[String(option.value) === String(value) && 'is-selected', index === activeIndex && 'is-active']"
+                            :class="[String(option.value) === String(value) ? 'is-selected' : '', index === activeIndex ? 'is-active' : '']"
                             :aria-selected="String(option.value) === String(value)"
                             @click="choose(option)"
                             @mousemove="activeIndex = index">

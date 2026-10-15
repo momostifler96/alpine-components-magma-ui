@@ -370,6 +370,29 @@ Cibles ES2020. Aucun polyfill n'est nécessaire : `fetch`, `URL`,
 `navigator.clipboard` (avec repli `execCommand`) et `CustomEvent` sont natifs sur
 ces versions.
 
+### Deux pièges d'Alpine à connaître
+
+**1. Un déclencheur isolé a besoin de son propre `x-data`.** Au chargement,
+Alpine n'initialise les directives que dans les portées `x-data`. Un `@click`
+posé sur un élément statique qui n'est sous aucun `x-data` n'est jamais branché :
+le clic ne fait rien, sans erreur en console. C'est le cas des boutons qui
+ouvrent une modale, puisqu'ils sont forcément en dehors de sa portée.
+
+```html
+<!-- Le x-data est indispensable -->
+<button x-data @click="$dispatch('magma-open', { name: 'edition' })">Modifier</button>
+```
+
+Un élément ajouté au DOM après coup (Alpine le voit via son observateur) est
+initialisé même hors portée : le piège ne concerne que le HTML présent au
+chargement.
+
+**2. Préférez `cond ? 'classe' : ''` à `cond && 'classe'`.** Alpine 3.17 écrit la
+valeur booléenne telle quelle dans l'attribut `class`, ce qui produit une classe
+parasite `false` sur l'élément (`<div class="magma-toast false">`) absente en
+3.15. Le ternaire renvoie une chaîne vide dans toutes les versions :
+`scripts/fix-class-idioms.py` réécrit les attributs `:class` d'un fichier.
+
 ---
 
 ## Développement
@@ -381,6 +404,24 @@ npm run build     # génère dist/magma-ui.esm.js, dist/magma-ui.global.js et di
 Le générateur n'utilise que les modules natifs de Node : imports relatifs,
 regroupement topologique, réécriture des `export`. Aucun transpileur, aucun
 minifieur, aucun outil externe.
+
+### Les styles viennent de l'application
+
+`src/styles/magma-ui.css` est **généré** : la feuille de l'application
+(`resources/css/new-design.css`, elle-même au pixel des maquettes) fait
+référence, la bibliothèque en est la transposition exacte sous les noms
+`magma-` (classes, variables et animations renommées ; l'accordéon reprend le
+style de la FAQ, les onglets celui des filtres du tableau de bord).
+
+```bash
+python packages/magma-ui/scripts/generate-styles.py   # transposition
+python packages/magma-ui/scripts/compare-styles.py    # contrôle de parité
+npm run build
+```
+
+`compare-styles.py` vérifie qu'aucun sélecteur de composant ne manque et
+qu'aucune déclaration ne diverge : il doit sortir sans écart. Corrigez toujours
+le style dans l'application, jamais dans le fichier généré.
 
 Parcourez [`examples/index.html`](examples/index.html) dans un navigateur pour
 voir chaque composant en fonctionnement, y compris le chargement distant simulé.

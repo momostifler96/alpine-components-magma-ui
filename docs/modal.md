@@ -45,9 +45,15 @@ fond. Peut être ouverte à distance par événement.
 
 | Depuis | Code |
 | --- | --- |
-| Un bouton de la page | `@click="$dispatch('magma-open', { name: 'edition' })"` |
+| Un bouton de la page | `<button x-data @click="$dispatch('magma-open', { name: 'edition' })">` |
 | Une autre portée Alpine | `$dispatch('magma-open', { name: 'edition' })` |
 | Livewire | `$this->dispatch('magma-open', name: 'edition');` |
+
+> **Le `x-data` du bouton d'ouverture n'est pas décoratif.** Alpine n'initialise au
+> chargement de la page que les directives situées dans une portée `x-data` : un
+> `@click` posé sur un élément statique isolé n'est jamais branché et le clic reste
+> sans effet, sans message d'erreur. Comme le déclencheur est forcément en dehors de
+> la portée de la modale (elle est fermée au chargement), il lui faut la sienne.
 
 ## Options
 

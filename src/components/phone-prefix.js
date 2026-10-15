@@ -65,6 +65,14 @@ export function createPhonePrefix(config = {}) {
             return this.value;
         },
 
+        /**
+         * Ligne sélectionnée, avec ses champs propres (`code`, `flag`, `region`…).
+         * Pratique pour rendre un drapeau : `flagSvg(currentOption?.code)`.
+         */
+        get currentOption() {
+            return this.options.find((option) => String(option.value) === String(this.value)) ?? null;
+        },
+
         init() {
             this.startTracking();
         },

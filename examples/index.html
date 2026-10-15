@@ -75,7 +75,9 @@
 </head>
 
 <body>
-    <div class="wrap">
+    <!-- `magma-root` fixe le contexte typographique des composants et active les
+         remises à zéro locales. Facultatif, mais recommandé. -->
+    <div class="wrap magma-root">
         <h1>Magma UI</h1>
         <p class="lede">
             Démonstration autonome — aucun bundler, aucune dépendance. Ouvrez la console
@@ -90,23 +92,23 @@
                     searchable: true,
                     placeholder: 'Choisissez un pays',
                     options: [
-                        { value: 'ci', label: "Côte d'Ivoire" },
+                        { value: 'ci', label: &quot;Côte d'Ivoire&quot; },
                         { value: 'sn', label: 'Sénégal' },
                         { value: 'bj', label: 'Bénin' },
                         { value: 'gh', label: 'Ghana' },
                     ],
                     allLabel: 'Tout',
                 })"
-                @click.outside="close()" @keydown="onKeydown($event)" :class="open && 'is-open'">
+                @click.outside="close()" @keydown="onKeydown($event)" :class="open ? 'is-open' : ''">
 
-                <button type="button" class="magma-select__trigger" @click="toggle()"
+                <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()"
                         :aria-expanded="open" aria-haspopup="listbox">
                     <span class="magma-select__value" x-text="currentLabel"></span>
                     <svg class="magma-select__caret" width="20" height="20" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
                 </button>
 
-                <div class="magma-select__menu" :style="menuStyle" x-show="open" x-cloak role="listbox"
+                <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox"
                      x-transition:enter="magma-fade-enter" x-transition:enter-start="magma-fade-enter-start"
                      x-transition:leave="magma-fade-leave" x-transition:leave-end="magma-fade-leave-end">
 
@@ -119,7 +121,7 @@
                         <template x-for="(option, index) in visibleOptions" :key="option.value">
                             <li :data-index="index">
                                 <button type="button" class="magma-select__option" role="option"
-                                        :class="[String(option.value) === String(value) && 'is-selected', index === activeIndex && 'is-active']"
+                                        :class="[String(option.value) === String(value) ? 'is-selected' : '', index === activeIndex ? 'is-active' : '']"
                                         :aria-selected="String(option.value) === String(value)"
                                         @click="choose(option)" @mousemove="activeIndex = index">
                                     <span class="magma-select__name" x-text="option.label"></span>
@@ -141,6 +143,83 @@
             </p>
         </div>
 
+        <!-- ─────────────────────────────────────────── Largeur du panneau -->
+        <h2>Largeur du panneau</h2>
+        <div class="panel">
+            <div class="row">
+                <div class="magma-select" x-data="magmaSelect({
+                        menuWidth: 'field',
+                        placeholder: 'menuWidth: field',
+                        options: [
+                            { value: '1', label: 'Le panneau prend la largeur du champ' },
+                            { value: '2', label: &quot;Deuxième entrée, plus longue que le champ&quot; },
+                        ],
+                    })"
+                    @click.outside="close()" @keydown="onKeydown($event)" :class="open ? 'is-open' : ''">
+
+                    <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()"
+                            :aria-expanded="open" aria-haspopup="listbox">
+                        <span class="magma-select__value" x-text="currentLabel"></span>
+                        <svg class="magma-select__caret" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
+                    </button>
+
+                    <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox">
+                        <ul class="magma-select__list" x-ref="list">
+                            <template x-for="option in options" :key="option.value">
+                                <li>
+                                    <button type="button" class="magma-select__option" role="option"
+                                            :class="String(option.value) === String(value) ? 'is-selected' : ''"
+                                            @click="choose(option)">
+                                        <span class="magma-select__name" x-text="option.label"></span>
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="magma-select" x-data="magmaSelect({
+                        menuWidth: 'auto',
+                        placeholder: 'menuWidth: auto',
+                        options: [
+                            { value: '1', label: 'Le panneau s\'ajuste au contenu' },
+                            { value: '2', label: &quot;Deuxième entrée, plus longue que le champ&quot; },
+                        ],
+                    })"
+                    @click.outside="close()" @keydown="onKeydown($event)" :class="open ? 'is-open' : ''">
+
+                    <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()"
+                            :aria-expanded="open" aria-haspopup="listbox">
+                        <span class="magma-select__value" x-text="currentLabel"></span>
+                        <svg class="magma-select__caret" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
+                    </button>
+
+                    <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox">
+                        <ul class="magma-select__list" x-ref="list">
+                            <template x-for="option in options" :key="option.value">
+                                <li>
+                                    <button type="button" class="magma-select__option" role="option"
+                                            :class="String(option.value) === String(value) ? 'is-selected' : ''"
+                                            @click="choose(option)">
+                                        <span class="magma-select__name" x-text="option.label"></span>
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <p class="muted">
+                Les deux panneaux sont posés en <code>position: fixed</code> : ils échappent aux
+                <code>overflow</code> de leurs ancêtres et suivent le champ au défilement.
+                <code>field</code> reprend la largeur du champ, <code>auto</code> s'ajuste au contenu
+                sans jamais être plus étroit.
+            </p>
+        </div>
+
         <!-- ─────────────────────────────────────────── Chargement AJAX simulé -->
         <h2>Chargement AJAX et « charger plus »</h2>
         <div class="panel">
@@ -151,16 +230,16 @@
                     loadMoreLabel: 'Charger plus de pays',
                     placeholder: 'Pays (distant)',
                 })"
-                @click.outside="close()" @keydown="onKeydown($event)" :class="open && 'is-open'">
+                @click.outside="close()" @keydown="onKeydown($event)" :class="open ? 'is-open' : ''">
 
-                <button type="button" class="magma-select__trigger" @click="toggle()"
+                <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()"
                         :aria-expanded="open" aria-haspopup="listbox">
                     <span class="magma-select__value" x-text="currentLabel"></span>
                     <svg class="magma-select__caret" width="20" height="20" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
                 </button>
 
-                <div class="magma-select__menu" :style="menuStyle" x-show="open" x-cloak role="listbox">
+                <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox">
                     <div class="magma-select__search">
                         <input type="text" x-model="searchTerm" @input="onSearchInput()" x-ref="search"
                                placeholder="Rechercher" aria-label="Rechercher" />
@@ -170,7 +249,7 @@
                         <template x-for="(option, index) in visibleOptions" :key="option.value">
                             <li :data-index="index">
                                 <button type="button" class="magma-select__option" role="option"
-                                        :class="[String(option.value) === String(value) && 'is-selected', index === activeIndex && 'is-active']"
+                                        :class="[String(option.value) === String(value) ? 'is-selected' : '', index === activeIndex ? 'is-active' : '']"
                                         @click="choose(option)">
                                     <span class="magma-select__name" x-text="option.label"></span>
                                     <span class="magma-select__meta" x-text="option.value"></span>
@@ -200,54 +279,75 @@
         <!-- ──────────────────────────────────────────── Indicatif téléphonique -->
         <h2>Indicatif téléphonique</h2>
         <div class="panel">
-            <div class="magma-phone" x-data="magmaPhonePrefix({
+            <div class="magma-input magma-phone" x-data="magmaPhonePrefix({
                     value: '+225',
                     options: [
-                        { value: '+225', label: "Côte d'Ivoire", code: 'ci', region: "Afrique de l'Ouest" },
-                        { value: '+221', label: 'Sénégal', code: 'sn', region: "Afrique de l'Ouest" },
-                        { value: '+254', label: 'Kenya', code: 'ke', region: "Afrique de l'Est" },
-                        { value: '+255', label: 'Tanzanie', code: 'tz', region: "Afrique de l'Est" },
+                        { value: '+225', label: &quot;Côte d'Ivoire&quot;, code: 'ci', region: &quot;Afrique de l'Ouest&quot; },
+                        { value: '+221', label: 'Sénégal', code: 'sn', region: &quot;Afrique de l'Ouest&quot; },
+                        { value: '+254', label: 'Kenya', code: 'ke', region: &quot;Afrique de l'Est&quot; },
+                        { value: '+223', label: 'Mali', code: 'ml', region: &quot;Afrique de l'Ouest&quot; },
                         { value: '+33', label: 'France', code: 'fr', region: 'International' },
                     ],
                 })"
-                @click.outside="close()" @keydown="onKeydown($event)" :class="open && 'is-open'">
+                @click.outside="close()" @keydown.escape="close()"
+                :class="open ? 'is-open' : ''">
 
                 <div class="magma-phone__picker">
-                    <button type="button" class="magma-phone__trigger" @click="toggle()"
-                            :aria-expanded="open" aria-haspopup="listbox" aria-label="Indicatif téléphonique">
+                    <button type="button" class="magma-phone__trigger" x-ref="trigger" @click="toggle()"
+                            :class="open ? 'is-open' : ''" :aria-expanded="open" aria-haspopup="listbox"
+                            aria-label="Indicatif téléphonique">
+                        <span class="magma-phone__flag" x-html="flagSvg(currentOption?.code, 22)" aria-hidden="true"></span>
                         <span class="magma-phone__dial" x-text="currentDial"></span>
                         <svg class="magma-phone__caret" width="16" height="16" viewBox="0 0 24 24" fill="none"
                              stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
                     </button>
 
-                    <div class="magma-select__menu" x-show="open" x-cloak role="listbox">
-                        <div class="magma-select__search">
+                    <!-- Recherche et pied fixes : seule la liste défile. -->
+                    <div class="magma-phone__menu magma-scroll" x-ref="menu" :style="menuStyle" x-show="open" x-cloak
+                         role="listbox" @keydown="onKeydown($event)"
+                         x-transition:enter="magma-fade-enter" x-transition:enter-start="magma-fade-enter-start"
+                         x-transition:leave="magma-fade-leave" x-transition:leave-end="magma-fade-leave-end">
+
+                        <div class="magma-phone__search">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
                             <input type="text" x-model="searchTerm" @input="onSearchInput()" x-ref="search"
-                                   placeholder="Pays, indicatif ou région…" aria-label="Rechercher" />
+                                   placeholder="Pays, indicatif ou région…" aria-label="Rechercher" autocomplete="off" />
                         </div>
 
-                        <ul class="magma-select__list" x-ref="list" @scroll="onListScroll($event)">
+                        <ul class="magma-phone__list" x-ref="list" @scroll="onListScroll($event)">
                             <template x-for="(option, index) in visibleOptions" :key="option.value">
                                 <li :data-index="index">
-                                    <button type="button" class="magma-select__option" role="option"
-                                            :class="[String(option.value) === String(value) && 'is-selected', index === activeIndex && 'is-active']"
-                                            @click="choose(option)">
-                                        <span class="magma-select__name" x-text="option.label"></span>
-                                        <span class="magma-select__meta" x-text="option.value"></span>
+                                    <button type="button" class="magma-phone__option" role="option"
+                                            :class="[String(option.value) === String(value) ? 'is-selected' : '', index === activeIndex ? 'is-active' : '']"
+                                            :aria-selected="String(option.value) === String(value)"
+                                            @click="choose(option)" @mousemove="activeIndex = index">
+                                        <span class="magma-phone__flag" x-html="flagSvg(option.code, 24)" aria-hidden="true"></span>
+                                        <span class="magma-phone__name" x-text="option.label"></span>
+                                        <span class="magma-phone__code" x-text="option.value"></span>
+
+                                        <span class="magma-phone__check" x-show="String(option.value) === String(value)" x-cloak>
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                 stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 5 5 9-11"/></svg>
+                                        </span>
                                     </button>
                                 </li>
                             </template>
                         </ul>
 
-                        <div class="magma-select__foot">
-                            <p class="magma-select__state" x-show="isEmpty" x-cloak x-text="emptyLabel"></p>
+                        <div class="magma-phone__foot">
+                            <p class="magma-phone__state" x-show="isEmpty" x-cloak
+                               x-text="searchTerm ? `${emptyLabel} « ${searchTerm} »` : emptyLabel"></p>
                         </div>
                     </div>
                 </div>
 
                 <input type="tel" placeholder="07 00 000 000" autocomplete="tel" />
 
-                <button type="button" class="magma-phone__clear" @click="clear()" aria-label="Effacer le numéro">×</button>
+                <button type="button" class="magma-input__suffix" @click="clear()" aria-label="Effacer le numéro">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="1.9" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
             </div>
 
             <p class="muted">
@@ -260,7 +360,10 @@
         <h2>Modale et notifications</h2>
         <div class="row">
             <div class="panel">
-                <button type="button" class="magma-btn magma-btn--primary"
+                <!-- `x-data` est obligatoire : Alpine n'initialise au chargement que
+                     les directives situées dans une portée `x-data`. Un `@click`
+                     posé sur un élément isolé reste silencieusement inerte. -->
+                <button type="button" class="magma-btn magma-btn--primary" x-data
                         @click="$dispatch('magma-open', { name: 'demo' })">
                     Ouvrir la modale
                 </button>
@@ -300,7 +403,7 @@
             </div>
 
             <div class="panel">
-                <button type="button" class="magma-btn magma-btn--yellow"
+                <button type="button" class="magma-btn magma-btn--yellow" x-data
                         @click="MagmaUI.notify({ type: 'warning', title: 'Attention', message: 'Le solde est faible.' })">
                     Notifier depuis JavaScript
                 </button>
@@ -317,7 +420,7 @@
                         { id: 'a', title: 'Première question', body: 'Réponse détaillée à la première question.' },
                         { id: 'b', title: 'Deuxième question', body: 'Réponse détaillée à la deuxième question.' },
                     ]" :key="item.id">
-                    <div class="magma-accordion__item" :class="isOpen(index) && 'is-open'">
+                    <div class="magma-accordion__item" :class="isOpen(index) ? 'is-open' : ''">
                         <button type="button" class="magma-accordion__trigger" @click="toggle(index)"
                                 :aria-expanded="isOpen(index)">
                             <span x-text="item.title"></span>
@@ -334,14 +437,14 @@
             <div style="margin-top:24px" class="magma-tabs" x-data="magmaTabs({ current: 'all' })" role="tablist">
                 <template x-for="tab in [['all', 'Tout'], ['payout', 'Payout'], ['payin', 'Payin']]" :key="tab[0]">
                     <button type="button" class="magma-tab" role="tab"
-                            :class="is(tab[0]) && 'is-active'"
+                            :class="is(tab[0]) ? 'is-active' : ''"
                             :aria-selected="is(tab[0])"
                             @click="select(tab[0])" x-text="tab[1]"></button>
                 </template>
             </div>
 
             <div style="margin-top:24px" x-data="magmaSwitch({ on: true })">
-                <button type="button" class="magma-switch" :class="on && 'is-on'" @click="toggle()"
+                <button type="button" class="magma-switch" :class="on ? 'is-on' : ''" @click="toggle()"
                         role="switch" :aria-checked="on" aria-label="Mode test">
                     <span class="magma-switch__dot"></span>
                 </button>
@@ -367,7 +470,7 @@
 
                     <template x-for="item in pages" :key="item">
                         <button type="button" class="magma-pagination__page"
-                                :class="page === item && 'is-active'"
+                                :class="page === item ? 'is-active' : ''"
                                 @click="goTo(item)" x-text="item"></button>
                     </template>
 
@@ -381,7 +484,7 @@
     <div class="magma-toasts" x-data="magmaToasts()" @magma-notify.window="push($event.detail)"
          aria-live="polite" aria-atomic="false">
         <template x-for="toast in items" :key="toast.id">
-            <div class="magma-toast" :class="[`magma-toast--${toast.type}`, toast.leaving && 'is-leaving']">
+            <div class="magma-toast" :class="[`magma-toast--${toast.type}`, toast.leaving ? 'is-leaving' : '']">
                 <span class="magma-toast__icon">!</span>
                 <span style="min-width:0">
                     <span class="magma-toast__title" x-text="toast.title"></span>
@@ -393,6 +496,40 @@
     </div>
 
     <script>
+        /*
+         * Drapeaux : la bibliothèque n'impose rien, elle affiche le contenu que
+         * vous lui donnez. Ici, un descripteur par pays (`mode` : bandes
+         * verticales ou horizontales) suffit à dessiner le drapeau — même
+         * approche que l'application Magma OnePay, qui fournit ses descripteurs
+         * côté serveur. `flagSvg()` est appelé depuis `x-html`.
+         */
+        const DRAPEAUX = {
+            ci: { mode: 'v', colors: ['#F77F00', '#FFFFFF', '#009E60'] },
+            ml: { mode: 'v', colors: ['#14B53A', '#FCD116', '#CE1126'] },
+            sn: { mode: 'v', colors: ['#00853F', '#FDEF42', '#E31B23'] },
+            ke: { mode: 'h', colors: ['#000000', '#FFFFFF', '#BB0000', '#FFFFFF', '#006600'] },
+            fr: { mode: 'v', colors: ['#0055A4', '#FFFFFF', '#EF4135'] },
+        };
+
+        function flagSvg(code, size = 22) {
+            const drapeau = DRAPEAUX[code];
+
+            if (!drapeau) {
+                return '';
+            }
+
+            const hauteur = Math.round(size * 0.68);
+            const longueur = (drapeau.mode === 'v' ? size : hauteur) / drapeau.colors.length;
+
+            const bandes = drapeau.colors.map((couleur, index) => (drapeau.mode === 'v'
+                ? `<rect x="${(index * longueur).toFixed(2)}" y="0" width="${longueur.toFixed(2)}" height="${hauteur}" fill="${couleur}"/>`
+                : `<rect x="0" y="${(index * longueur).toFixed(2)}" width="${size}" height="${longueur.toFixed(2)}" fill="${couleur}"/>`));
+
+            return `<svg width="${size}" height="${hauteur}" viewBox="0 0 ${size} ${hauteur}">${bandes.join('')}</svg>`;
+        }
+
+        window.flagSvg = flagSvg;
+
         // Journalisation : tous les événements `magma-*` remontent à l'écran.
         ['magma-select:change', 'magma-select:loaded', 'magma-select:error',
          'magma-phone:change', 'magma-multiselect:change', 'magma-tabs:change',
@@ -422,7 +559,9 @@
 
                 const page = Number(url.searchParams.get('page') || 1);
                 const perPage = 8;
-                const q = (url.searchParams.get('search') || '').toLowerCase();
+                // Le sélecteur envoie la recherche sous le nom déclaré par
+                // `searchParam` — ici `q`.
+                const q = (url.searchParams.get('q') || '').toLowerCase();
 
                 const filtered = COUNTRIES.filter((country) => country.label.toLowerCase().includes(q));
                 const start = (page - 1) * perPage;

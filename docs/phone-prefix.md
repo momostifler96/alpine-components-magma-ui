@@ -17,7 +17,7 @@ ou distante, avec recherche (nom de pays, indicatif, code) et « charger plus »
     })"
     @click.outside="close()"
     @keydown="onKeydown($event)"
-    :class="open && 'is-open'">
+    :class="open ? 'is-open' : ''">
 
     <div class="magma-phone__picker">
         <button type="button" class="magma-phone__trigger" x-ref="trigger" @click="toggle()"
@@ -37,7 +37,7 @@ ou distante, avec recherche (nom de pays, indicatif, code) et « charger plus »
                 <template x-for="(option, index) in visibleOptions" :key="option.value">
                     <li :data-index="index">
                         <button type="button" class="magma-select__option" role="option"
-                                :class="[String(option.value) === String(value) && 'is-selected', index === activeIndex && 'is-active']"
+                                :class="[String(option.value) === String(value) ? 'is-selected' : '', index === activeIndex ? 'is-active' : '']"
                                 :aria-selected="String(option.value) === String(value)"
                                 @click="choose(option)">
                             <span class="magma-select__name" x-text="option.label"></span>
@@ -103,6 +103,7 @@ Le filtre local cherche dans **le libellé, la valeur, le code pays et la régio
 | --- | --- |
 | `value` / `code` | Indicatif et code pays retenus. |
 | `currentDial` | Indicateur prêt à afficher. |
+| `currentOption` | Ligne retenue, avec ses champs propres (`code`, `region`…) : `flagSvg(currentOption?.code)`. |
 | `visibleOptions` | Liste filtrée. |
 | `choose(option)` | Retient l'option et ferme. |
 | `clear()` | Vide le numéro saisi sans toucher à l'indicatif. |

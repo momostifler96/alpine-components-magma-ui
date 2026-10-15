@@ -13,7 +13,7 @@ partie de l'application peut notifier sans connaître la pile.
     <template x-for="toast in items" :key="toast.id">
         <!-- `toast.leaving` déclenche l'animation de sortie ; la notification
              est retirée du tableau une fois l'animation jouée. -->
-        <div class="magma-toast" :class="[`magma-toast--${toast.type}`, toast.leaving && 'is-leaving']">
+        <div class="magma-toast" :class="[`magma-toast--${toast.type}`, toast.leaving ? 'is-leaving' : '']">
             <span class="magma-toast__icon">!</span>
             <span style="min-width:0">
                 <span class="magma-toast__title" x-text="toast.title"></span>
