@@ -297,9 +297,9 @@ ancêtre des composants à thémer.
 
 ```css
 .mon-theme {
-    --magma-orange: #0a7d55;
-    --magma-orange-hover: #086345;
-    --magma-orange-soft: #e6f5ef;
+    --magma-primary: #0a7d55;
+    --magma-primary-hover: #086345;
+    --magma-primary-soft: #e6f5ef;
     --magma-font: "Inter", system-ui, sans-serif;
     --magma-r-sm: 6px;
 }

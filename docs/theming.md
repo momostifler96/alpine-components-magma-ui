@@ -7,11 +7,11 @@ complet, sans toucher au JavaScript.
 ```css
 /* Sur :root pour toute la page, ou sur un conteneur pour un thème local. */
 .mon-theme {
-    --magma-orange: #0a7d55;
-    --magma-orange-hover: #086345;
-    --magma-orange-soft: #e6f5ef;
-    --magma-orange-tint: #c9e9dd;
-    --magma-orange-ghost: #f1faf6;
+    --magma-primary: #0a7d55;
+    --magma-primary-hover: #086345;
+    --magma-primary-soft: #e6f5ef;
+    --magma-primary-tint: #c9e9dd;
+    --magma-primary-ghost: #f1faf6;
     --magma-font: "Inter", system-ui, sans-serif;
 }
 ```
@@ -20,12 +20,12 @@ complet, sans toucher au JavaScript.
 
 | Variable | Défaut | Usage |
 | --- | --- | --- |
-| `--magma-orange` | `#ff6602` | Couleur d'accent : boutons pleins, onglet actif, cases cochées, puces. |
-| `--magma-orange-hover` | `#e85c00` | Survol de l'accent. |
-| `--magma-orange-active` | `#cc5200` | Appui. |
-| `--magma-orange-soft` | `#ffece0` | Fond des boutons secondaires, ligne sélectionnée. |
-| `--magma-orange-tint` | `#ffdbc4` | Survol des fonds doux. |
-| `--magma-orange-ghost` | `#fff0e8` | Page courante de la pagination. |
+| `--magma-primary` | `#ff6602` | Couleur d'accent : boutons pleins, onglet actif, cases cochées, puces. |
+| `--magma-primary-hover` | `#e85c00` | Survol de l'accent. |
+| `--magma-primary-active` | `#cc5200` | Appui. |
+| `--magma-primary-soft` | `#ffece0` | Fond des boutons secondaires, ligne sélectionnée. |
+| `--magma-primary-tint` | `#ffdbc4` | Survol des fonds doux. |
+| `--magma-primary-ghost` | `#fff0e8` | Page courante de la pagination. |
 
 ## États
 
@@ -77,7 +77,7 @@ complet, sans toucher au JavaScript.
 | `--magma-accent-glow` | `rgba(255,102,2,.28)` | Ombre portée d'un bouton plein au survol. |
 | `--magma-accent-halo` | `rgba(255,102,2,.12)` | Ombre légère sous un champ actif. |
 
-Si vous changez `--magma-orange`, pensez à ajuster `--magma-focus-ring`, `--magma-accent-glow` et `--magma-accent-halo` : ce sont des `rgba()` indépendants, ils ne se recalculent pas tout seuls.
+Si vous changez `--magma-primary`, pensez à ajuster `--magma-focus-ring`, `--magma-accent-glow` et `--magma-accent-halo` : ce sont des `rgba()` indépendants, ils ne se recalculent pas tout seuls.
 
 ## Typographie et formes
 
@@ -132,9 +132,9 @@ interprétée comme un pourcentage de la fenêtre.
     --magma-scrollbar: #363b44;
 
     /* L'accent reste vif sur fond sombre. */
-    --magma-orange-soft: #33241a;
-    --magma-orange-tint: #4a3423;
-    --magma-orange-ghost: #2a1d14;
+    --magma-primary-soft: #33241a;
+    --magma-primary-tint: #4a3423;
+    --magma-primary-ghost: #2a1d14;
 
     --magma-blue-soft: #1e2140;
     --magma-green-soft: #14281a;
