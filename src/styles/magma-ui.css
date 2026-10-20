@@ -479,11 +479,13 @@
     z-index: 25;
     top: calc(100% + 6px);
     left: 0;
+    display: flex;
+    flex-direction: column;
     width: var(--magma-menu-width, 100%);
     min-width: var(--magma-menu-min-width, 0);
     max-width: calc(100vw - 48px);
     max-height: 300px;
-    overflow-y: auto;
+    overflow: hidden;
     padding: 6px;
     background: var(--magma-surface);
     border: 1px solid var(--magma-line);
@@ -844,6 +846,244 @@
     padding: 0 32px 32px;
     margin-top: 28px;
 }
+
+/* Tiroir latéral ----------------------------------------------------------- */
+.magma-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+}
+.magma-drawer--right {
+    justify-content: flex-end;
+}
+.magma-drawer--left {
+    justify-content: flex-start;
+}
+.magma-drawer--top {
+    align-items: flex-start;
+    justify-content: center;
+}
+.magma-drawer--bottom {
+    align-items: flex-end;
+    justify-content: center;
+}
+.magma-drawer__backdrop,
+.magma-sheet__backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--magma-overlay);
+    backdrop-filter: blur(2px);
+}
+.magma-drawer__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-width: calc(100vw - 24px);
+    max-height: 100vh;
+    overflow: hidden;
+    background: var(--magma-surface);
+    box-shadow: var(--magma-shadow-lg);
+    outline: none;
+}
+.magma-drawer--right .magma-drawer__panel {
+    width: var(--magma-drawer-size, 420px);
+    height: 100%;
+    border-radius: var(--magma-r-xl) 0 0 var(--magma-r-xl);
+}
+.magma-drawer--left .magma-drawer__panel {
+    width: var(--magma-drawer-size, 420px);
+    height: 100%;
+    border-radius: 0 var(--magma-r-xl) var(--magma-r-xl) 0;
+}
+.magma-drawer--top .magma-drawer__panel {
+    width: 100%;
+    max-width: 100%;
+    height: var(--magma-drawer-size, 360px);
+    border-radius: 0 0 var(--magma-r-xl) var(--magma-r-xl);
+}
+.magma-drawer--bottom .magma-drawer__panel {
+    width: 100%;
+    max-width: 100%;
+    height: var(--magma-drawer-size, 360px);
+    border-radius: var(--magma-r-xl) var(--magma-r-xl) 0 0;
+}
+.magma-drawer__head,
+.magma-sheet__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex: none;
+    padding: 22px 24px 16px;
+}
+.magma-drawer__title,
+.magma-sheet__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--magma-title);
+}
+.magma-drawer__subtitle,
+.magma-sheet__subtitle {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--magma-muted);
+}
+.magma-drawer__body,
+.magma-sheet__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 24px 20px;
+}
+.magma-drawer__foot,
+.magma-sheet__foot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex: none;
+    padding: 16px 24px 22px;
+    border-top: 1px solid var(--magma-line-soft);
+}
+
+/* Feuille (bottom sheet) --------------------------------------------------- */
+.magma-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.magma-sheet__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(640px, calc(100vw - 20px));
+    max-height: var(--magma-sheet-max-height, 85vh);
+    margin: 0 10px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    overflow: hidden;
+    background: var(--magma-surface);
+    border-radius: var(--magma-r-xl) var(--magma-r-xl) 0 0;
+    box-shadow: var(--magma-shadow-lg);
+    outline: none;
+    transition: transform var(--magma-t) var(--magma-ease-out);
+}
+.magma-sheet__panel.is-dragging {
+    transition: none;
+}
+.magma-sheet__grabber {
+    display: grid;
+    place-items: center;
+    flex: none;
+    height: 24px;
+    cursor: grab;
+    touch-action: none;
+}
+.magma-sheet__grabber:active {
+    cursor: grabbing;
+}
+.magma-sheet__grabber span {
+    width: 44px;
+    height: 5px;
+    border-radius: var(--magma-r-pill);
+    background: var(--magma-line);
+}
+.magma-sheet__head {
+    padding-top: 8px;
+}
+
+/* Transitions partagées par les surfaces superposées ---------------------- */
+.magma-overlay-enter {
+    transition: opacity var(--magma-t) var(--magma-ease);
+}
+.magma-overlay-enter-start {
+    opacity: 0;
+}
+.magma-overlay-leave {
+    transition: opacity var(--magma-t-fast) var(--magma-ease);
+}
+.magma-overlay-leave-end {
+    opacity: 0;
+}
+.magma-drawer-enter {
+    transition: transform var(--magma-t) var(--magma-ease-out), opacity var(--magma-t) var(--magma-ease);
+}
+.magma-drawer-enter-start {
+    opacity: 0;
+}
+.magma-drawer-leave {
+    transition: transform var(--magma-t-fast) var(--magma-ease), opacity var(--magma-t-fast) var(--magma-ease);
+}
+.magma-drawer-leave-end {
+    opacity: 0;
+}
+.magma-drawer--right .magma-drawer-enter-start,
+.magma-drawer--right .magma-drawer-leave-end {
+    transform: translateX(100%);
+}
+.magma-drawer--left .magma-drawer-enter-start,
+.magma-drawer--left .magma-drawer-leave-end {
+    transform: translateX(-100%);
+}
+.magma-drawer--top .magma-drawer-enter-start,
+.magma-drawer--top .magma-drawer-leave-end {
+    transform: translateY(-100%);
+}
+.magma-drawer--bottom .magma-drawer-enter-start,
+.magma-drawer--bottom .magma-drawer-leave-end {
+    transform: translateY(100%);
+}
+.magma-sheet-enter {
+    transition: transform var(--magma-t-slow) cubic-bezier(0.22, 1, 0.36, 1), opacity var(--magma-t) var(--magma-ease);
+}
+.magma-sheet-enter-start {
+    opacity: 0;
+    transform: translateY(100%);
+}
+.magma-sheet-leave {
+    transition: transform var(--magma-t) var(--magma-ease), opacity var(--magma-t-fast) var(--magma-ease);
+}
+.magma-sheet-leave-end {
+    opacity: 0;
+    transform: translateY(100%);
+}
+
+/* Disclosure --------------------------------------------------------------- */
+.magma-disclosure,
+.magma-accordion__body {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows var(--magma-t) var(--magma-ease), opacity var(--magma-t-fast) var(--magma-ease);
+}
+.magma-disclosure>*,
+.magma-accordion__body>* {
+    overflow: hidden;
+}
+.magma-disclosure.is-open,
+.magma-accordion__body.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .magma-drawer-enter,
+    .magma-drawer-leave,
+    .magma-sheet-enter,
+    .magma-sheet-leave,
+    .magma-sheet__panel,
+    .magma-overlay-enter,
+    .magma-overlay-leave,
+    .magma-disclosure,
+    .magma-accordion__body {
+        transition-duration: 1ms !important;
+    }
+}
+
 .magma-accordion {
     display: flex;
     flex-direction: column;
@@ -1628,6 +1868,16 @@
     border-radius: 50%;
     background: var(--magma-surface);
     transition: transform var(--magma-base) var(--magma-ease);
+}
+.magma-switch.is-on {
+    background: var(--magma-orange);
+}
+.magma-switch.is-on .magma-switch__dot {
+    transform: translateX(20px);
+}
+.magma-switch:focus-visible {
+    outline: none;
+    box-shadow: var(--magma-focus-ring);
 }
 .magma-rise {
     animation: magma-rise var(--magma-slow) var(--magma-ease-out) backwards;

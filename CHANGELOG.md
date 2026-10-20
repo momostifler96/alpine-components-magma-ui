@@ -3,6 +3,37 @@
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
 versionnage suit [SemVer](https://semver.org/lang/fr/).
 
+## Non publié
+
+### Ajouts
+
+- `magmaDrawer` — tiroir ancré à droite, à gauche, en haut ou en bas, avec voile,
+  verrouillage du défilement, focus et transitions directionnelles.
+- `magmaSheet` — feuille ancrée en bas, glisser-fermer depuis la poignée,
+  transitions d'entrée/sortie et hauteur maximale configurable.
+- Verrouillage du défilement partagé entre modale, tiroir et feuille : la page
+  ne redevient défilante qu'à la fermeture de la dernière couche.
+- `magma-disclosure` — animation d'ouverture/fermeture en CSS pur
+  (`grid-template-rows`), utilisée par l'accordéon ; plus besoin du greffon
+  `@alpinejs/collapse`.
+
+### Corrections
+
+- `magmaMultiSelect` est enregistré avec les autres composants (il manquait dans
+  le registre) ; la navigation clavier, `Échap`, le défilement de l'option
+  active et la réinitialisation de la recherche sont pris en charge.
+- « Tout sélectionner » n'agit plus que sur les options visibles et ne modifie
+  pas les valeurs masquées par le filtre.
+- Les sélecteurs et l'indicatif téléphonique vident leur recherche à la
+  fermeture et rechargent la première page à la réouverture en mode distant.
+- L'événement `magma-multiselect:change` transporte un vrai tableau et
+  `magma-select:change` une copie simple de l'option.
+- `.magma-select__menu` est une colonne flex : la recherche et le pied restent
+  fixes, seule la liste défile ; le chargement distant n'enchaîne plus toutes
+  les pages automatiquement.
+- `magmaSwitch` possède enfin un style d'état activé (`is-on`) et un anneau de
+  focus visible.
+
 ## 1.0.0 — 2026-10-15
 
 Première version publiée sous le nom `@momoledev/alpine-magma-ui-component`.

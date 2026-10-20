@@ -70,7 +70,7 @@ complet, sans toucher au JavaScript.
 | `--magma-line-soft` | `#f2f2f2` | Séparateurs discrets, survols. |
 | `--magma-on-accent` | `#ffffff` | Texte posé sur l'accent. |
 | `--magma-on-dark` | `#ffffff` | Texte posé sur fond sombre. |
-| `--magma-overlay` | `rgba(26,26,26,.45)` | Voile derrière une modale. |
+| `--magma-overlay` | `rgba(26,26,26,.45)` | Voile derrière une modale, un tiroir ou une feuille. |
 | `--magma-scrollbar` | `#d7d7d7` | Curseur de défilement des listes. |
 | `--magma-focus-ring` | `rgba(255,102,2,.18)` | Couleur de l'anneau de focus. |
 | `--magma-focus` | `0 0 0 3px var(--magma-focus-ring)` | Anneau complet, composé à partir de la ligne précédente. |

@@ -1,4 +1,5 @@
 import { emit } from '../emit.js';
+import { lockDocumentScroll, unlockDocumentScroll } from '../overlay.js';
 
 /**
  * Fenêtre modale.
@@ -16,6 +17,7 @@ export function createModal(config = {}) {
         open: config.open ?? false,
         name: config.name ?? null,
         lockScroll: config.lockScroll ?? true,
+        locked: false,
 
         init() {
             if (this.open) {
@@ -25,12 +27,24 @@ export function createModal(config = {}) {
             this.$watch('open', (value) => (value ? this.lock() : this.unlock()));
         },
 
+        destroy() {
+            this.unlock();
+        },
+
         show() {
+            if (this.open) {
+                return;
+            }
+
             this.open = true;
             emit(this, 'magma-modal:opened', { name: this.name });
         },
 
         hide() {
+            if (!this.open) {
+                return;
+            }
+
             this.open = false;
             emit(this, 'magma-modal:closed', { name: this.name });
         },
@@ -40,14 +54,16 @@ export function createModal(config = {}) {
         },
 
         lock() {
-            if (this.lockScroll) {
-                document.documentElement.style.overflow = 'hidden';
+            if (this.lockScroll && !this.locked) {
+                lockDocumentScroll();
+                this.locked = true;
             }
         },
 
         unlock() {
-            if (this.lockScroll) {
-                document.documentElement.style.overflow = '';
+            if (this.lockScroll && this.locked) {
+                unlockDocumentScroll();
+                this.locked = false;
             }
         },
     };

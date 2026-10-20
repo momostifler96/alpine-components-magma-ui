@@ -4,9 +4,9 @@ Petite bibliothèque de composants **Alpine.js**, pensée pour fonctionner aussi
 avec **Alpine seul** qu'avec **Alpine embarqué par Livewire**. Aucune dépendance
 d'exécution : ni framework CSS, ni utilitaires, ni police distante.
 
-- **12 composants** : sélecteurs (local, distant, multiple, indicatif téléphonique),
-  modale, tiroir, accordéon, onglets, pagination, notifications, recherche,
-  actualisation, copie, interrupteur.
+- **15 composants** : sélecteurs (local, distant, multiple, indicatif téléphonique),
+  modale, tiroir latéral, feuille, panneau déroulant, accordéon, onglets,
+  pagination, notifications, recherche, actualisation, copie, interrupteur.
 - **Chargement distant** intégré : recherche serveur temporisée, pagination,
   « charger plus » au défilement.
 - **Zéro dépendance** : Alpine est une `peerDependency`, exactement comme pour les
@@ -260,6 +260,8 @@ Chaque composant dispose de sa propre documentation :
 | Sélection multiple | `magmaMultiSelect` | [docs/multi-select.md](docs/multi-select.md) |
 | Indicatif téléphonique | `magmaPhonePrefix` | [docs/phone-prefix.md](docs/phone-prefix.md) |
 | Fenêtre modale | `magmaModal` | [docs/modal.md](docs/modal.md) |
+| Tiroir latéral | `magmaDrawer` | [docs/drawer.md](docs/drawer.md) |
+| Feuille (bottom sheet) | `magmaSheet` | [docs/sheet.md](docs/sheet.md) |
 | Panneau déroulant | `magmaDropdown` | [docs/dropdown.md](docs/dropdown.md) |
 | Accordéon | `magmaAccordion` | [docs/accordion.md](docs/accordion.md) |
 | Onglets | `magmaTabs` | [docs/tabs.md](docs/tabs.md) |
@@ -425,6 +427,10 @@ le style dans l'application, jamais dans le fichier généré.
 
 Parcourez [`examples/index.html`](examples/index.html) dans un navigateur pour
 voir chaque composant en fonctionnement, y compris le chargement distant simulé.
+
+Un mini projet Vite autonome, qui installe le paquet et sert de banc d'essai aux
+15 composants, se trouve dans [`examples/mini-alpine`](examples/mini-alpine)
+(`npm install && npm run dev`).
 
 ---
 

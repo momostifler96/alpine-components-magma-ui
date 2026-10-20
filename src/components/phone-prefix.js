@@ -78,6 +78,7 @@ export function createPhonePrefix(config = {}) {
         },
 
         destroy() {
+            window.clearTimeout(this.debounceTimer);
             this.stopTracking();
         },
 
@@ -92,18 +93,17 @@ export function createPhonePrefix(config = {}) {
             this.$nextTick(() => {
                 this.$refs.search?.focus();
 
-                if (this.remote && !this.loaded) {
+                if (this.remote && this.loadOnOpen) {
                     this.load(true);
                 }
             });
         },
 
         close() {
+            window.clearTimeout(this.debounceTimer);
             this.open = false;
-
-            if (this.remote) {
-                this.searchTerm = '';
-            }
+            this.searchTerm = '';
+            this.activeIndex = 0;
         },
 
         onSearchInput() {
@@ -120,7 +120,7 @@ export function createPhonePrefix(config = {}) {
         choose(option) {
             this.value = option.value;
             this.code = option.code ?? option.value;
-            this.open = false;
+            this.close();
             emit(this, 'magma-phone:change', { dial: option.value, code: this.code });
         },
 

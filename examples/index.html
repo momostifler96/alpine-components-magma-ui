@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Magma UI — démonstration</title>
+    <link rel="icon" href="data:,">
 
     <link rel="stylesheet" href="../dist/magma-ui.css">
 
@@ -409,6 +410,22 @@
                 </button>
                 <p class="muted">Passe par <code>window.MagmaUI.notify()</code>.</p>
             </div>
+
+            <div class="panel">
+                <button type="button" class="magma-btn magma-btn--primary" x-data
+                        @click="$dispatch('magma-drawer:open', { name: 'filtres-demo' })">
+                    Ouvrir le tiroir
+                </button>
+                <p class="muted">Glisse depuis le bord droit, avec voile et verrouillage du défilement.</p>
+            </div>
+
+            <div class="panel">
+                <button type="button" class="magma-btn magma-btn--primary" x-data
+                        @click="$dispatch('magma-sheet:open', { name: 'actions-demo' })">
+                    Ouvrir la feuille
+                </button>
+                <p class="muted">Monte depuis le bas ; la poignée permet de la tirer vers le bas.</p>
+            </div>
         </div>
 
         <!-- ──────────────────────────────────────────── Accordéon et onglets -->
@@ -427,8 +444,11 @@
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
                         </button>
-                        <div x-show="isOpen(index)" x-cloak x-collapse>
-                            <p class="magma-accordion__panel" x-text="item.body"></p>
+                        <div class="magma-disclosure" :class="isOpen(index) ? 'is-open' : ''"
+                             :aria-hidden="!isOpen(index)" :inert="isOpen(index) ? null : true">
+                            <div>
+                                <p class="magma-accordion__panel" x-text="item.body"></p>
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -477,6 +497,91 @@
                     <button type="button" class="magma-pagination__next" @click="next()">Suivant</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Tiroir latéral -->
+    <div class="magma-drawer"
+         x-data="magmaDrawer({ name: 'filtres-demo', side: 'right', size: 400 })"
+         x-show="open" x-cloak :class="'magma-drawer--' + side"
+         @magma-drawer:open.window="if ($event.detail?.name === name) show()"
+         @magma-drawer:close.window="if ($event.detail?.name === name) hide()"
+         @keydown.escape="hide()"
+         role="dialog" aria-modal="true" aria-label="Filtres">
+        <div class="magma-drawer__backdrop" x-show="open" @click="onBackdrop()"
+             x-transition:enter="magma-overlay-enter"
+             x-transition:enter-start="magma-overlay-enter-start"
+             x-transition:leave="magma-overlay-leave"
+             x-transition:leave-end="magma-overlay-leave-end"></div>
+
+        <aside class="magma-drawer__panel" x-ref="panel" x-show="open" tabindex="-1" :style="panelStyle"
+               x-transition:enter="magma-drawer-enter"
+               x-transition:enter-start="magma-drawer-enter-start"
+               x-transition:leave="magma-drawer-leave"
+               x-transition:leave-end="magma-drawer-leave-end">
+            <header class="magma-drawer__head">
+                <div>
+                    <h2 class="magma-drawer__title">Filtres</h2>
+                    <p class="magma-drawer__subtitle">Tiroir de démonstration.</p>
+                </div>
+                <button type="button" class="magma-modal__close" @click="hide()" aria-label="Fermer">×</button>
+            </header>
+            <div class="magma-drawer__body">
+                <p style="margin:0;font-size:14px;line-height:1.7;color:#606060">
+                    Le panneau glisse depuis le bord droit. Échap ou le voile le referment.
+                </p>
+            </div>
+            <footer class="magma-drawer__foot">
+                <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Annuler</button>
+                <button type="button" class="magma-btn magma-btn--primary"
+                        @click="hide(); $dispatch('magma-notify', { type: 'success', title: 'Filtres appliqués' })">
+                    Appliquer
+                </button>
+            </footer>
+        </aside>
+    </div>
+
+    <!-- Feuille -->
+    <div class="magma-sheet"
+         x-data="magmaSheet({ name: 'actions-demo', maxHeight: '70vh' })"
+         x-show="open" x-cloak
+         @magma-sheet:open.window="if ($event.detail?.name === name) show()"
+         @magma-sheet:close.window="if ($event.detail?.name === name) hide()"
+         @keydown.escape="hide()"
+         role="dialog" aria-modal="true" aria-label="Actions rapides">
+        <div class="magma-sheet__backdrop" x-show="open" @click="onBackdrop()"
+             x-transition:enter="magma-overlay-enter"
+             x-transition:enter-start="magma-overlay-enter-start"
+             x-transition:leave="magma-overlay-leave"
+             x-transition:leave-end="magma-overlay-leave-end"></div>
+
+        <div class="magma-sheet__panel" x-ref="panel" x-show="open" tabindex="-1"
+             :style="panelStyle" :class="dragging ? 'is-dragging' : ''"
+             x-transition:enter="magma-sheet-enter"
+             x-transition:enter-start="magma-sheet-enter-start"
+             x-transition:leave="magma-sheet-leave"
+             x-transition:leave-end="magma-sheet-leave-end">
+            <div class="magma-sheet__grabber" @pointerdown="startDrag($event)" aria-hidden="true">
+                <span></span>
+            </div>
+            <header class="magma-sheet__head">
+                <div>
+                    <h2 class="magma-sheet__title">Actions rapides</h2>
+                    <p class="magma-sheet__subtitle">Tirez la poignée vers le bas pour fermer.</p>
+                </div>
+            </header>
+            <div class="magma-sheet__body">
+                <p style="margin:0;font-size:14px;line-height:1.7;color:#606060">
+                    La feuille monte depuis le bas et revient en place si le glissement est trop court.
+                </p>
+            </div>
+            <footer class="magma-sheet__foot">
+                <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Fermer</button>
+                <button type="button" class="magma-btn magma-btn--primary"
+                        @click="hide(); $dispatch('magma-notify', { type: 'success', title: 'Action confirmée' })">
+                    Confirmer
+                </button>
+            </footer>
         </div>
     </div>
 
@@ -534,7 +639,9 @@
         ['magma-select:change', 'magma-select:loaded', 'magma-select:error',
          'magma-phone:change', 'magma-multiselect:change', 'magma-tabs:change',
          'magma-page:change', 'magma-switch:change', 'magma-accordion:change',
-         'magma-modal:opened', 'magma-modal:closed', 'magma-copy:done'
+         'magma-modal:opened', 'magma-modal:closed',
+         'magma-drawer:opened', 'magma-drawer:closed',
+         'magma-sheet:opened', 'magma-sheet:closed', 'magma-copy:done'
         ].forEach((name) => {
             document.addEventListener(name, (event) => console.log(name, event.detail));
         });

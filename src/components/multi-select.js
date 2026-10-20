@@ -16,7 +16,7 @@ export function createMultiSelect(config = {}) {
         ...state,
 
         open: false,
-        values: config.values ?? [],
+        values: config.values ? [...config.values] : [],
         searchTerm: '',
         activeIndex: 0,
         searchable: config.searchable ?? true,
@@ -45,15 +45,19 @@ export function createMultiSelect(config = {}) {
 
             const needle = this.searchTerm.trim().toLowerCase();
 
-            return this.options.filter((option) => String(option.label).toLowerCase().includes(needle));
+            return this.options.filter((option) =>
+                [option.label, option.value].some((field) => String(field ?? '').toLowerCase().includes(needle))
+            );
         },
 
         get isEmpty() {
             return !this.loading && this.visibleOptions.length === 0;
         },
 
+        /** Vrai lorsque toutes les options visibles (filtrées) sont retenues. */
         get allSelected() {
-            return this.options.length > 0 && this.values.length === this.options.length;
+            return this.visibleOptions.length > 0
+                && this.visibleOptions.every((option) => this.isSelected(option.value));
         },
 
         get label() {
@@ -79,6 +83,7 @@ export function createMultiSelect(config = {}) {
         },
 
         destroy() {
+            window.clearTimeout(this.debounceTimer);
             this.stopTracking();
         },
 
@@ -88,25 +93,29 @@ export function createMultiSelect(config = {}) {
 
         show() {
             this.open = true;
+            this.activeIndex = 0;
             this.$nextTick(() => this.placeMenuSoon());
             this.$nextTick(() => {
                 this.$refs.search?.focus();
 
-                if (this.remote && !this.loaded) {
+                // La recherche est vidée à la fermeture ; on repart donc de la
+                // première page pour ne pas rouvrir sur un ancien filtre.
+                if (this.remote && this.loadOnOpen) {
                     this.load(true);
                 }
             });
         },
 
         close() {
+            window.clearTimeout(this.debounceTimer);
             this.open = false;
-
-            if (this.remote) {
-                this.searchTerm = '';
-            }
+            this.searchTerm = '';
+            this.activeIndex = 0;
         },
 
         onSearchInput() {
+            this.activeIndex = 0;
+
             if (!this.remote) {
                 return;
             }
@@ -120,17 +129,93 @@ export function createMultiSelect(config = {}) {
                 ? this.values.filter((item) => String(item) !== String(option.value))
                 : [...this.values, option.value];
 
-            emit(this, 'magma-multiselect:change', { values: this.values });
+            emit(this, 'magma-multiselect:change', { values: [...this.values] });
         },
 
+        /** Sélectionne ou désélectionne toutes les options actuellement visibles. */
         toggleAll() {
-            this.values = this.allSelected ? [] : this.options.map((option) => option.value);
-            emit(this, 'magma-multiselect:change', { values: this.values });
+            const visible = this.visibleOptions;
+
+            if (visible.length === 0) {
+                return;
+            }
+
+            if (this.allSelected) {
+                const remove = new Set(visible.map((option) => String(option.value)));
+                this.values = this.values.filter((value) => !remove.has(String(value)));
+            } else {
+                const merged = new Map(this.values.map((value) => [String(value), value]));
+
+                visible.forEach((option) => merged.set(String(option.value), option.value));
+                this.values = [...merged.values()];
+            }
+
+            emit(this, 'magma-multiselect:change', { values: [...this.values] });
         },
 
         clear() {
             this.values = [];
             emit(this, 'magma-multiselect:change', { values: [] });
+        },
+
+        /** Navigation clavier : flèches, début/fin, Entrée, Échap. */
+        onKeydown(event) {
+            const last = this.visibleOptions.length - 1;
+
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+
+                    if (!this.open) {
+                        this.show();
+                    } else {
+                        this.activeIndex = Math.min(this.activeIndex + 1, last);
+                        this.scrollActiveIntoView();
+                    }
+                    break;
+                case 'ArrowUp':
+                    event.preventDefault();
+                    this.activeIndex = Math.max(this.activeIndex - 1, 0);
+                    this.scrollActiveIntoView();
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    this.activeIndex = 0;
+                    this.scrollActiveIntoView();
+                    break;
+                case 'End':
+                    event.preventDefault();
+                    this.activeIndex = last;
+                    this.scrollActiveIntoView();
+                    break;
+                case 'Enter':
+                    if (!this.open) {
+                        event.preventDefault();
+                        this.show();
+                    } else if (this.visibleOptions[this.activeIndex]) {
+                        event.preventDefault();
+                        this.choose(this.visibleOptions[this.activeIndex]);
+                    }
+                    break;
+                case 'Escape':
+                    if (this.open) {
+                        event.preventDefault();
+                        this.close();
+                    }
+                    break;
+                case 'Tab':
+                    if (this.open) {
+                        this.close();
+                    }
+                    break;
+            }
+        },
+
+        scrollActiveIntoView() {
+            this.$nextTick(() => {
+                this.$refs.list?.querySelector(`[data-index="${this.activeIndex}"]`)
+                    ?.scrollIntoView({ block: 'nearest' });
+            });
         },
     };
 }

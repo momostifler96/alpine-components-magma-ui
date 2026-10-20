@@ -1,7 +1,10 @@
 import { createAccordion } from './components/accordion.js';
 import { createCopy } from './components/copy.js';
+import { createDrawer } from './components/drawer.js';
 import { createDropdown } from './components/dropdown.js';
 import { createModal } from './components/modal.js';
+import { createSheet } from './components/sheet.js';
+import { createMultiSelect } from './components/multi-select.js';
 import { createPagination } from './components/pagination.js';
 import { createPhonePrefix } from './components/phone-prefix.js';
 import { createRefresh } from './components/refresh.js';
@@ -21,9 +24,12 @@ import { createToasts } from './components/toasts.js';
  */
 export const components = {
     magmaSelect: createSelect,
+    magmaMultiSelect: createMultiSelect,
     magmaPhonePrefix: createPhonePrefix,
     magmaDropdown: createDropdown,
     magmaModal: createModal,
+    magmaDrawer: createDrawer,
+    magmaSheet: createSheet,
     magmaAccordion: createAccordion,
     magmaTabs: createTabs,
     magmaPagination: createPagination,

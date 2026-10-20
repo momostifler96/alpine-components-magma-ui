@@ -28,6 +28,8 @@ export { createMultiSelect } from './components/multi-select.js';
 export { createPhonePrefix } from './components/phone-prefix.js';
 export { createDropdown } from './components/dropdown.js';
 export { createModal } from './components/modal.js';
+export { createDrawer } from './components/drawer.js';
+export { createSheet } from './components/sheet.js';
 export { createAccordion } from './components/accordion.js';
 export { createTabs } from './components/tabs.js';
 export { createPagination } from './components/pagination.js';

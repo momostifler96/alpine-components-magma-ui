@@ -49,7 +49,9 @@ export function createSelect(config = {}) {
 
             const needle = this.searchTerm.trim().toLowerCase();
 
-            return this.options.filter((option) => String(option.label).toLowerCase().includes(needle));
+            return this.options.filter((option) =>
+                [option.label, option.value].some((field) => String(field ?? '').toLowerCase().includes(needle))
+            );
         },
 
         get isEmpty() {
@@ -73,6 +75,11 @@ export function createSelect(config = {}) {
             }
         },
 
+        destroy() {
+            window.clearTimeout(this.debounceTimer);
+            this.stopTracking();
+        },
+
         toggle() {
             this.open ? this.close() : this.show();
         },
@@ -84,18 +91,19 @@ export function createSelect(config = {}) {
             this.$nextTick(() => {
                 this.$refs.search?.focus();
 
-                if (this.remote && (!this.loaded || this.searchTerm !== '')) {
+                // La recherche est vidée à la fermeture : on recharge la
+                // première page pour ne pas rouvrir sur un ancien filtre.
+                if (this.remote && this.loadOnOpen) {
                     this.load(true);
                 }
             });
         },
 
         close() {
+            window.clearTimeout(this.debounceTimer);
             this.open = false;
-
-            if (this.remote) {
-                this.searchTerm = '';
-            }
+            this.searchTerm = '';
+            this.activeIndex = 0;
         },
 
         /** Recherche : locale immédiate, distante après temporisation. */
@@ -112,8 +120,8 @@ export function createSelect(config = {}) {
 
         choose(option) {
             this.value = option.value;
-            this.open = false;
-            emit(this, 'magma-select:change', { value: option.value, option });
+            this.close();
+            emit(this, 'magma-select:change', { value: option.value, option: { ...option } });
         },
 
         /** Navigation clavier : flèches, entrée, échap, début/fin. */
