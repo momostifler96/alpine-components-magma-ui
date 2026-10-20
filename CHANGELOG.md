@@ -15,8 +15,13 @@ versioning follows [SemVer](https://semver.org/).
   range, time, month, year and ISO week; datetime combines the calendar, a
   month/year switcher and a single bordered `HH:MM:SS` widget in the same panel;
   the month/year switcher is shared by date, datetime, multiple, range and week
-  modes, with keyboard navigation, min/max, disabled dates, localized labels
-  and floating panel.
+  modes, with keyboard navigation (including `ArrowUp`/`ArrowDown` stepping on
+  the time fields), min/max, disabled dates, localized labels and floating or
+  inline rendering (`inline: true`, no trigger/overlay/dialog). Range mode shows
+  two consecutive months and a customizable shortcuts rail (`shortcuts`,
+  `period`/`range`/`getRange`, label per entry; `shortcuts: false` to hide it).
+  The datetime `HH:MM:SS` widget is one rounded bordered field with large
+  numeric values.
 - Scroll locking shared between modal, drawer and sheet: the page only becomes
   scrollable again once the last layer is closed.
 - `magma-disclosure` — pure-CSS open/close animation (`grid-template-rows`),

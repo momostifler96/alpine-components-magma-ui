@@ -20,6 +20,7 @@ import {
     pad2,
     parseDateTime,
     parseISODate,
+    resolveRangePeriod,
     splitTime,
     startOfWeek,
     timeSlots,
@@ -50,6 +51,16 @@ const PANEL_LABELS = {
     year: 'Choose a year',
     week: 'Choose a week',
 };
+
+const DEFAULT_RANGE_SHORTCUTS = [
+    { label: 'Today', period: 'today' },
+    { label: 'Yesterday', period: 'yesterday' },
+    { label: 'Last 7 days', period: 'last-days', amount: 7 },
+    { label: 'This week', period: 'this-week' },
+    { label: 'This month', period: 'this-month' },
+    { label: 'Last 3 months', period: 'last-months', amount: 3 },
+    { label: 'This year', period: 'this-year' },
+];
 
 function normalizeValue(value, mode) {
     if (mode === 'multiple') {
@@ -168,11 +179,20 @@ export function createDateTimePicker(config = {}) {
     const base = initialBase(value, mode, today);
     const baseDate = parseISODate(base) ?? new Date();
     const initialTime = splitTime(parseDateTime(value)?.time ?? '00:00:00');
+    const inline = config.inline ?? false;
+    const shortcutList = config.shortcuts === false
+        ? []
+        : Array.isArray(config.shortcuts)
+            ? config.shortcuts
+            : mode === 'range'
+                ? DEFAULT_RANGE_SHORTCUTS
+                : [];
 
     return {
         mode,
+        inline,
         value,
-        open: false,
+        open: inline ? true : (config.open ?? false),
         viewYear: baseDate.getFullYear(),
         viewMonth: baseDate.getMonth(),
         view: 'days',
@@ -198,12 +218,17 @@ export function createDateTimePicker(config = {}) {
         hourLabel: config.hourLabel ?? 'Hour',
         minuteLabel: config.minuteLabel ?? 'Minute',
         secondLabel: config.secondLabel ?? 'Second',
-        panelWidth: config.panelWidth ?? 344,
+        shortcutsLabel: config.shortcutsLabel ?? 'Shortcuts',
+        shortcutList,
+        panelWidth: config.panelWidth ?? (mode === 'range' ? 680 : 344),
 
         ...floatingMenu.options(config),
+        floating: inline ? false : (config.floating ?? true),
 
         get menuStyle() {
-            return `${menuWidthStyle(this.panelWidth)} ${menuPositionStyle(this.anchor, this.panelWidth)}`.trim();
+            return this.inline
+                ? ''
+                : `${menuWidthStyle(this.panelWidth)} ${menuPositionStyle(this.anchor, this.panelWidth)}`.trim();
         },
 
         get panelLabel() {
@@ -215,7 +240,9 @@ export function createDateTimePicker(config = {}) {
         },
 
         init() {
-            this.startTracking();
+            if (!this.inline) {
+                this.startTracking();
+            }
         },
 
         destroy() {
@@ -223,7 +250,7 @@ export function createDateTimePicker(config = {}) {
         },
 
         show() {
-            if (this.open) {
+            if (this.inline || this.open) {
                 return;
             }
 
@@ -247,7 +274,7 @@ export function createDateTimePicker(config = {}) {
         },
 
         close(options = {}) {
-            if (!this.open) {
+            if (this.inline || !this.open) {
                 return;
             }
 
@@ -268,6 +295,10 @@ export function createDateTimePicker(config = {}) {
         },
 
         toggle() {
+            if (this.inline) {
+                return;
+            }
+
             this.open ? this.close() : this.show();
         },
 
@@ -276,6 +307,43 @@ export function createDateTimePicker(config = {}) {
             this.hoverDate = null;
             this.syncTimeDraft();
             this.commit();
+        },
+
+        applyShortcut(shortcut) {
+            const range = shortcut?.range;
+
+            if (!range?.start || !range?.end) {
+                return;
+            }
+
+            let { start, end } = range;
+
+            if (this.min && start < this.min) {
+                start = this.min;
+            }
+
+            if (this.max && end > this.max) {
+                end = this.max;
+            }
+
+            if (start > end) {
+                return;
+            }
+
+            const date = parseISODate(start);
+
+            this.value = { start, end };
+            this.hoverDate = null;
+            this.view = 'days';
+
+            if (date) {
+                this.viewYear = date.getFullYear();
+                this.viewMonth = date.getMonth();
+                this.activeDate = start;
+            }
+
+            this.commit();
+            this.maybeClose();
         },
 
         selectToday() {
@@ -586,15 +654,28 @@ export function createDateTimePicker(config = {}) {
             this.setTimePart(part, number, { syncDraft: false });
         },
 
-        showMonths() {
+        stepTimePart(part, direction) {
+            const range = part === 'hour' ? 24 : 60;
+            const parts = splitTime(parseDateTime(this.value)?.time ?? '00:00:00');
+            const raw = this.timeDraft[part];
+            const current = raw === '' || raw === null || raw === undefined
+                ? Number(parts[part]) || 0
+                : Number(raw) || 0;
+
+            this.setTimePart(part, (current + direction + range) % range);
+        },
+
+        showMonths(year = this.viewYear) {
             if (this.hasViewSwitcher) {
+                this.viewYear = Number(year) || this.viewYear;
                 this.view = 'months';
                 this.refreshLayout();
             }
         },
 
-        showYears() {
+        showYears(year = this.viewYear) {
             if (this.hasViewSwitcher) {
+                this.viewYear = Number(year) || this.viewYear;
                 this.view = 'years';
                 this.refreshLayout();
             }
@@ -735,7 +816,7 @@ export function createDateTimePicker(config = {}) {
         },
 
         maybeClose() {
-            if (this.mode === 'datetime' || !this.closeOnSelect) {
+            if (this.inline || this.mode === 'datetime' || !this.closeOnSelect) {
                 return;
             }
 
@@ -762,6 +843,12 @@ export function createDateTimePicker(config = {}) {
             if (event.key === 'Escape') {
                 event.preventDefault();
                 this.close();
+                return;
+            }
+
+            // The time fields own their arrow keys (caret movement, stepping);
+            // the calendar shortcuts must not also move the active day.
+            if (event.target?.closest?.('input, textarea, select, [contenteditable="true"]')) {
                 return;
             }
 
@@ -813,8 +900,8 @@ export function createDateTimePicker(config = {}) {
             this.setActive(toISODate(next));
         },
 
-        get calendarDays() {
-            return buildMonthDays(this.viewYear, this.viewMonth, this.weekStartsOn).map((day) => ({
+        buildCalendarDays(year, month) {
+            return buildMonthDays(year, month, this.weekStartsOn).map((day) => ({
                 ...day,
                 label: formatFullDate(day.iso, this.locale),
                 selected: this.isSelected(day.iso),
@@ -825,6 +912,81 @@ export function createDateTimePicker(config = {}) {
                 active: this.isActive(day.iso),
                 disabled: this.isDisabled(day.iso),
             }));
+        },
+
+        get calendarDays() {
+            return this.buildCalendarDays(this.viewYear, this.viewMonth);
+        },
+
+        get calendarMonths() {
+            const count = this.mode === 'range' ? 2 : 1;
+
+            return Array.from({ length: count }, (_, index) => {
+                const date = addMonths(new Date(this.viewYear, this.viewMonth, 1, 12), index);
+                const allDays = this.buildCalendarDays(date.getFullYear(), date.getMonth());
+                let length = allDays.length;
+
+                // Drop trailing weeks made only of adjacent-month days; the
+                // grid keeps its weekday alignment without an empty last row.
+                while (length > 7 && allDays.slice(length - 7, length).every((day) => !day.inMonth)) {
+                    length -= 7;
+                }
+
+                return {
+                    key: `${date.getFullYear()}-${pad2(date.getMonth() + 1)}`,
+                    year: date.getFullYear(),
+                    month: date.getMonth(),
+                    title: formatMonth(date.getFullYear(), date.getMonth(), this.locale),
+                    days: allDays.slice(0, length),
+                };
+            });
+        },
+
+        get rangeTitle() {
+            const [first, second] = this.calendarMonths;
+
+            if (!second) {
+                return this.calendarTitle;
+            }
+
+            if (first.year === second.year) {
+                const formatter = new Intl.DateTimeFormat(this.locale, { month: 'long' });
+                const firstLabel = formatter.format(new Date(first.year, first.month, 1, 12));
+                const secondLabel = formatter.format(new Date(second.year, second.month, 1, 12));
+
+                return `${firstLabel} – ${secondLabel} ${second.year}`;
+            }
+
+            return `${first.title} – ${second.title}`;
+        },
+
+        get shortcuts() {
+            if (!this.shortcutList.length) {
+                return [];
+            }
+
+            return this.shortcutList.flatMap((shortcut, index) => {
+                const range = typeof shortcut.range === 'function'
+                    ? shortcut.range()
+                    : shortcut.range ?? (typeof shortcut.getRange === 'function'
+                        ? shortcut.getRange()
+                        : resolveRangePeriod(shortcut.period, {
+                            today: this.today,
+                            weekStartsOn: this.weekStartsOn,
+                            amount: shortcut.amount,
+                        }));
+
+                if (!range?.start || !range?.end) {
+                    return [];
+                }
+
+                return [{
+                    ...shortcut,
+                    key: shortcut.id ?? `${shortcut.period ?? 'range'}-${index}`,
+                    range,
+                    active: this.value?.start === range.start && this.value?.end === range.end,
+                }];
+            });
         },
 
         get weeks() {

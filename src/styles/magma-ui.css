@@ -775,6 +775,10 @@
     position: relative;
     min-width: 200px;
 }
+.magma-datepicker--inline {
+    width: 100%;
+    min-width: 0;
+}
 .magma-datepicker__field {
     position: relative;
 }
@@ -856,6 +860,89 @@
     border-radius: var(--magma-r-md);
     box-shadow: var(--magma-shadow-md);
     outline: none;
+}
+.magma-datepicker__panel--inline {
+    position: static;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    overflow: visible;
+    box-shadow: none;
+}
+.magma-datepicker__range {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+}
+.magma-datepicker__range.is-single {
+    grid-template-columns: minmax(0, 1fr);
+}
+.magma-datepicker__shortcuts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-right: 10px;
+    border-right: 1px solid var(--magma-line-soft);
+}
+.magma-datepicker__shortcut {
+    padding: 8px 10px;
+    border-radius: var(--magma-r-sm);
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--magma-body);
+    white-space: nowrap;
+    transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-datepicker__shortcut:hover {
+    background: var(--magma-primary-soft);
+    color: var(--magma-primary);
+}
+.magma-datepicker__shortcut.is-active {
+    background: var(--magma-primary-soft);
+    color: var(--magma-primary);
+    font-weight: 700;
+}
+.magma-datepicker__shortcut:focus-visible {
+    outline: none;
+    box-shadow: var(--magma-focus-ring);
+}
+.magma-datepicker__months {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    min-width: 0;
+}
+.magma-datepicker__month {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.magma-datepicker__month-title {
+    display: block;
+    width: 100%;
+    margin-bottom: 6px;
+    padding: 2px 0;
+    border: 0;
+    border-radius: var(--magma-r-sm);
+    background: transparent;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--magma-ink);
+    cursor: pointer;
+    transition: color var(--magma-t-fast) var(--magma-ease);
+}
+.magma-datepicker__month-title:hover {
+    color: var(--magma-primary);
+}
+.magma-datepicker__month-title:focus-visible {
+    outline: none;
+    box-shadow: var(--magma-focus-ring);
+}
+.magma-datepicker__range .magma-datepicker__day.is-other {
+    visibility: hidden;
 }
 .magma-datepicker__head {
     display: flex;
@@ -1054,12 +1141,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 4px;
+    height: 64px;
     margin-top: 10px;
-    padding: 2px 10px;
+    padding: 0 18px;
     background: var(--magma-surface);
     border: 1px solid var(--magma-line);
-    border-radius: var(--magma-r-sm);
+    border-radius: var(--magma-r-lg);
     transition: border-color var(--magma-t-fast) var(--magma-ease), box-shadow var(--magma-t-fast) var(--magma-ease);
 }
 .magma-datepicker__time-widget:focus-within {
@@ -1070,25 +1158,27 @@
     flex: 1 1 0;
     width: 100%;
     min-width: 0;
-    height: 40px;
+    height: 100%;
     padding: 0;
     background: transparent;
     border: 0;
     outline: none;
     color: var(--magma-ink);
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 800;
     font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
     text-align: center;
 }
 .magma-datepicker__time-input::placeholder {
     color: var(--magma-placeholder);
-    font-weight: 600;
+    font-weight: 700;
 }
 .magma-datepicker__time-separator {
     flex: none;
+    padding: 0 2px;
     color: var(--magma-muted);
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 700;
     user-select: none;
 }
@@ -1195,6 +1285,28 @@
     outline: none;
     border-radius: var(--magma-r-sm);
     box-shadow: var(--magma-focus-ring);
+}
+@media (max-width: 900px) {
+    .magma-datepicker__range {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .magma-datepicker__shortcuts {
+        flex-direction: row;
+        gap: 4px;
+        padding: 0 0 8px;
+        overflow-x: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--magma-line-soft);
+        overscroll-behavior-x: contain;
+    }
+    .magma-datepicker__shortcut {
+        flex: none;
+    }
+}
+@media (max-width: 640px) {
+    .magma-datepicker__months {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 .magma-modal {
     position: fixed;

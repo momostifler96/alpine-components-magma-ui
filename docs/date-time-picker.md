@@ -190,9 +190,12 @@ digit-only, clamped to `0–23` / `0–59` and padded to two digits on blur or
            @input="onTimePartInput('hour', $event.target.value)"
            @blur="normalizeTimePart('hour')"
            @keydown.enter.prevent="normalizeTimePart('hour')"
+           @keydown.up.prevent="stepTimePart('hour', 1)"
+           @keydown.down.prevent="stepTimePart('hour', -1)"
            @focus="$event.target.select()">
     <span class="magma-datepicker__time-separator" aria-hidden="true">:</span>
-    <!-- same input with timeDraft.minute / 'minute' / minuteLabel / MM -->
+    <!-- same input with timeDraft.minute / 'minute' / minuteLabel / MM and the
+         same ArrowUp/ArrowDown handlers -->
     <span class="magma-datepicker__time-separator" aria-hidden="true">:</span>
     <!-- same input with timeDraft.second / 'second' / secondLabel / SS -->
 </div>
@@ -223,6 +226,89 @@ In `date`, `datetime`, `multiple`, `range` and `week`, `selectMonth()` and
 `selectYear()` only navigate: choosing a year opens the months, choosing a month
 returns to the days. In datetime mode the value changes when a day or a time
 field is edited. `Done`, `Escape` or an outside click closes the panel.
+
+## Inline (no modal)
+
+Set `inline: true` to render the calendar directly in the page. Inline mode has
+no trigger, no floating positioning, no overlay and no `role="dialog"`; the
+panel is always visible and `close()` is a no-op.
+
+```html
+<div class="magma-datepicker magma-datepicker--inline"
+     x-data="magmaDateTimePicker({ mode: 'date', value: '2026-10-20', inline: true })"
+     role="group" aria-label="Inline date picker">
+
+    <div class="magma-datepicker__panel magma-datepicker__panel--inline"
+         tabindex="-1" role="group" :aria-label="panelLabel" @keydown="onKeydown($event)">
+        <!-- same head, weekday row, day/month/year grids and footer as above -->
+    </div>
+</div>
+```
+
+The panel uses `position: static`, fills its container and drops the shadow.
+Selecting a day only updates `value`; the calendar stays in place. This is the
+variant to use when the picker must live in a form or a card instead of a
+popover.
+
+## Range: two months and shortcuts
+
+`range` shows two consecutive months and a shortcuts rail. The rail is built
+from the `shortcuts` option and sits on the left of the calendars; below 900px
+it becomes a horizontal strip above them, and below 640px the two months stack.
+
+The default shortcuts are `Today`, `Yesterday`, `Last 7 days`, `This week`,
+`This month`, `Last 3 months` and `This year`. Each entry combines a `label`
+with one of:
+
+| Key | Role |
+| --- | --- |
+| `period` | Named period: `today`, `yesterday`, `last-day`, `this-week`, `last-week`, `this-month`, `last-month`, `this-year`, `last-year`, `last-days`, `last-weeks`, `last-months`, `last-years`. |
+| `amount` | Size of a rolling `last-*` period. Defaults: 7 days, 3 weeks/months/years. |
+| `range` | Fixed `{ start: 'YYYY-MM-DD', end: 'YYYY-MM-DD' }`. |
+| `getRange` | Function returning `{ start, end }`, evaluated when the panel renders. |
+
+```js
+magmaDateTimePicker({
+    mode: 'range',
+    shortcuts: [
+        { label: 'Aujourd’hui', period: 'today' },
+        { label: 'Hier', period: 'yesterday' },
+        { label: '7 derniers jours', period: 'last-days', amount: 7 },
+        { label: 'Cette semaine', period: 'this-week' },
+        { label: 'Ce mois', period: 'this-month' },
+        { label: '3 derniers mois', period: 'last-months', amount: 3 },
+        { label: 'T1 2026', range: { start: '2026-01-01', end: '2026-03-31' } },
+    ],
+});
+```
+
+Pass `shortcuts: false` to hide the rail. A shortcut is highlighted when its
+range equals the current value; applying one clamps the range to `min`/`max`
+and commits `magma-datepicker:change`.
+
+```html
+<div class="magma-datepicker__range" :class="shortcuts.length ? '' : 'is-single'"
+     x-show="mode === 'range' && view === 'days'">
+    <div class="magma-datepicker__shortcuts" role="group" :aria-label="shortcutsLabel"
+         x-show="shortcuts.length">
+        <template x-for="shortcut in shortcuts" :key="shortcut.key">
+            <button type="button" class="magma-datepicker__shortcut"
+                    :class="shortcut.active ? 'is-active' : ''"
+                    @click="applyShortcut(shortcut)" x-text="shortcut.label"></button>
+        </template>
+    </div>
+
+    <div class="magma-datepicker__months">
+        <template x-for="month in calendarMonths" :key="month.key">
+            <div class="magma-datepicker__month">
+                <button type="button" class="magma-datepicker__month-title"
+                        @click="showMonths(month.year)" x-text="month.title"></button>
+                <!-- weekday row + day grid over month.days -->
+            </div>
+        </template>
+    </div>
+</div>
+```
 
 ## Modes
 
@@ -268,8 +354,11 @@ magmaDateTimePicker({ mode: 'week', value: '2026-W43' })
 | `multipleLabel` | `'dates selected'` | Suffix for the multiple counter. |
 | `todayLabel` / `nowLabel` / `clearLabel` / `doneLabel` | `'Today'` / `'Now'` / `'Clear'` / `'Done'` | Footer actions. |
 | `hourLabel` / `minuteLabel` / `secondLabel` | `'Hour'` / `'Minute'` / `'Second'` | Time column labels in datetime mode. |
-| `panelWidth` | `344` | Number (pixels) or any CSS width. |
-| `floating` | `true` | Positions the panel in the viewport (`position: fixed`). |
+| `panelWidth` | `344` (`680` in range) | Number (pixels) or any CSS width. |
+| `shortcuts` | range presets | Array of `{ label, period, amount, range, getRange }` entries for the range rail. `false` hides it. |
+| `shortcutsLabel` | `'Shortcuts'` | Accessible label of the shortcuts rail. |
+| `floating` | `true` | Positions the panel in the viewport (`position: fixed`). Ignored when `inline` is true. |
+| `inline` | `false` | Renders the calendar in the page: no trigger, overlay or dialog; `open` is forced and `close()` is a no-op. |
 | `format` | – | `(value, mode, picker) => string` to rewrite the trigger label. |
 
 ## State and methods
@@ -294,6 +383,9 @@ magmaDateTimePicker({ mode: 'week', value: '2026-W43' })
 | `previous()` / `next()` | Previous/next month, year or 12-year page. |
 | `isSelected(iso)` / `isInRange(iso)` / `isDisabled(iso)` | Cell state helpers. |
 | `calendarDays` / `weeks` / `months` / `years` / `timeOptions` | Render collections. |
+| `calendarMonths` | Month blocks; two consecutive months in range mode. |
+| `shortcuts` | Resolved range shortcuts, each with `range` and `active`. |
+| `applyShortcut(shortcut)` | Applies a shortcut range and closes like a completed range. |
 | `timeDraft` | Editable hour/minute/second field values. |
 | `timeParts` | Current value split into hour/minute/second. |
 | `view` | Calendar sub-view for day-based modes: `'days'`, `'months'` or `'years'`. |
@@ -326,14 +418,19 @@ document.addEventListener('magma-datepicker:change', (event) => {
 - Month, year and time views use regular buttons, so `Tab` and `Enter` work
   natively. The three datetime time controls are numeric fields; `Enter` or
   blur normalizes them.
+- In a datetime time field, `ArrowUp` / `ArrowDown` increase or decrease the
+  value by one, wrapping at 23→00 for hours and 59→00 for minutes and seconds.
+  The arrow keys stay in the field and do not move the calendar selection.
 
 ## Classes
 
 | Class | Role |
 | --- | --- |
 | `magma-datepicker` | Root scope. |
+| `magma-datepicker--inline` | In-page variant. |
 | `magma-datepicker__trigger` | Field trigger. |
 | `magma-datepicker__panel` | Floating panel. |
+| `magma-datepicker__panel--inline` | Static, full-width in-page panel. |
 | `magma-datepicker__head` / `__title` / `__nav` | Header and navigation. |
 | `magma-datepicker__title-group` / `__title-button` | Datetime month/year switcher. |
 | `magma-datepicker__weekdays` / `__weekday` | Weekday row. |
@@ -341,13 +438,17 @@ document.addEventListener('magma-datepicker:change', (event) => {
 | `magma-datepicker__weeks` / `__week` | ISO week rows. |
 | `magma-datepicker__time` / `__time-option` | Time slots. |
 | `magma-datepicker__time-widget` / `__time-input` / `__time-separator` | Single bordered `HH:MM:SS` widget. |
+| `magma-datepicker__range` / `__months` / `__month` | Range layout: shortcuts rail and two-month area. |
+| `magma-datepicker__shortcuts` / `__shortcut` | Range shortcut rail and its buttons (`is-active`). |
+| `magma-datepicker__month-title` | Clickable month title that opens the month grid. |
 | `magma-datepicker__cell` | Month/year cells. |
 | `magma-datepicker__foot` / `__action` / `__done` | Today, Now, clear and Done actions. |
 
 ## Accessibility
 
 - The trigger is a button with `aria-haspopup="dialog"` and `aria-expanded`.
-- The panel is a dialog with a mode-specific `aria-label`.
+- The floating panel is a dialog with a mode-specific `aria-label`; the inline
+  panel is a labelled `role="group"`.
 - Days expose `aria-pressed`, `aria-current="date"` for today and a full
   localized `aria-label`.
 - Disabled dates use the native `disabled` attribute.
@@ -356,6 +457,8 @@ document.addEventListener('magma-datepicker:change', (event) => {
   without stealing focus from the element that was clicked.
 - The datetime hour/minute/second fields share a labelled group, use
   `inputmode="numeric"` and clamp invalid values.
+- Range shortcuts are real buttons in a labelled group; the two month grids are
+  labelled with their month name.
 - `prefers-reduced-motion` reduces the cell and panel transitions.
 
 ## Notes
@@ -368,7 +471,10 @@ document.addEventListener('magma-datepicker:change', (event) => {
   field writes the time while keeping the current date. With no date yet, a time
   edit uses today.
 - Week mode uses ISO 8601 weeks, Monday-based, with the `YYYY-Www` key.
-- The panel uses the shared floating-panel behavior: it follows its trigger on
-  scroll and resize and flips above the field when there is not enough room.
+- The floating panel uses the shared floating-panel behavior: it follows its
+  trigger on scroll and resize and flips above the field when there is not
+  enough room.
+- Use `inline: true` when the calendar must stay in the document flow (form,
+  card, dashboard) and no popover or modal should appear.
 - Use `format` when the application needs a specific display format while
   keeping the ISO value for the server.

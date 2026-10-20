@@ -5,7 +5,8 @@ A small **Alpine.js** component library, designed to work equally well with
 dependencies: no CSS framework, no utilities, no remote font.
 
 - **16 components**: selectors (local, remote, multiple, phone prefix), date and
-  time picker (eight modes), modal, side drawer, bottom sheet, dropdown panel,
+  time picker (eight modes, inline calendar, double-month range with shortcuts),
+  modal, side drawer, bottom sheet, dropdown panel,
   accordion, tabs, pagination, notifications, search, refresh, copy, switch.
 - **Built-in remote loading**: debounced server-side search, pagination, and
   "load more" on scroll.

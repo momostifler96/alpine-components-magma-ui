@@ -78,6 +78,17 @@ window.pickerConfig = (mode) => {
         week: '2026-W43',
     };
 
+    const shortcuts = [
+        { label: 'Aujourd’hui', period: 'today' },
+        { label: 'Hier', period: 'yesterday' },
+        { label: '7 derniers jours', period: 'last-days', amount: 7 },
+        { label: 'Cette semaine', period: 'this-week' },
+        { label: 'Ce mois', period: 'this-month' },
+        { label: '3 derniers mois', period: 'last-months', amount: 3 },
+        { label: 'Cette année', period: 'this-year' },
+        { label: 'T1 2026', id: 'q1-2026', range: { start: '2026-01-01', end: '2026-03-31' } },
+    ];
+
     return {
         mode,
         value: values[mode],
@@ -85,6 +96,7 @@ window.pickerConfig = (mode) => {
         min: '2020-01-01',
         max: '2030-12-31',
         disabledDates: ['2026-11-11'],
+        ...(mode === 'range' ? { shortcuts, shortcutsLabel: 'Raccourcis' } : {}),
     };
 };
 

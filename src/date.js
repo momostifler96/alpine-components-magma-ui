@@ -82,6 +82,73 @@ export function endOfWeek(date, weekStartsOn = 1) {
 }
 
 /**
+ * Resolves a named shortcut period into an inclusive ISO range.
+ *
+ * Relative periods are computed from `today`; `this-*` periods cover the whole
+ * unit (week, month, year), while `last-*` periods are rolling windows ending
+ * today.
+ *
+ * @param {string} period
+ * @param {{ today?: string, weekStartsOn?: number, amount?: number }} [options]
+ * @returns {{ start: string, end: string } | null}
+ */
+export function resolveRangePeriod(period, options = {}) {
+    const today = parseISODate(options.today ?? todayISO()) ?? new Date();
+    const weekStartsOn = options.weekStartsOn ?? 1;
+    const amount = Math.max(1, Math.floor(Number(options.amount) || 0));
+    const iso = (date) => toISODate(date);
+    const monthStart = (date, offset = 0) => new Date(date.getFullYear(), date.getMonth() + offset, 1, 12);
+    const monthEnd = (date, offset = 0) => new Date(date.getFullYear(), date.getMonth() + offset + 1, 0, 12);
+    const year = today.getFullYear();
+
+    switch (period) {
+        case 'today':
+            return { start: iso(today), end: iso(today) };
+        case 'yesterday':
+        case 'last-day': {
+            const date = addDays(today, -1);
+            return { start: iso(date), end: iso(date) };
+        }
+        case 'this-week':
+            return {
+                start: iso(startOfWeek(today, weekStartsOn)),
+                end: iso(endOfWeek(today, weekStartsOn)),
+            };
+        case 'last-week':
+            return {
+                start: iso(addDays(startOfWeek(today, weekStartsOn), -7)),
+                end: iso(addDays(endOfWeek(today, weekStartsOn), -7)),
+            };
+        case 'this-month':
+            return { start: iso(monthStart(today)), end: iso(monthEnd(today)) };
+        case 'last-month':
+            return { start: iso(monthStart(today, -1)), end: iso(monthEnd(today, -1)) };
+        case 'this-year':
+            return { start: `${year}-01-01`, end: `${year}-12-31` };
+        case 'last-year':
+            return { start: `${year - 1}-01-01`, end: `${year - 1}-12-31` };
+        case 'last-days': {
+            const days = amount || 7;
+            return { start: iso(addDays(today, -(days - 1))), end: iso(today) };
+        }
+        case 'last-weeks': {
+            const weeks = amount || 3;
+            return { start: iso(addDays(today, -(weeks * 7 - 1))), end: iso(today) };
+        }
+        case 'last-months': {
+            const months = amount || 3;
+            return { start: iso(addMonths(today, -months)), end: iso(today) };
+        }
+        case 'last-years': {
+            const years = amount || 3;
+            return { start: iso(addMonths(today, -(years * 12))), end: iso(today) };
+        }
+        default:
+            return null;
+    }
+}
+
+/**
  * 42 calendar cells (six weeks) for a month, including adjacent-month days.
  */
 export function buildMonthDays(year, month, weekStartsOn = 1) {
