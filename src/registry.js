@@ -1,5 +1,6 @@
 import { createAccordion } from './components/accordion.js';
 import { createCopy } from './components/copy.js';
+import { createDateTimePicker } from './components/date-time-picker.js';
 import { createDrawer } from './components/drawer.js';
 import { createDropdown } from './components/dropdown.js';
 import { createModal } from './components/modal.js';
@@ -30,6 +31,7 @@ export const components = {
     magmaModal: createModal,
     magmaDrawer: createDrawer,
     magmaSheet: createSheet,
+    magmaDateTimePicker: createDateTimePicker,
     magmaAccordion: createAccordion,
     magmaTabs: createTabs,
     magmaPagination: createPagination,

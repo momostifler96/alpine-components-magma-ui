@@ -4,9 +4,9 @@ A small **Alpine.js** component library, designed to work equally well with
 **Alpine alone** or with **Alpine embedded by Livewire**. Zero runtime
 dependencies: no CSS framework, no utilities, no remote font.
 
-- **16 components**: selectors (local, remote, multiple, phone prefix), modal,
-  side drawer, bottom sheet, dropdown panel, accordion, tabs, pagination,
-  notifications, search, refresh, copy, switch.
+- **16 components**: selectors (local, remote, multiple, phone prefix), date and
+  time picker (eight modes), modal, side drawer, bottom sheet, dropdown panel,
+  accordion, tabs, pagination, notifications, search, refresh, copy, switch.
 - **Built-in remote loading**: debounced server-side search, pagination, and
   "load more" on scroll.
 - **Zero dependencies**: Alpine is a `peerDependency`, exactly like Alpine's
@@ -258,6 +258,7 @@ Each component has its own documentation:
 | Dropdown | `magmaSelect` | [docs/select.md](docs/select.md) |
 | Multi-select | `magmaMultiSelect` | [docs/multi-select.md](docs/multi-select.md) |
 | Phone prefix | `magmaPhonePrefix` | [docs/phone-prefix.md](docs/phone-prefix.md) |
+| Date & time picker | `magmaDateTimePicker` | [docs/date-time-picker.md](docs/date-time-picker.md) |
 | Modal dialog | `magmaModal` | [docs/modal.md](docs/modal.md) |
 | Side drawer | `magmaDrawer` | [docs/drawer.md](docs/drawer.md) |
 | Bottom sheet | `magmaSheet` | [docs/sheet.md](docs/sheet.md) |

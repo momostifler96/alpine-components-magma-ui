@@ -17,6 +17,7 @@ window.addEventListener('unhandledrejection', (event) => {
 const EVENTS = [
     'magma-select:change', 'magma-select:loaded', 'magma-select:error',
     'magma-multiselect:change', 'magma-phone:change',
+    'magma-datepicker:change',
     'magma-modal:opened', 'magma-modal:closed',
     'magma-drawer:opened', 'magma-drawer:closed',
     'magma-sheet:opened', 'magma-sheet:closed',
@@ -62,6 +63,29 @@ window.flagSvg = (code, size = 22) => {
         : `<rect x="0" y="${(index * length).toFixed(2)}" width="${size}" height="${length.toFixed(2)}" fill="${color}"/>`));
 
     return `<svg width="${size}" height="${height}" viewBox="0 0 ${size} ${height}">${bands.join('')}</svg>`;
+};
+
+/* Configuration des huit variantes du date picker de démonstration. */
+window.pickerConfig = (mode) => {
+    const values = {
+        date: '2026-10-20',
+        datetime: '2026-10-20T14:30:45',
+        multiple: ['2026-10-20', '2026-10-22'],
+        range: { start: '2026-10-20', end: '2026-10-24' },
+        time: '14:30',
+        month: '2026-10',
+        year: '2026',
+        week: '2026-W43',
+    };
+
+    return {
+        mode,
+        value: values[mode],
+        locale: 'en-US',
+        min: '2020-01-01',
+        max: '2030-12-31',
+        disabledDates: ['2026-11-11'],
+    };
 };
 
 /* Installation documentée : install() avant Alpine.start(). */

@@ -11,6 +11,12 @@ versioning follows [SemVer](https://semver.org/).
   backdrop, scroll locking, focus and directional transitions.
 - `magmaSheet` — sheet anchored at the bottom, swipe-to-close from the grabber,
   enter/exit transitions and configurable maximum height.
+- `magmaDateTimePicker` — one picker with eight modes: date, datetime, multiple,
+  range, time, month, year and ISO week; datetime combines the calendar, a
+  month/year switcher and a single bordered `HH:MM:SS` widget in the same panel;
+  the month/year switcher is shared by date, datetime, multiple, range and week
+  modes, with keyboard navigation, min/max, disabled dates, localized labels
+  and floating panel.
 - Scroll locking shared between modal, drawer and sheet: the page only becomes
   scrollable again once the last layer is closed.
 - `magma-disclosure` — pure-CSS open/close animation (`grid-template-rows`),
@@ -32,6 +38,11 @@ versioning follows [SemVer](https://semver.org/).
   automatically.
 - `magmaSwitch` finally has an "on" state style (`is-on`) and a visible focus
   ring.
+- Floating panels now accept either `x-ref="menu"` or `x-ref="panel"` and
+  re-measure after their content is laid out, so tall date/time grids flip
+  above the field instead of overflowing the viewport.
+- Pagination stacks its counter and controls on narrow screens, avoiding
+  horizontal overflow.
 
 ## 1.0.0 — 2026-10-15
 

@@ -25,6 +25,7 @@ No external service is required.
 | `magmaSelect` remote | loading page 1, "load more", server search, selection |
 | `magmaMultiSelect` | cumulative add, "select all" scoped to the filter, reset search, keyboard navigation, `Escape` |
 | `magmaPhonePrefix` | search by country, dial-code selection, clearing the number |
+| `magmaDateTimePicker` | all eight modes; month/year switcher in date, datetime, multiple, range and week; a single `HH:MM:SS` field group in datetime |
 | `magmaModal` | open via `magma-open`, scroll locking, `Escape`, confirmation + notification |
 | `magmaDrawer` | open from the right edge, backdrop, focus, `Escape`, lateral transition |
 | `magmaSheet` | open from the bottom, swipe-to-close, elastic return, transitions |

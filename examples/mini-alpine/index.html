@@ -545,8 +545,221 @@
             </div>
         </div>
 
+        <!-- ──────────────────────────────────────── Date & time picker -->
+        <h2>6. Date &amp; time picker</h2>
+        <div class="grid" x-data="{
+                modes: ['date', 'datetime', 'multiple', 'range', 'time', 'month', 'year', 'week'],
+                labels: {
+                    date: 'Date', datetime: 'Date & time', multiple: 'Multiple dates', range: 'Date range',
+                    time: 'Time', month: 'Month', year: 'Year', week: 'Week',
+                },
+                hints: {
+                    date: 'Une date ISO unique ; mois/année dans l’en-tête.',
+                    datetime: 'Date, mois/année dans le panneau, puis heure/minute/seconde.',
+                    multiple: 'Tableau de dates, panneau maintenu ouvert ; mois/année dans l’en-tête.',
+                    range: 'Deux clics : début puis fin ; mois/année dans l’en-tête.',
+                    time: 'Créneaux de 15 minutes, fermeture à la sélection.',
+                    month: 'Valeur YYYY-MM, navigation par année.',
+                    year: 'Valeur YYYY, navigation par page de 12 ans.',
+                    week: 'Semaine ISO 8601, ligne entière sélectionnée ; mois/année dans l’en-tête.',
+                },
+            }">
+            <template x-for="mode in modes" :key="mode">
+                <div class="panel">
+                    <h3 x-text="labels[mode]"></h3>
+
+                    <div class="magma-datepicker" :data-testid="'datepicker-' + mode"
+                         x-data="magmaDateTimePicker(pickerConfig(mode))"
+                         @click.outside="close({ restoreFocus: false })" :class="open ? 'is-open' : ''">
+
+                        <div class="magma-datepicker__field">
+                            <button type="button" class="magma-datepicker__trigger"
+                                    :data-testid="'datepicker-' + mode + '-trigger'"
+                                    x-ref="trigger" @click="toggle()" @keydown.down.prevent="show()"
+                                    :aria-expanded="open" aria-haspopup="dialog">
+                                <svg class="magma-datepicker__icon" width="18" height="18" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                                    <rect x="3" y="5" width="18" height="16" rx="2"/>
+                                    <path d="M16 3v4M8 3v4M3 10h18"/>
+                                </svg>
+                                <span class="magma-datepicker__value"
+                                      :class="hasValue ? '' : 'is-placeholder'" x-text="displayValue"></span>
+                            </button>
+
+                            <button type="button" class="magma-datepicker__clear"
+                                    :data-testid="'datepicker-' + mode + '-clear'"
+                                    x-show="hasValue" x-cloak @click.stop="clear()" aria-label="Effacer">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+
+                        <div class="magma-datepicker__panel" :data-testid="'datepicker-' + mode + '-panel'"
+                             x-ref="panel" x-show="open" x-cloak tabindex="-1" role="dialog"
+                             :aria-label="panelLabel" :style="menuStyle" @keydown="onKeydown($event)"
+                             x-transition:enter="magma-fade-enter"
+                             x-transition:enter-start="magma-fade-enter-start"
+                             x-transition:leave="magma-fade-leave"
+                             x-transition:leave-end="magma-fade-leave-end">
+
+                            <div class="magma-datepicker__head">
+                                <button type="button" class="magma-datepicker__nav" @click="previous()"
+                                        :data-testid="'datepicker-' + mode + '-prev'"
+                                        x-show="mode !== 'time'" aria-label="Précédent">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round"><path d="m15 5-7 7 7 7"/></svg>
+                                </button>
+                                <span class="magma-datepicker__title"
+                                      :data-testid="'datepicker-' + mode + '-title'"
+                                      x-show="!hasViewSwitcher" x-text="calendarTitle"></span>
+                                <div class="magma-datepicker__title-group" x-show="hasViewSwitcher">
+                                    <button type="button" class="magma-datepicker__title-button"
+                                            :data-testid="'datepicker-' + mode + '-month-title'"
+                                            :class="view === 'months' ? 'is-active' : ''"
+                                            @click="showMonths()" x-text="monthTitle"></button>
+                                    <button type="button" class="magma-datepicker__title-button"
+                                            :data-testid="'datepicker-' + mode + '-year-title'"
+                                            :class="view === 'years' ? 'is-active' : ''"
+                                            @click="showYears()" x-text="viewYear"></button>
+                                </div>
+                                <button type="button" class="magma-datepicker__nav" @click="next()"
+                                        :data-testid="'datepicker-' + mode + '-next'"
+                                        x-show="mode !== 'time'" aria-label="Suivant">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                         stroke-width="2" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg>
+                                </button>
+                            </div>
+
+                            <div class="magma-datepicker__weekdays"
+                                 :class="mode === 'week' ? 'magma-datepicker__weekdays--weeks' : ''"
+                                 x-show="hasViewSwitcher && view === 'days'" aria-hidden="true">
+                                <span x-show="mode === 'week'"></span>
+                                <template x-for="(name, index) in weekdayNames" :key="index">
+                                    <span class="magma-datepicker__weekday" x-text="name"></span>
+                                </template>
+                            </div>
+
+                            <div class="magma-datepicker__grid" role="grid" @mouseleave="hoverDate = null"
+                                 x-show="['date', 'datetime', 'multiple', 'range'].includes(mode) && view === 'days'">
+                                <template x-for="day in calendarDays" :key="day.iso">
+                                    <button type="button" class="magma-datepicker__day"
+                                            :data-testid="'datepicker-' + mode + '-day'" :data-date="day.iso"
+                                            :class="[day.inMonth ? '' : 'is-other', day.selected ? 'is-selected' : '', day.inRange ? 'is-in-range' : '', day.rangeStart ? 'is-range-start' : '', day.rangeEnd ? 'is-range-end' : '', day.today ? 'is-today' : '', day.active ? 'is-active' : '']"
+                                            :disabled="day.disabled" :aria-label="day.label"
+                                            :aria-pressed="day.selected" :aria-current="day.today ? 'date' : null"
+                                            @click="selectDate(day.iso)" @mouseenter="hoverDate = day.iso"
+                                            @focus="activeDate = day.iso" x-text="day.day"></button>
+                                </template>
+                            </div>
+
+                            <div class="magma-datepicker__weeks" x-show="mode === 'week' && view === 'days'">
+                                <template x-for="week in weeks" :key="week.key">
+                                    <button type="button" class="magma-datepicker__week"
+                                            :data-testid="'datepicker-' + mode + '-week'" :data-week="week.key"
+                                            :class="week.selected ? 'is-selected' : ''" :disabled="week.disabled"
+                                            :aria-label="week.label" :aria-pressed="week.selected"
+                                            @click="selectWeek(week)">
+                                        <span class="magma-datepicker__week-number" x-text="week.week"></span>
+                                        <template x-for="day in week.days" :key="day.iso">
+                                            <span class="magma-datepicker__week-day"
+                                                  :class="[day.inMonth ? '' : 'is-other', day.today ? 'is-today' : '']"
+                                                  x-text="day.day"></span>
+                                        </template>
+                                    </button>
+                                </template>
+                            </div>
+
+                            <div class="magma-datepicker__grid magma-datepicker__grid--months"
+                                 x-show="mode === 'month' || (hasViewSwitcher && view === 'months')">
+                                <template x-for="month in months" :key="month.key">
+                                    <button type="button" class="magma-datepicker__cell"
+                                            :data-testid="'datepicker-' + mode + '-month'" :data-month="month.key"
+                                            :class="month.selected ? 'is-selected' : ''" :disabled="month.disabled"
+                                            :aria-pressed="month.selected" @click="selectMonth(month.index)"
+                                            x-text="month.label"></button>
+                                </template>
+                            </div>
+
+                            <div class="magma-datepicker__grid magma-datepicker__grid--years"
+                                 x-show="mode === 'year' || (hasViewSwitcher && view === 'years')">
+                                <template x-for="year in years" :key="year.year">
+                                    <button type="button" class="magma-datepicker__cell"
+                                            :data-testid="'datepicker-' + mode + '-year'" :data-year="year.year"
+                                            :class="year.selected ? 'is-selected' : ''" :disabled="year.disabled"
+                                            :aria-pressed="year.selected" @click="selectYear(year.year)"
+                                            x-text="year.year"></button>
+                                </template>
+                            </div>
+
+                            <div class="magma-datepicker__time" x-show="mode === 'time'">
+                                <template x-for="slot in timeOptions" :key="slot.value">
+                                    <button type="button" class="magma-datepicker__time-option"
+                                            :data-testid="'datepicker-' + mode + '-time'" :data-time="slot.value"
+                                            :class="slot.selected ? 'is-selected' : ''" :aria-pressed="slot.selected"
+                                            @click="selectTime(slot.value)" x-text="slot.value"></button>
+                                </template>
+                            </div>
+
+                            <div class="magma-datepicker__time-widget" role="group" aria-label="Time"
+                                 x-show="mode === 'datetime' && view === 'days'">
+                                <input class="magma-datepicker__time-input" type="text" inputmode="numeric"
+                                       pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="HH"
+                                       :data-testid="'datepicker-' + mode + '-hour'"
+                                       :value="timeDraft.hour" :aria-label="hourLabel"
+                                       @input="onTimePartInput('hour', $event.target.value)"
+                                       @blur="normalizeTimePart('hour')"
+                                       @keydown.enter.prevent="normalizeTimePart('hour')"
+                                       @focus="$event.target.select()">
+                                <span class="magma-datepicker__time-separator" aria-hidden="true">:</span>
+                                <input class="magma-datepicker__time-input" type="text" inputmode="numeric"
+                                       pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="MM"
+                                       :data-testid="'datepicker-' + mode + '-minute'"
+                                       :value="timeDraft.minute" :aria-label="minuteLabel"
+                                       @input="onTimePartInput('minute', $event.target.value)"
+                                       @blur="normalizeTimePart('minute')"
+                                       @keydown.enter.prevent="normalizeTimePart('minute')"
+                                       @focus="$event.target.select()">
+                                <span class="magma-datepicker__time-separator" aria-hidden="true">:</span>
+                                <input class="magma-datepicker__time-input" type="text" inputmode="numeric"
+                                       pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="SS"
+                                       :data-testid="'datepicker-' + mode + '-second'"
+                                       :value="timeDraft.second" :aria-label="secondLabel"
+                                       @input="onTimePartInput('second', $event.target.value)"
+                                       @blur="normalizeTimePart('second')"
+                                       @keydown.enter.prevent="normalizeTimePart('second')"
+                                       @focus="$event.target.select()">
+                            </div>
+
+                            <div class="magma-datepicker__foot">
+                                <div class="magma-datepicker__foot-start">
+                                    <button type="button" class="magma-datepicker__action" @click="selectToday()"
+                                            x-text="todayLabel"></button>
+                                    <button type="button" class="magma-datepicker__action"
+                                            :data-testid="'datepicker-' + mode + '-now'"
+                                            x-show="mode === 'datetime'" @click="selectNow()"
+                                            x-text="nowLabel"></button>
+                                </div>
+                                <div class="magma-datepicker__foot-end">
+                                    <button type="button" class="magma-datepicker__action magma-datepicker__action--muted"
+                                            @click="clear()" x-text="clearLabel"></button>
+                                    <button type="button" class="magma-datepicker__done"
+                                            :data-testid="'datepicker-' + mode + '-done'"
+                                            x-show="mode === 'datetime'" @click="close()"
+                                            x-text="doneLabel"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="muted" style="margin-top:8px">
+                            Valeur : <code x-text="JSON.stringify(value)"></code>
+                        </p>
+                    </div>
+                </div>
+            </template>
+        </div>
+
         <!-- ──────────────────────────────────────── Journal des événements -->
-        <h2>6. Journal des événements</h2>
+        <h2>7. Journal des événements</h2>
         <div class="panel">
             <p class="muted" style="margin:0 0 10px">
                 Tous les événements <code>magma-*</code> émis par les composants.

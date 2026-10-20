@@ -95,11 +95,21 @@ export function computeMenuPosition(trigger, menu = null) {
     // dessus en offre davantage.
     const placement = height > roomBelow && roomAbove > roomBelow ? 'top' : 'bottom';
 
-    const top = placement === 'top' ? rect.top - MENU_GAP - height : rect.bottom + MENU_GAP;
+    // Un panneau haut ne doit jamais sortir par le haut ou le bas de la
+    // fenêtre, même lorsqu'il est plus grand que l'espace disponible.
+    const top = placement === 'top'
+        ? Math.max(VIEWPORT_MARGIN, rect.top - MENU_GAP - height)
+        : Math.max(VIEWPORT_MARGIN, Math.min(rect.bottom + MENU_GAP, viewportHeight - height - VIEWPORT_MARGIN));
 
-    // Le panneau ne déborde jamais latéralement de la fenêtre.
+    // Le panneau ne déborde jamais latéralement de la fenêtre. Sa largeur peut
+    // être supérieure à celle du champ (date picker), on borne donc avec la
+    // largeur réelle du panneau.
     const width = rect.width;
-    const left = Math.min(Math.max(rect.left, VIEWPORT_MARGIN), viewportWidth - width - VIEWPORT_MARGIN);
+    const panelWidth = menu?.offsetWidth || width;
+    const left = Math.max(
+        VIEWPORT_MARGIN,
+        Math.min(Math.max(rect.left, VIEWPORT_MARGIN), viewportWidth - panelWidth - VIEWPORT_MARGIN)
+    );
 
     return { top, left, width, placement };
 }
@@ -171,7 +181,11 @@ export const floatingMenu = {
                     return;
                 }
 
-                this.anchor = computeMenuPosition(trigger, this.$refs?.menu ?? null);
+                // Les composants nomment leur panneau `menu` (sélecteurs) ou
+                // `panel` (date picker) : les deux références sont acceptées.
+                const menu = this.$refs?.menu ?? this.$refs?.panel ?? null;
+
+                this.anchor = computeMenuPosition(trigger, menu);
             },
 
             /**
@@ -183,6 +197,10 @@ export const floatingMenu = {
                 this.placeMenu();
                 window.clearTimeout(this.anchorTimer);
                 this.anchorTimer = window.setTimeout(() => this.placeMenu(), 0);
+
+                // Le contenu (grille, liste chargée) peut acquérir sa hauteur
+                // définitive seulement après la frame de rendu.
+                window.requestAnimationFrame(() => this.placeMenu());
             },
 
             /** Suit le déclencheur au défilement et au redimensionnement. */
@@ -200,10 +218,18 @@ export const floatingMenu = {
 
                 // Le déclencheur peut changer de largeur sans défilement : une
                 // barre de défilement qui apparaît dans la modale, une fenêtre
-                // redimensionnée, une colonne qui se réorganise.
+                // redimensionnée, une colonne qui se réorganise. Le panneau est
+                // observé aussi : son contenu (liste chargée, grille de dates)
+                // peut changer de hauteur après le premier positionnement.
                 if (typeof ResizeObserver !== 'undefined' && this.$refs?.trigger) {
                     this.observer = new ResizeObserver(() => this.placeMenu());
                     this.observer.observe(this.$refs.trigger);
+
+                    const menu = this.$refs?.menu ?? this.$refs?.panel;
+
+                    if (menu) {
+                        this.observer.observe(menu);
+                    }
                 }
             },
 
