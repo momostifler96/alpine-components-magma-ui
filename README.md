@@ -1,33 +1,33 @@
 # Magma UI
 
-Petite bibliothèque de composants **Alpine.js**, pensée pour fonctionner aussi bien
-avec **Alpine seul** qu'avec **Alpine embarqué par Livewire**. Aucune dépendance
-d'exécution : ni framework CSS, ni utilitaires, ni police distante.
+A small **Alpine.js** component library, designed to work equally well with
+**Alpine alone** or with **Alpine embedded by Livewire**. Zero runtime
+dependencies: no CSS framework, no utilities, no remote font.
 
-- **15 composants** : sélecteurs (local, distant, multiple, indicatif téléphonique),
-  modale, tiroir latéral, feuille, panneau déroulant, accordéon, onglets,
-  pagination, notifications, recherche, actualisation, copie, interrupteur.
-- **Chargement distant** intégré : recherche serveur temporisée, pagination,
-  « charger plus » au défilement.
-- **Zéro dépendance** : Alpine est une `peerDependency`, exactement comme pour les
-  greffons officiels d'Alpine.
-- **Accessible** : navigation clavier complète, rôles ARIA, focus visible.
-- **Thémable par variables CSS**, préfixe `magma-` unique.
+- **16 components**: selectors (local, remote, multiple, phone prefix), modal,
+  side drawer, bottom sheet, dropdown panel, accordion, tabs, pagination,
+  notifications, search, refresh, copy, switch.
+- **Built-in remote loading**: debounced server-side search, pagination, and
+  "load more" on scroll.
+- **Zero dependencies**: Alpine is a `peerDependency`, exactly like Alpine's
+  official plugins.
+- **Accessible**: full keyboard navigation, ARIA roles, visible focus.
+- **Themeable via CSS variables**, unique `magma-` prefix.
 
 ---
 
-## Sommaire
+## Table of contents
 
 - [Installation](#installation)
-- [Démarrage rapide](#démarrage-rapide)
-- [Alpine seul ou Alpine + Livewire](#alpine-seul-ou-alpine--livewire)
-- [Chargement distant et « charger plus »](#chargement-distant-et-charger-plus)
-- [Composants](#composants)
-- [Personnalisation](#personnalisation)
-- [Accessibilité](#accessibilité)
-- [Compatibilité](#compatibilité)
-- [Développement](#développement)
-- [Licence](#licence)
+- [Quick start](#quick-start)
+- [Alpine alone or Alpine + Livewire](#alpine-alone-or-alpine--livewire)
+- [Remote loading and "load more"](#remote-loading-and-load-more)
+- [Components](#components)
+- [Customization](#customization)
+- [Accessibility](#accessibility)
+- [Compatibility](#compatibility)
+- [Development](#development)
+- [License](#license)
 
 ---
 
@@ -37,13 +37,13 @@ d'exécution : ni framework CSS, ni utilitaires, ni police distante.
 npm install @momoledev/alpine-magma-ui-component
 ```
 
-Alpine doit être présent dans l'application :
+Alpine must be present in the application:
 
 ```bash
 npm install alpinejs
 ```
 
-### Sans bundler
+### Without a bundler
 
 ```html
 <link rel="stylesheet" href="https://unpkg.com/@momoledev/alpine-magma-ui-component/dist/magma-ui.css" />
@@ -51,14 +51,14 @@ npm install alpinejs
 <script src="https://unpkg.com/alpinejs/dist/cdn.min.js" defer></script>
 ```
 
-Le bundle global expose `window.MagmaUI`, enregistre les composants auprès d'Alpine
-et publie chaque fabrique en global (`window.magmaSelect`, `window.magmaModal`, …).
-L'ordre des deux balises n'a pas d'importance : si Alpine démarre après la
-bibliothèque, l'enregistrement est différé jusqu'à `alpine:init`.
+The global bundle exposes `window.MagmaUI`, registers the components with Alpine,
+and publishes each factory globally (`window.magmaSelect`, `window.magmaModal`,
+…). The order of the two tags does not matter: if Alpine starts after the
+library, registration is deferred until `alpine:init`.
 
 ---
 
-## Démarrage rapide
+## Quick start
 
 ```html
 <link rel="stylesheet" href="/node_modules/@momoledev/alpine-magma-ui-component/dist/magma-ui.css" />
@@ -68,7 +68,7 @@ bibliothèque, l'enregistrement est différé jusqu'à `alpine:init`.
         class="magma-select"
         x-data="magmaSelect({
             value: 'ci',
-            placeholder: 'Choisissez un pays',
+            placeholder: 'Choose a country',
             options: [
                 { value: 'ci', label: "Côte d'Ivoire" },
                 { value: 'sn', label: 'Sénégal' },
@@ -87,7 +87,7 @@ bibliothèque, l'enregistrement est différé jusqu'à `alpine:init`.
              x-transition:leave="magma-fade-leave" x-transition:leave-end="magma-fade-leave-end"
              role="listbox">
             <div class="magma-select__search">
-                <input type="text" x-model="searchTerm" @input="onSearchInput()" x-ref="search" placeholder="Rechercher" />
+                <input type="text" x-model="searchTerm" @input="onSearchInput()" x-ref="search" placeholder="Search" />
             </div>
 
             <ul class="magma-select__list" x-ref="list" @scroll="onListScroll($event)">
@@ -108,66 +108,65 @@ bibliothèque, l'enregistrement est différé jusqu'à `alpine:init`.
 </div>
 ```
 
-Un exemple complet et autonome, sans build, se trouve dans
+A complete, self-contained, build-free example lives in
 [`examples/index.html`](examples/index.html).
 
 ---
 
-## Alpine seul ou Alpine + Livewire
+## Alpine alone or Alpine + Livewire
 
-La bibliothèque est conçue pour les deux cas de figure.
+The library is designed for both scenarios.
 
-### Alpine seul
+### Alpine alone
 
 ```js
 import Alpine from 'alpinejs';
 import { install } from '@momoledev/alpine-magma-ui-component';
 import '@momoledev/alpine-magma-ui-component/css';
 
-install();                    // attend `alpine:init` si Alpine n'est pas encore là
+install();                    // waits for `alpine:init` if Alpine isn't there yet
 window.Alpine = Alpine;
 Alpine.start();
 ```
 
-### Alpine embarqué par Livewire
+### Alpine embedded by Livewire
 
-Livewire 3 fournit son propre Alpine. On l'enregistre donc sur l'instance
-existante :
+Livewire 3 ships its own Alpine, so the library registers against that existing
+instance:
 
 ```js
 import { install } from '@momoledev/alpine-magma-ui-component';
 import '@momoledev/alpine-magma-ui-component/css';
 
-// Livewire est chargé par `@livewireScripts` : `window.Alpine` existe déjà
-// au moment où ce module s'exécute.
+// Livewire is loaded via `@livewireScripts`: `window.Alpine` already exists
+// by the time this module runs.
 install({ Alpine: window.Alpine });
 ```
 
-Ou, si l'ordre n'est pas garanti, laissez `install()` faire le travail : elle
-détecte `window.Alpine`, sinon s'inscrit sur `alpine:init`.
+Or, if the load order isn't guaranteed, just let `install()` do the work: it
+detects `window.Alpine`, and otherwise subscribes to `alpine:init`.
 
 ```js
-install();   // couvre les deux cas
+install();   // covers both cases
 ```
 
-### Ce que la compatibilité Livewire implique
+### What Livewire compatibility implies
 
-| Point | Traitement |
+| Point | Handling |
 | --- | --- |
-| Alpine déjà démarré | `install()` enregistre immédiatement, et publie aussi les fabriques en global pour que `x-data="magmaSelect({…})"` fonctionne sur du HTML monté plus tard. |
-| `wire:navigate` | Les composants vivent sur l'élément : après une navigation Livewire, Alpine réinitialise l'état depuis `x-data`. Aucun code spécifique n'est requis. |
-| Événements | Tous les événements sortants sont préfixés `magma-` et émis via `$dispatch`, donc écoutables avec `Livewire.on('magma-select:change', …)` et `$wire.on(…)`. |
-| Entrées | `$wire.dispatch('magma-notify', {…})` ou `window.MagmaUI.notify({…})` alimentent la pile de notifications sans couplage. |
-| Rendu serveur | Aucun composant n'exige le DOM au moment de l'évaluation de `x-data` : le chargement distant démarre à l'ouverture ou via `init()`. |
-| Animations | Les animations d'entrée/sortie sont des **animations CSS**, jamais des `x-transition` : Alpine n'applique pas ces directives aux enfants d'un `x-for`, ce dont dépendent les notifications. |
+| Alpine already started | `install()` registers immediately, and also publishes the factories globally so that `x-data="magmaSelect({…})"` works on HTML mounted later. |
+| `wire:navigate` | Components live on the element: after a Livewire navigation, Alpine re-initializes state from `x-data`. No special code required. |
+| Events | All outgoing events are prefixed `magma-` and emitted via `$dispatch`, so they are listenable with `Livewire.on('magma-select:change', …)` and `$wire.on(…)`. |
+| Inputs | `$wire.dispatch('magma-notify', {…})` or `window.MagmaUI.notify({…})` feed the notification stack without coupling. |
+| Server-side rendering | No component requires the DOM at `x-data` evaluation time: remote loading starts on open or via `init()`. |
+| Animations | Enter/leave animations are **CSS animations**, never `x-transition`: Alpine does not apply these directives to the children of an `x-for`, which notifications depend on. |
 
 ---
 
-## Chargement distant et « charger plus »
+## Remote loading and "load more"
 
-N'importe quel sélecteur accepte une URL à la place d'un tableau. Le composant
-gère alors la recherche serveur temporisée, la pagination et la récupération des
-pages suivantes.
+Any selector accepts a URL instead of an array. The component then handles
+debounced server-side search, pagination, and fetching subsequent pages.
 
 ```html
 <div x-data="magmaSelect({
@@ -179,64 +178,64 @@ pages suivantes.
         pageParam: 'page',
         debounce: 250,
         minChars: 2,
-        loadMoreLabel: 'Charger plus de pays',
+        loadMoreLabel: 'Load more countries',
         mapResponse: (payload) => ({ items: payload.results, hasMore: payload.next !== null }),
     })">
 ```
 
-### Contrat de réponse
+### Response contract
 
-Le composant accepte sans configuration :
+The component accepts the following formats without configuration:
 
 ```jsonc
-// Tableau simple
+// Plain array
 [{ "value": "ci", "label": "Côte d'Ivoire" }]
 
-// Objet avec pagination explicite
+// Object with explicit pagination
 { "data": [ … ], "hasMore": true }
 
-// Pagination Laravel
+// Laravel pagination
 { "data": [ … ], "current_page": 1, "last_page": 4 }
 
-// Pagination « total »
+// "total" pagination
 { "data": [ … ], "total": 150, "current_page": 1 }
 ```
 
-Pour tout autre format, `mapResponse(payload) → { items, hasMore }` prend le relais.
+For any other format, `mapResponse(payload) → { items, hasMore }` takes over.
 
-### Options de chargement distant
+### Remote loading options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `url` | `null` | Endpoint. Absent, le composant reste local. |
-| `perPage` | `25` | Taille de page annoncée au serveur et utilisée pour déduire `hasMore`. |
-| `pageParam` | `'page'` | Nom du paramètre de page. |
-| `searchParam` | `'search'` | Nom du paramètre de recherche. |
-| `debounce` | `250` | Temporisation avant de relancer une recherche (ms). |
-| `minChars` | `0` | Longueur minimale avant d'envoyer la recherche. |
-| `params` | `{}` ou `() => ({})` | Paramètres additionnels envoyés à chaque requête. |
-| `fetchOptions` | `{}` | Fusionné dans l'appel `fetch` (en-têtes, `signal`, …). |
-| `credentials` | `'same-origin'` | Politique de cookies. |
-| `mapResponse` | – | Réécrit la réponse serveur. |
-| `mapOption` | – | Réécrit chaque entrée. |
-| `valueKey` / `labelKey` | `'value'` / `'label'` | Clés des entrées. |
-| `loadOnOpen` | `true` | Charge la première page à l'ouverture. |
-| `loadMoreLabel` | `'Charger plus'` | Libellé du bouton de pagination. |
-| `onError` | `console.error` | Rappel en cas d'échec. |
+| `url` | `null` | Endpoint. When absent, the component stays local. |
+| `perPage` | `25` | Page size announced to the server and used to infer `hasMore`. |
+| `pageParam` | `'page'` | Name of the page parameter. |
+| `searchParam` | `'search'` | Name of the search parameter. |
+| `debounce` | `250` | Delay before re-running a search (ms). |
+| `minChars` | `0` | Minimum length before sending the search. |
+| `params` | `{}` or `() => ({})` | Additional parameters sent with each request. |
+| `fetchOptions` | `{}` | Merged into the `fetch` call (headers, `signal`, …). |
+| `credentials` | `'same-origin'` | Cookies policy. |
+| `mapResponse` | – | Rewrites the server response. |
+| `mapOption` | – | Rewrites each entry. |
+| `valueKey` / `labelKey` | `'value'` / `'label'` | Entry keys. |
+| `loadOnOpen` | `true` | Loads the first page on open. |
+| `loadMoreLabel` | `'Load more'` | Label of the pagination button. |
+| `onError` | `console.error` | Failure callback. |
 
-### Déclencheurs
+### Triggers
 
-- **À l'ouverture** : la première page est demandée si `loadOnOpen` est actif.
-- **À la saisie** : la recherche repart de la page 1 après `debounce`.
-- **Au défilement** : `onListScroll($event)` sur la liste déclenche `loadMore()`
-  quand il reste moins de 48 px à parcourir.
-- **Au clic** : le bouton `.magma-select__more` appelle `loadMore()`.
-- **Automatiquement** : si la première page ne remplit pas la hauteur visible,
-  les pages suivantes sont enchaînées pour éviter une liste trop courte.
+- **On open**: the first page is requested if `loadOnOpen` is enabled.
+- **On input**: the search restarts from page 1 after `debounce`.
+- **On scroll**: `onListScroll($event)` on the list fires `loadMore()` when fewer
+  than 48 px remain.
+- **On click**: the `.magma-select__more` button calls `loadMore()`.
+- **Automatically**: if the first page doesn't fill the visible height, the next
+  pages are fetched to avoid an overly short list.
 
-### Événements
+### Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-select:loaded` | `{ page, count, hasMore }` |
 | `magma-select:error` | `{ message }` |
@@ -250,53 +249,53 @@ document.addEventListener('magma-select:loaded', (event) => {
 
 ---
 
-## Composants
+## Components
 
-Chaque composant dispose de sa propre documentation :
+Each component has its own documentation:
 
-| Composant | Fabrique | Documentation |
+| Component | Factory | Documentation |
 | --- | --- | --- |
-| Liste déroulante | `magmaSelect` | [docs/select.md](docs/select.md) |
-| Sélection multiple | `magmaMultiSelect` | [docs/multi-select.md](docs/multi-select.md) |
-| Indicatif téléphonique | `magmaPhonePrefix` | [docs/phone-prefix.md](docs/phone-prefix.md) |
-| Fenêtre modale | `magmaModal` | [docs/modal.md](docs/modal.md) |
-| Tiroir latéral | `magmaDrawer` | [docs/drawer.md](docs/drawer.md) |
-| Feuille (bottom sheet) | `magmaSheet` | [docs/sheet.md](docs/sheet.md) |
-| Panneau déroulant | `magmaDropdown` | [docs/dropdown.md](docs/dropdown.md) |
-| Accordéon | `magmaAccordion` | [docs/accordion.md](docs/accordion.md) |
-| Onglets | `magmaTabs` | [docs/tabs.md](docs/tabs.md) |
+| Dropdown | `magmaSelect` | [docs/select.md](docs/select.md) |
+| Multi-select | `magmaMultiSelect` | [docs/multi-select.md](docs/multi-select.md) |
+| Phone prefix | `magmaPhonePrefix` | [docs/phone-prefix.md](docs/phone-prefix.md) |
+| Modal dialog | `magmaModal` | [docs/modal.md](docs/modal.md) |
+| Side drawer | `magmaDrawer` | [docs/drawer.md](docs/drawer.md) |
+| Bottom sheet | `magmaSheet` | [docs/sheet.md](docs/sheet.md) |
+| Dropdown panel | `magmaDropdown` | [docs/dropdown.md](docs/dropdown.md) |
+| Accordion | `magmaAccordion` | [docs/accordion.md](docs/accordion.md) |
+| Tabs | `magmaTabs` | [docs/tabs.md](docs/tabs.md) |
 | Pagination | `magmaPagination` | [docs/pagination.md](docs/pagination.md) |
 | Notifications | `magmaToasts` | [docs/toasts.md](docs/toasts.md) |
-| Actualisation | `magmaRefresh` | [docs/refresh.md](docs/refresh.md) |
-| Recherche | `magmaSearch` | [docs/search.md](docs/search.md) |
-| Copie | `magmaCopy` | [docs/copy.md](docs/copy.md) |
-| Interrupteur | `magmaSwitch` | [docs/switch.md](docs/switch.md) |
-| Chargement distant | – | [docs/remote.md](docs/remote.md) |
-| **Thème et variables CSS** | – | [docs/theming.md](docs/theming.md) |
+| Refresh | `magmaRefresh` | [docs/refresh.md](docs/refresh.md) |
+| Search | `magmaSearch` | [docs/search.md](docs/search.md) |
+| Copy | `magmaCopy` | [docs/copy.md](docs/copy.md) |
+| Switch | `magmaSwitch` | [docs/switch.md](docs/switch.md) |
+| Remote loading | – | [docs/remote.md](docs/remote.md) |
+| **Theme and CSS variables** | – | [docs/theming.md](docs/theming.md) |
 
-### API globale
+### Global API
 
 ```js
 import { notify } from '@momoledev/alpine-magma-ui-component';
 
-notify({ type: 'success', title: 'Enregistré', message: 'Les modifications sont prises en compte.' });
+notify({ type: 'success', title: 'Saved', message: 'Your changes have been applied.' });
 ```
 
-`notify()` émet l'événement global `magma-notify`, écouté par le composant
-`magmaToasts`. Elle est aussi disponible sous `window.MagmaUI.notify` dans le
-bundle global, ce qui permet de l'appeler depuis un composant Livewire sans
-importer quoi que ce soit.
+`notify()` emits the global `magma-notify` event, listened to by the
+`magmaToasts` component. It is also available as `window.MagmaUI.notify` in the
+global bundle, so it can be called from a Livewire component without importing
+anything.
 
 ---
 
-## Personnalisation
+## Customization
 
-Tout passe par des variables CSS — **aucune couleur n'est écrite en dur** dans la
-feuille de style. Redéfinissez les jetons sur `:root`, ou sur n'importe quel
-ancêtre des composants à thémer.
+Everything flows through CSS variables — **no color is hard-coded** in the
+stylesheet. Override the tokens on `:root`, or on any ancestor of the components
+to theme.
 
 ```css
-.mon-theme {
+.my-theme {
     --magma-primary: #0a7d55;
     --magma-primary-hover: #086345;
     --magma-primary-soft: #e6f5ef;
@@ -305,135 +304,134 @@ ancêtre des composants à thémer.
 }
 ```
 
-La liste complète des jetons (accent, états, gris, surfaces, contrastes,
-typographie, rayons, élévations, mouvement, largeur des panneaux) et un
-**exemple de thème sombre** se trouvent dans [docs/theming.md](docs/theming.md).
+The full list of tokens (accent, states, grays, surfaces, contrasts, typography,
+radii, elevations, motion, panel width) and a **dark theme example** live in
+[docs/theming.md](docs/theming.md).
 
 ```html
 <html data-theme="dark">
     <body class="magma-root">
-        <!-- tous les composants suivent le thème -->
+        <!-- all components follow the theme -->
     </body>
 </html>
 ```
 
-Ajoutez la classe `magma-root` sur un conteneur pour bénéficier de la remise à
-zéro locale (police, couleur, `box-sizing`) sans toucher au reste de la page.
+Add the `magma-root` class to a container to benefit from the local reset (font,
+color, `box-sizing`) without touching the rest of the page.
 
-### Largeur des panneaux déroulants
+### Dropdown panel width
 
-Les sélecteurs et les tiroirs acceptent une option `menuWidth` :
+The selectors (`magmaSelect`, `magmaMultiSelect`, `magmaPhonePrefix`) and the
+dropdown panel (`magmaDropdown`) accept a `menuWidth` option:
 
-| Valeur | Effet |
+| Value | Effect |
 | --- | --- |
-| *(absente)* | Largeur par défaut de la feuille de style — `min(324px, calc(100vw - 48px))` pour un sélecteur, 240 px minimum pour un tiroir. |
-| `'field'` | Le panneau prend **exactement la largeur du champ**. |
-| `'auto'` | Le panneau s'ajuste à son contenu, sans jamais être plus étroit que le champ. |
-| `320` | Largeur explicite en pixels. |
-| `'20rem'` | Toute valeur acceptée par `width`. |
+| *(absent)* | Default stylesheet width — `min(324px, calc(100vw - 48px))` for a selector, 240 px minimum for the dropdown panel. |
+| `'field'` | The panel takes **exactly the field's width**. |
+| `'auto'` | The panel fits its content, never narrower than the field. |
+| `320` | Explicit width in pixels. |
+| `'20rem'` | Any value accepted by `width`. |
 
 ```html
 <div class="magma-select"
      x-data="magmaSelect({ menuWidth: 'field', options: [ … ] })">
     <button class="magma-select__trigger" …></button>
 
-    <!-- `menuStyle` pose la variable --magma-menu-width -->
+    <!-- `menuStyle` sets the --magma-menu-width variable -->
     <div class="magma-select__menu" :style="menuStyle" x-show="open" …>
         …
     </div>
 </div>
 ```
 
-Sans JavaScript, les mêmes variantes existent en classes :
-`magma-select__menu--field` et `magma-select__menu--auto`.
+Without JavaScript, the same variants exist as classes:
+`magma-select__menu--field` and `magma-select__menu--auto`.
 
-## Accessibilité
+## Accessibility
 
-- Les déclencheurs sont de vrais `<button>` avec `aria-expanded` et
+- Triggers are real `<button>` elements with `aria-expanded` and
   `aria-haspopup="listbox"`.
-- Les listes portent `role="listbox"` / `role="option"` et `aria-selected`.
-- Navigation clavier : `↓` / `↑` déplacent la sélection, `Début` / `Fin` vont aux
-  extrémités, `Entrée` valide, `Échap` ferme.
-- La modale verrouille le défilement du document et se ferme avec `Échap`.
-- `prefers-reduced-motion` neutralise les animations et transitions.
-- Le focus est toujours visible (`:focus-visible`) et suit la couleur d'accent.
+- Lists carry `role="listbox"` / `role="option"` and `aria-selected`.
+- Keyboard navigation: `↓` / `↑` move the selection, `Home` / `End` go to the
+  ends, `Enter` confirms, `Escape` closes.
+- The modal locks document scrolling and closes with `Escape`.
+- `prefers-reduced-motion` neutralizes animations and transitions.
+- Focus is always visible (`:focus-visible`) and follows the accent color.
 
 ---
 
-## Compatibilité
+## Compatibility
 
-| Navigateur | Version |
+| Browser | Version |
 | --- | --- |
 | Chrome / Edge | ≥ 90 |
 | Firefox | ≥ 90 |
 | Safari | ≥ 15 |
 
-Cibles ES2020. Aucun polyfill n'est nécessaire : `fetch`, `URL`,
-`navigator.clipboard` (avec repli `execCommand`) et `CustomEvent` sont natifs sur
-ces versions.
+Targets ES2020. No polyfill is required: `fetch`, `URL`,
+`navigator.clipboard` (with an `execCommand` fallback), and `CustomEvent` are
+native in these versions.
 
-### Deux pièges d'Alpine à connaître
+### Two Alpine pitfalls to know
 
-**1. Un déclencheur isolé a besoin de son propre `x-data`.** Au chargement,
-Alpine n'initialise les directives que dans les portées `x-data`. Un `@click`
-posé sur un élément statique qui n'est sous aucun `x-data` n'est jamais branché :
-le clic ne fait rien, sans erreur en console. C'est le cas des boutons qui
-ouvrent une modale, puisqu'ils sont forcément en dehors de sa portée.
+**1. An isolated trigger needs its own `x-data`.** On load, Alpine only
+initializes directives inside `x-data` scopes. An `@click` placed on a static
+element that isn't under any `x-data` is never wired up: the click does nothing,
+with no console error. This is the case for buttons that open a modal, since
+they are necessarily outside its scope.
 
 ```html
-<!-- Le x-data est indispensable -->
-<button x-data @click="$dispatch('magma-open', { name: 'edition' })">Modifier</button>
+<!-- The x-data is required -->
+<button x-data @click="$dispatch('magma-open', { name: 'edition' })">Edit</button>
 ```
 
-Un élément ajouté au DOM après coup (Alpine le voit via son observateur) est
-initialisé même hors portée : le piège ne concerne que le HTML présent au
-chargement.
+An element added to the DOM later (Alpine sees it through its observer) is
+initialized even outside scope: the pitfall only concerns HTML present at load.
 
-**2. Préférez `cond ? 'classe' : ''` à `cond && 'classe'`.** Alpine 3.17 écrit la
-valeur booléenne telle quelle dans l'attribut `class`, ce qui produit une classe
-parasite `false` sur l'élément (`<div class="magma-toast false">`) absente en
-3.15. Le ternaire renvoie une chaîne vide dans toutes les versions :
-`scripts/fix-class-idioms.py` réécrit les attributs `:class` d'un fichier.
+**2. Prefer `cond ? 'class' : ''` over `cond && 'class'`.** Alpine 3.17 writes
+the boolean value as-is into the `class` attribute, producing a spurious `false`
+class on the element (`<div class="magma-toast false">`) that is absent in 3.15.
+The ternary returns an empty string in all versions:
+`scripts/fix-class-idioms.py` rewrites the `:class` attributes of a file.
 
 ---
 
-## Développement
+## Development
 
 ```bash
-npm run build     # génère dist/magma-ui.esm.js, dist/magma-ui.global.js et dist/magma-ui.css
+npm run build     # generates dist/magma-ui.esm.js, dist/magma-ui.global.js and dist/magma-ui.css
 ```
 
-Le générateur n'utilise que les modules natifs de Node : imports relatifs,
-regroupement topologique, réécriture des `export`. Aucun transpileur, aucun
-minifieur, aucun outil externe.
+The generator only uses Node's native modules: relative imports, topological
+bundling, `export` rewriting. No transpiler, no minifier, no external tool.
 
-### Les styles viennent de l'application
+### The styles come from the application
 
-`src/styles/magma-ui.css` est **généré** : la feuille de l'application
-(`resources/css/new-design.css`, elle-même au pixel des maquettes) fait
-référence, la bibliothèque en est la transposition exacte sous les noms
-`magma-` (classes, variables et animations renommées ; l'accordéon reprend le
-style de la FAQ, les onglets celui des filtres du tableau de bord).
+`src/styles/magma-ui.css` is **generated**: the application's stylesheet
+(`resources/css/new-design.css`, itself pixel-matched to the mockups) is the
+reference, and the library is its exact transposition under the `magma-` names
+(classes, variables, and animations renamed; the accordion reuses the FAQ style,
+the tabs those of the dashboard filters).
 
 ```bash
 python packages/magma-ui/scripts/generate-styles.py   # transposition
-python packages/magma-ui/scripts/compare-styles.py    # contrôle de parité
+python packages/magma-ui/scripts/compare-styles.py    # parity check
 npm run build
 ```
 
-`compare-styles.py` vérifie qu'aucun sélecteur de composant ne manque et
-qu'aucune déclaration ne diverge : il doit sortir sans écart. Corrigez toujours
-le style dans l'application, jamais dans le fichier généré.
+`compare-styles.py` verifies that no component selector is missing and no
+declaration diverges: it should exit with no diff. Always fix the style in the
+application, never in the generated file.
 
-Parcourez [`examples/index.html`](examples/index.html) dans un navigateur pour
-voir chaque composant en fonctionnement, y compris le chargement distant simulé.
+Browse [`examples/index.html`](examples/index.html) in a browser to see each
+component in action, including simulated remote loading.
 
-Un mini projet Vite autonome, qui installe le paquet et sert de banc d'essai aux
-15 composants, se trouve dans [`examples/mini-alpine`](examples/mini-alpine)
+A standalone Vite mini-project that installs the package and serves as a test
+bed for the 16 components lives in [`examples/mini-alpine`](examples/mini-alpine)
 (`npm install && npm run dev`).
 
 ---
 
-## Licence
+## License
 
-MIT — voir [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).

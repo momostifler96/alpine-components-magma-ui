@@ -1,12 +1,12 @@
-# Thème et variables
+# Theme and variables
 
-Toute l'apparence passe par des variables CSS. Aucune couleur n'est écrite en
-dur dans la feuille de style : redéfinir ces jetons suffit à créer un thème
-complet, sans toucher au JavaScript.
+All appearance flows through CSS variables. No color is hard-coded in the
+stylesheet: redefining these tokens is enough to build a complete theme, without
+touching the JavaScript.
 
 ```css
-/* Sur :root pour toute la page, ou sur un conteneur pour un thème local. */
-.mon-theme {
+/* On :root for the whole page, or on a container for a local theme. */
+.my-theme {
     --magma-primary: #0a7d55;
     --magma-primary-hover: #086345;
     --magma-primary-soft: #e6f5ef;
@@ -18,102 +18,103 @@ complet, sans toucher au JavaScript.
 
 ## Accent
 
-| Variable | Défaut | Usage |
+| Variable | Default | Usage |
 | --- | --- | --- |
-| `--magma-primary` | `#ff6602` | Couleur d'accent : boutons pleins, onglet actif, cases cochées, puces. |
-| `--magma-primary-hover` | `#e85c00` | Survol de l'accent. |
-| `--magma-primary-active` | `#cc5200` | Appui. |
-| `--magma-primary-soft` | `#ffece0` | Fond des boutons secondaires, ligne sélectionnée. |
-| `--magma-primary-tint` | `#ffdbc4` | Survol des fonds doux. |
-| `--magma-primary-ghost` | `#fff0e8` | Page courante de la pagination. |
+| `--magma-primary` | `#ff6602` | Accent color: solid buttons, active tab, checked boxes, bullets. |
+| `--magma-primary-hover` | `#e85c00` | Hover of the accent. |
+| `--magma-primary-active` | `#cc5200` | Pressed state. |
+| `--magma-primary-soft` | `#ffece0` | Background of secondary buttons, selected row. |
+| `--magma-primary-tint` | `#ffdbc4` | Hover of soft backgrounds. |
+| `--magma-primary-ghost` | `#fff0e8` | Current pagination page. |
 
-## États
+## States
 
-| Variable | Défaut | Usage |
+| Variable | Default | Usage |
 | --- | --- | --- |
-| `--magma-yellow` | `#ffde54` | Bouton jaune, graphique « Payin ». |
-| `--magma-yellow-soft` | `#fff0b2` | Fond des actions douces jaunes. |
-| `--magma-yellow-badge` | `#ffff99` | Badge « en cours » ou « en attente ». |
-| `--magma-yellow-badge-ink` | `#666600` | Texte de ce badge. |
-| `--magma-yellow-ink` | `#332900` | Texte sur jaune. |
-| `--magma-green` | `#12b312` | Badge « succès », graphique « BaaS ». |
-| `--magma-green-ink` | `#0a7a0a` | Texte vert sur fond clair. |
-| `--magma-green-soft` | `#e0efe0` | Fond vert clair. |
-| `--magma-green-tint` | `#edfff7` | Pastille « Test ». |
-| `--magma-green-dot` | `#00bf6f` | Point animé de la pastille. |
-| `--magma-blue` | `#3d3dff` | Badge « actif », icône de notification. |
-| `--magma-blue-soft` | `#ebebff` | Fond bleu clair. |
-| `--magma-blue-mid` | `#ccccff` | Badge de rôle « développeur ». |
-| `--magma-pink` | `#ffccd3` | Badge d'échec ou d'ouverture. |
-| `--magma-pink-ink` | `#cc001b` | Texte sur rose. |
-| `--magma-red` | `#e60023` | Compteur de notifications. |
+| `--magma-yellow` | `#ffde54` | Yellow button, "Payin" chart. |
+| `--magma-yellow-soft` | `#fff0b2` | Background of soft yellow actions. |
+| `--magma-yellow-badge` | `#ffff99` | "In progress" or "pending" badge. |
+| `--magma-yellow-badge-ink` | `#666600` | Text of that badge. |
+| `--magma-yellow-ink` | `#332900` | Text on yellow. |
+| `--magma-green` | `#12b312` | "Success" badge, "BaaS" chart. |
+| `--magma-green-ink` | `#0a7a0a` | Green text on a light background. |
+| `--magma-green-soft` | `#e0efe0` | Light green background. |
+| `--magma-green-tint` | `#edfff7` | "Test" pill. |
+| `--magma-green-dot` | `#00bf6f` | Animated dot of the pill. |
+| `--magma-blue` | `#3d3dff` | "Active" badge, notification icon. |
+| `--magma-blue-soft` | `#ebebff` | Light blue background. |
+| `--magma-blue-mid` | `#ccccff` | "Developer" role badge. |
+| `--magma-pink` | `#ffccd3` | Failure or open badge. |
+| `--magma-pink-ink` | `#cc001b` | Text on pink. |
+| `--magma-red` | `#e60023` | Notification counter. |
 
-## Gris et texte
+## Grays and text
 
-| Variable | Défaut | Usage |
+| Variable | Default | Usage |
 | --- | --- | --- |
-| `--magma-gray-soft` | `#e6e6e6` | Badge « expiré ». |
-| `--magma-gray-ink` | `#999999` | Texte de ce badge. |
-| `--magma-ink` | `#000000` | Texte principal. |
-| `--magma-title` | `#1a1a1a` | Titres. |
-| `--magma-body` | `#404040` | Texte courant. |
-| `--magma-muted` | `#808080` | Texte secondaire. |
-| `--magma-placeholder` | `#bcbcbc` | Texte indicatif des champs. |
+| `--magma-gray-soft` | `#e6e6e6` | "Expired" badge. |
+| `--magma-gray-ink` | `#999999` | Text of that badge. |
+| `--magma-ink` | `#000000` | Primary text. |
+| `--magma-title` | `#1a1a1a` | Titles. |
+| `--magma-body` | `#404040` | Body text. |
+| `--magma-muted` | `#808080` | Secondary text. |
+| `--magma-placeholder` | `#bcbcbc` | Input placeholder text. |
 
-## Surfaces et contrastes
+## Surfaces and contrasts
 
-| Variable | Défaut | Usage |
+| Variable | Default | Usage |
 | --- | --- | --- |
-| `--magma-surface` | `#ffffff` | Fond des cartes, panneaux et champs. |
-| `--magma-page` | `#fafafa` | Fond de page. |
-| `--magma-line` | `#e6e6e6` | Bordures. |
-| `--magma-line-soft` | `#f2f2f2` | Séparateurs discrets, survols. |
-| `--magma-on-accent` | `#ffffff` | Texte posé sur l'accent. |
-| `--magma-on-dark` | `#ffffff` | Texte posé sur fond sombre. |
-| `--magma-overlay` | `rgba(26,26,26,.45)` | Voile derrière une modale, un tiroir ou une feuille. |
-| `--magma-scrollbar` | `#d7d7d7` | Curseur de défilement des listes. |
-| `--magma-focus-ring` | `rgba(255,102,2,.18)` | Couleur de l'anneau de focus. |
-| `--magma-focus` | `0 0 0 3px var(--magma-focus-ring)` | Anneau complet, composé à partir de la ligne précédente. |
-| `--magma-accent-glow` | `rgba(255,102,2,.28)` | Ombre portée d'un bouton plein au survol. |
-| `--magma-accent-halo` | `rgba(255,102,2,.12)` | Ombre légère sous un champ actif. |
+| `--magma-surface` | `#ffffff` | Background of cards, panels and fields. |
+| `--magma-page` | `#fafafa` | Page background. |
+| `--magma-line` | `#e6e6e6` | Borders. |
+| `--magma-line-soft` | `#f2f2f2` | Discreet separators, hovers. |
+| `--magma-on-accent` | `#ffffff` | Text placed on the accent. |
+| `--magma-on-dark` | `#ffffff` | Text placed on a dark background. |
+| `--magma-overlay` | `rgba(26,26,26,.45)` | Backdrop behind a modal, drawer or sheet. |
+| `--magma-scrollbar` | `#d7d7d7` | List scrollbar thumb. |
+| `--magma-focus-ring` | `0 0 0 3px rgba(255,102,2,.18)` | Full focus ring, applied as-is via `box-shadow`. |
+| `--magma-accent-glow` | `rgba(255,102,2,.28)` | Drop shadow of a solid button on hover. |
+| `--magma-accent-halo` | `rgba(255,102,2,.12)` | Light shadow under an active field. |
 
-Si vous changez `--magma-primary`, pensez à ajuster `--magma-focus-ring`, `--magma-accent-glow` et `--magma-accent-halo` : ce sont des `rgba()` indépendants, ils ne se recalculent pas tout seuls.
+If you change `--magma-primary`, remember to also adjust `--magma-focus-ring`,
+`--magma-accent-glow` and `--magma-accent-halo`: these are independent `rgba()`
+values, they don't recompute on their own.
 
-## Typographie et formes
+## Typography and shapes
 
-| Variable | Défaut |
+| Variable | Default |
 | --- | --- |
 | `--magma-font` | `"Montserrat", system-ui, …` |
 | `--magma-font-mono` | `ui-monospace, …` |
 | `--magma-r-sm` · `--magma-r-md` · `--magma-r-lg` · `--magma-r-xl` | `8px` · `12px` · `16px` · `20px` |
 | `--magma-r-pill` | `999px` |
 
-## Élévations et mouvement
+## Elevations and motion
 
-| Variable | Défaut |
+| Variable | Default |
 | --- | --- |
-| `--magma-shadow-sm` · `--magma-shadow-md` · `--magma-shadow-lg` | ombres croissantes |
+| `--magma-shadow-sm` · `--magma-shadow-md` · `--magma-shadow-lg` | increasing shadows |
+| `--magma-t-fast` · `--magma-t` · `--magma-t-slow` | `140ms` · `220ms` · `420ms` |
 | `--magma-fast` · `--magma-base` · `--magma-slow` | `140ms` · `220ms` · `420ms` |
-| `--magma-ease` · `--magma-ease-out` | courbes d'animation |
+| `--magma-ease` · `--magma-ease-out` | animation curves |
 
-## Largeur des panneaux
+## Panel width
 
-| Variable | Défaut | Usage |
+| Variable | Default | Usage |
 | --- | --- | --- |
-| `--magma-menu-width` | `min(324px, calc(100vw - 48px))` | Largeur d'un panneau déroulant. Posée automatiquement par l'option `menuWidth`, ou à la main. |
-| `--magma-menu-min-width` | `240px` · `0` | Largeur minimale du tiroir d'une part, des menus de sélecteur d'autre part. |
-| `--magma-menu-min-width` | `240px` | Largeur minimale du tiroir (`magmaDropdown`). |
+| `--magma-menu-width` | `min(324px, calc(100vw - 48px))` | Width of a dropdown panel. Set automatically by the `menuWidth` option, or manually. |
+| `--magma-menu-min-width` | `0` | Minimum width of selector menus (0 = none); the `magmaDropdown` panel sets its own minimum width to 240 px. |
 
-## Menus flottants
+## Floating menus
 
-Les panneaux de sélecteur sont posés en `position: fixed` (`floating: true` par
-défaut) pour échapper aux `overflow` de leurs ancêtres. Conséquence à connaître :
-dans ce mode, **un pourcentage de largeur se résout contre la fenêtre**, pas
-contre le champ. Le composant fige donc la largeur du déclencheur en pixels.
-Si vous fournissez vous-même une largeur (`menuWidth: '50%'`), elle sera
-interprétée comme un pourcentage de la fenêtre.
+Selector panels are laid out with `position: fixed` (`floating: true` by
+default) to escape their ancestors' `overflow`. A consequence to know: in this
+mode, **a percentage width resolves against the window**, not the field. The
+component therefore freezes the trigger width in pixels. If you supply a width
+yourself (`menuWidth: '50%'`), it will be interpreted as a percentage of the
+window.
 
-## Exemple : thème sombre
+## Example: dark theme
 
 ```css
 [data-theme="dark"] {
@@ -131,7 +132,7 @@ interprétée comme un pourcentage de la fenêtre.
     --magma-overlay: rgba(0, 0, 0, 0.65);
     --magma-scrollbar: #363b44;
 
-    /* L'accent reste vif sur fond sombre. */
+    /* The accent stays vivid on a dark background. */
     --magma-primary-soft: #33241a;
     --magma-primary-tint: #4a3423;
     --magma-primary-ghost: #2a1d14;
@@ -147,18 +148,18 @@ interprétée comme un pourcentage de la fenêtre.
 ```html
 <html data-theme="dark">
     <body class="magma-root">
-        <!-- tous les composants suivent -->
+        <!-- all components follow -->
     </body>
 </html>
 ```
 
-## Bonnes pratiques
+## Best practices
 
-- Posez `magma-root` sur un conteneur : la mise à zéro locale (police, couleur,
-  `box-sizing`) s'applique alors sans toucher au reste de la page.
-- Un thème peut être limité à une sous-arborescence : déclarez les variables sur
-  n'importe quel ancêtre des composants à thémer.
-- Les variables sont toutes préfixées `magma-` : aucun risque de collision avec
-  votre propre système de jetons.
-- `prefers-reduced-motion` neutralise animations et transitions ; inutile de le
-  gérer vous-même.
+- Put `magma-root` on a container: the local reset (font, color, `box-sizing`)
+  then applies without touching the rest of the page.
+- A theme can be limited to a subtree: declare the variables on any ancestor of
+  the components to theme.
+- All variables are prefixed `magma-`: no risk of collision with your own token
+  system.
+- `prefers-reduced-motion` neutralizes animations and transitions; no need to
+  handle it yourself.

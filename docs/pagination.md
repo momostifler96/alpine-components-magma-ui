@@ -1,23 +1,23 @@
 # `magmaPagination` — pagination
 
-Compteur, saut direct et numéros de page calculés.
+Counter, direct jump and computed page numbers.
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-pagination" x-data="magmaPagination({ page: 1, perPage: 25, total: 1500 })">
     <p class="magma-pagination__count">
         <strong x-text="from"></strong>–<strong x-text="to"></strong>
-        sur <strong x-text="total"></strong>
+        of <strong x-text="total"></strong>
     </p>
 
     <div class="magma-pagination__nav">
-        <span>Aller à</span>
+        <span>Go to</span>
         <input type="text" class="magma-pagination__jump" x-model.number="page"
-               @keydown.enter="goTo(page)" aria-label="Aller à la page" />
+               @keydown.enter="goTo(page)" aria-label="Go to page" />
 
         <button type="button" class="magma-pagination__step" @click="previous()"
-                :disabled="page <= 1">Précédent</button>
+                :disabled="page <= 1">Previous</button>
 
         <template x-for="item in pages" :key="item">
             <button type="button" class="magma-pagination__page"
@@ -25,39 +25,39 @@ Compteur, saut direct et numéros de page calculés.
                     @click="goTo(item)" x-text="item"></button>
         </template>
 
-        <button type="button" class="magma-pagination__next" @click="next()">Suivant</button>
+        <button type="button" class="magma-pagination__next" @click="next()">Next</button>
     </div>
 </div>
 ```
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `page` | `1` | Page courante. |
-| `perPage` | `25` | Éléments par page. |
-| `total` | `0` | Nombre total d'éléments. |
-| `window` | `1` | Pages affichées de part et d'autre de la page courante. |
+| `page` | `1` | Current page. |
+| `perPage` | `25` | Items per page. |
+| `total` | `0` | Total number of items. |
+| `window` | `1` | Pages shown on either side of the current page. |
 
-## État calculé
+## Computed state
 
-| Propriété | Description |
+| Property | Description |
 | --- | --- |
-| `lastPage` | Dernière page. |
-| `from` / `to` | Bornes affichées. |
-| `pages` | Numéros à rendre : première, voisines, dernière. |
+| `lastPage` | Last page. |
+| `from` / `to` | Displayed bounds. |
+| `pages` | Numbers to render: first, neighbors, last. |
 
-## Méthodes et événements
+## Methods and events
 
-| Membre | Rôle |
+| Member | Role |
 | --- | --- |
-| `goTo(page)` | Va à une page, bornée à `[1, lastPage]`. |
-| `next()` / `previous()` | Pas suivant et précédent. |
+| `goTo(page)` | Goes to a page, clamped to `[1, lastPage]`. |
+| `next()` / `previous()` | Next and previous step. |
 | `magma-page:change` | `{ page }` |
 
-## Côté serveur
+## Server side
 
-Branchez l'événement sur Livewire :
+Wire the event to Livewire:
 
 ```blade
 <div @magma-page:change.window="$wire.set('page', $event.detail.page)">

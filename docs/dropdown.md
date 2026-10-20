@@ -1,58 +1,58 @@
-# `magmaDropdown` — panneau déroulant
+# `magmaDropdown` — dropdown panel
 
-Base commune des menus de barre supérieure : notifications, sélecteur de compte,
-sélecteur de langue.
+Common base for top-bar menus: notifications, account selector, language
+selector.
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-dropdown" x-data="magmaDropdown()" @click.outside="close()">
     <button type="button" class="magma-btn magma-btn--ghost" x-ref="trigger" @click="toggle()" :aria-expanded="open">
-        Mon compte
+        My account
     </button>
 
     <div class="magma-menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="menu"
          x-transition:enter="magma-fade-enter" x-transition:enter-start="magma-fade-enter-start"
          x-transition:leave="magma-fade-leave" x-transition:leave-end="magma-fade-leave-end">
-        <a href="/profil" class="magma-menu__item">Mon profil</a>
+        <a href="/profile" class="magma-menu__item">My profile</a>
         <div class="magma-menu__sep"></div>
-        <button type="button" class="magma-menu__item" @click="close()">Se déconnecter</button>
+        <button type="button" class="magma-menu__item" @click="close()">Sign out</button>
     </div>
 </div>
 ```
 
 
-> **Deux références sont nécessaires** pour le positionnement flottant :
-> `x-ref="trigger"` sur le bouton et `x-ref="menu"` sur le panneau. Sans elles,
-> le panneau retombe sur le positionnement absolu de la feuille de style.
+> **Two references are required** for floating positioning: `x-ref="trigger"`
+> on the button and `x-ref="menu"` on the panel. Without them, the panel falls
+> back to the stylesheet's absolute positioning.
 
-## Options et méthodes
+## Options and methods
 
-| Membre | Défaut | Rôle |
+| Member | Default | Role |
 | --- | --- | --- |
-| `open` | `false` | État du panneau. |
-| `toggle()` | – | Bascule et émet l'événement. |
-| `show()` / `close()` | – | Ouverture et fermeture explicites. |
-| `menuWidth` | `null` | Largeur du tiroir : `'field'`, `'auto'`, un nombre de pixels ou une valeur CSS. |
-| `floating` | `true` | Pose le panneau dans le repère de la fenêtre (`position: fixed`) : il échappe ainsi aux `overflow` de ses ancêtres — modale, carte, cellule de tableau. |
+| `open` | `false` | Panel state. |
+| `toggle()` | – | Toggles and emits the event. |
+| `show()` / `close()` | – | Explicit open and close. |
+| `menuWidth` | `null` | Panel width: `'field'`, `'auto'`, a number of pixels or a CSS value. |
+| `floating` | `true` | Lays out the panel in the window coordinate space (`position: fixed`): it thus escapes its ancestors' `overflow` — modal, card, table cell. |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-dropdown:change` | `{ open }` |
 
 ## Classes
 
-| Classe | Rôle |
+| Class | Role |
 | --- | --- |
-| `magma-menu` | Panneau aligné à droite du déclencheur. |
-| `magma-menu--left` | Alignement à gauche. |
-| `magma-menu__item` | Ligne cliquable. |
-| `magma-menu__item.is-active` | Ligne courante. |
-| `magma-menu__sep` | Séparateur. |
+| `magma-menu` | Panel aligned to the right of the trigger. |
+| `magma-menu--left` | Left alignment. |
+| `magma-menu__item` | Clickable row. |
+| `magma-menu__item.is-active` | Current row. |
+| `magma-menu__sep` | Separator. |
 
 ## Notes
 
-- Pensez toujours à `@click.outside="close()"` sur le conteneur.
-- Plusieurs panneaux peuvent cohabiter : chacun a sa propre portée Alpine.
+- Always remember `@click.outside="close()"` on the container.
+- Several panels can coexist: each has its own Alpine scope.

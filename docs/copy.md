@@ -1,33 +1,34 @@
-# `magmaCopy` — copie dans le presse-papiers
+# `magmaCopy` — copy to clipboard
 
-Utilise `navigator.clipboard` et retombe sur `execCommand` hors contexte sécurisé.
+Uses `navigator.clipboard` and falls back to `execCommand` outside a secure
+context.
 
-## Aperçu
+## Overview
 
 ```html
 <button type="button" class="magma-btn magma-btn--ghost"
         x-data="magmaCopy({ value: 'sk_live_51N8xQ2…' })"
         @click="copy()">
-    <span x-text="copied ? 'Copié !' : 'Copier la clé'"></span>
+    <span x-text="copied ? 'Copied!' : 'Copy key'"></span>
 </button>
 ```
 
-## Options et méthodes
+## Options and methods
 
-| Membre | Défaut | Rôle |
+| Member | Default | Role |
 | --- | --- | --- |
-| `value` | `''` | Texte à copier. |
-| `copied` | `false` | Vrai pendant le retour visuel. |
-| `feedbackDuration` | `1600` | Durée du retour, en millisecondes. |
-| `copy(value?)` | – | Copie la valeur fournie, ou `value`. |
+| `value` | `''` | Text to copy. |
+| `copied` | `false` | True during the visual feedback. |
+| `feedbackDuration` | `1600` | Feedback duration, in milliseconds. |
+| `copy(value?)` | – | Copies the provided value, or `value`. |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-copy:done` | `{ value }` |
 
 ## Notes
 
-- `copy('autre texte')` permet de copier une valeur différente de celle affichée.
-- Le repli crée un `<textarea>` hors écran, le temps de la copie.
+- `copy('other text')` lets you copy a value different from the one displayed.
+- The fallback creates an off-screen `<textarea>` for the duration of the copy.

@@ -1,33 +1,33 @@
-# Chargement distant et « charger plus »
+# Remote loading and "load more"
 
-Mécanique partagée par `magmaSelect`, `magmaMultiSelect` et `magmaPhonePrefix`.
-Elle est également exportable seule (`createRemoteState`) pour l'intégrer à un
-composant maison.
+Mechanic shared by `magmaSelect`, `magmaMultiSelect` and `magmaPhonePrefix`. It
+can also be exported standalone (`createRemoteState`) to integrate into a custom
+component.
 
-## Principe
+## Principle
 
-Un composant devient distant dès qu'on lui passe une `url`. La mécanique gère :
+A component becomes remote as soon as it is given a `url`. The mechanic handles:
 
-1. la **première page** à l'ouverture (`loadOnOpen`) ;
-2. la **recherche serveur** après temporisation (`debounce`) et à partir d'un
-   nombre minimal de caractères (`minChars`) ;
-3. la **page suivante** au défilement (`onListScroll`), au clic (`loadMore`) ou
-   automatiquement si la liste ne remplit pas le panneau (`checkOverflow`) ;
-4. la **déduplication** des pages : chaque réponse est concaténée à la précédente,
-   sauf en cas de rechargement (`reset`).
+1. the **first page** on open (`loadOnOpen`);
+2. **server-side search** after debouncing (`debounce`) and from a minimum number
+   of characters (`minChars`);
+3. the **next page** on scroll (`onListScroll`), on click (`loadMore`) or
+   automatically if the list doesn't fill the panel (`checkOverflow`);
+4. **page deduplication**: each response is concatenated with the previous one,
+   except on reload (`reset`).
 
-## Requête émise
+## Issued request
 
 ```
 GET /api/countries?page=2&q=sen&active=1
 ```
 
-- `page` : nommé par `pageParam` ;
-- `q` : nommé par `searchParam`, envoyé seulement si la saisie atteint `minChars` ;
-- les clés de `params` sont ajoutées telles quelles (les valeurs vides sont ignorées).
+- `page`: named by `pageParam`;
+- `q`: named by `searchParam`, sent only if the input reaches `minChars`;
+- the `params` keys are added as-is (empty values are ignored).
 
-Les en-têtes par défaut sont `Accept: application/json`. Ajoutez les vôtres par
-`fetchOptions` :
+The default headers are `Accept: application/json`. Add yours via
+`fetchOptions`:
 
 ```js
 x-data="magmaSelect({
@@ -37,23 +37,23 @@ x-data="magmaSelect({
 })"
 ```
 
-## Contrat de réponse
+## Response contract
 
 ```jsonc
-// 1. Tableau simple — « plein » ⇒ il reste des pages, « incomplet » ⇒ fin de liste
+// 1. Plain array — "full" ⇒ pages remain, "incomplete" ⇒ end of list
 [{ "value": "ci", "label": "Côte d'Ivoire" }]
 
-// 2. Pagination explicite
+// 2. Explicit pagination
 { "data": [ … ], "hasMore": true }
 
-// 3. Pagination Laravel
+// 3. Laravel pagination
 { "data": [ … ], "current_page": 1, "last_page": 4 }
 
-// 4. Pagination par total
+// 4. Pagination by total
 { "data": [ … ], "total": 150, "current_page": 1 }
 ```
 
-Autre format :
+Another format:
 
 ```js
 mapResponse: (payload) => ({
@@ -62,7 +62,7 @@ mapResponse: (payload) => ({
 }),
 ```
 
-## Renommage des entrées
+## Renaming entries
 
 ```js
 x-data="magmaSelect({
@@ -72,53 +72,53 @@ x-data="magmaSelect({
 })"
 ```
 
-Ou, pour un format vraiment différent :
+Or, for a genuinely different format:
 
 ```js
 mapOption: (entry) => ({ value: entry.id, label: entry.attributes.name, extra: entry })
 ```
 
-Les propriétés supplémentaires survivent dans l'objet d'option, donc
-`option.extra` reste accessible dans le `template`.
+Extra properties survive in the option object, so `option.extra` remains
+accessible in the `template`.
 
-## Options complètes
+## Full options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `url` | `null` | Endpoint. Absent, le composant reste local. |
-| `perPage` | `25` | Taille de page, utilisée pour déduire `hasMore` d'un tableau. |
-| `pageParam` | `'page'` | Nom du paramètre de page. |
-| `searchParam` | `'search'` | Nom du paramètre de recherche. |
-| `debounce` | `250` | Temporisation de recherche (ms). |
-| `minChars` | `0` | Longueur minimale de la recherche envoyée. |
-| `params` | `{}` ou `() => ({})` | Paramètres additionnels. |
-| `fetchOptions` | `{}` | Fusionné dans `fetch`. |
+| `url` | `null` | Endpoint. When absent, the component stays local. |
+| `perPage` | `25` | Page size, used to infer `hasMore` from an array. |
+| `pageParam` | `'page'` | Name of the page parameter. |
+| `searchParam` | `'search'` | Name of the search parameter. |
+| `debounce` | `250` | Search debounce (ms). |
+| `minChars` | `0` | Minimum length of the sent search. |
+| `params` | `{}` or `() => ({})` | Additional parameters. |
+| `fetchOptions` | `{}` | Merged into `fetch`. |
 | `credentials` | `'same-origin'` | Cookies. |
-| `headers` | `{}` | En-têtes additionnels. |
+| `headers` | `{}` | Additional headers. |
 | `mapResponse` | – | `(payload) => ({ items, hasMore })`. |
 | `mapOption` | – | `(entry) => ({ value, label, … })`. |
-| `valueKey` / `labelKey` | `'value'` / `'label'` | Clés par défaut. |
-| `loadOnOpen` | `true` | Charge à l'ouverture. |
-| `onError` | `console.error` | Rappel d'échec : `(error, scope)`. |
+| `valueKey` / `labelKey` | `'value'` / `'label'` | Default keys. |
+| `loadOnOpen` | `true` | Loads on open. |
+| `onError` | `console.error` | Failure callback: `(error, scope)`. |
 
-## État et méthodes
+## State and methods
 
-| Membre | Rôle |
+| Member | Role |
 | --- | --- |
-| `loading` | Requête en cours. |
-| `error` | Message d'erreur, ou `null`. |
-| `hasMore` | Reste-t-il une page ? |
-| `loaded` | Au moins une page a été chargée. |
-| `page` | Page courante. |
-| `load(reset = false)` | Charge la page courante, ou repart de 1 si `reset`. |
-| `loadMore()` | Incrémente `page` puis charge. |
-| `onListScroll(event)` | À brancher sur `@scroll` de la liste. |
-| `checkOverflow()` | Enchaîne les pages si la liste est trop courte. |
+| `loading` | Request in progress. |
+| `error` | Error message, or `null`. |
+| `hasMore` | Is there another page? |
+| `loaded` | At least one page has been loaded. |
+| `page` | Current page. |
+| `load(reset = false)` | Loads the current page, or restarts from 1 if `reset`. |
+| `loadMore()` | Increments `page` then loads. |
+| `onListScroll(event)` | To wire onto the list's `@scroll`. |
+| `checkOverflow()` | Chains pages if the list is too short. |
 
-## Avec Livewire
+## With Livewire
 
-Le composant n'impose rien côté serveur : exposez une route JSON qui renvoie l'un
-des formats ci-dessus.
+The component imposes nothing on the server side: expose a JSON route that
+returns one of the formats above.
 
 ```php
 Route::get('/api/countries', function (Request $request) {
@@ -135,11 +135,11 @@ Route::get('/api/countries', function (Request $request) {
 });
 ```
 
-Pour rafraîchir la liste depuis un composant Livewire :
+To refresh the list from a Livewire component:
 
 ```php
-$this->dispatch('magma-select-reset');   // écouté côté client si vous le branchez
+$this->dispatch('magma-select-reset');   // listened to client-side if you wire it
 ```
 
-Le plus simple reste de changer la valeur de `url` ou de forcer un rechargement
-avec `$dispatch('magma-select:reload')` sur un écouteur dédié à votre application.
+The simplest is to change the `url` value or force a reload with
+`$dispatch('magma-select:reload')` on a listener dedicated to your application.

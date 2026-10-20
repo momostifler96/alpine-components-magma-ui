@@ -1,8 +1,8 @@
-# `magmaAccordion` — accordéon
+# `magmaAccordion` — accordion
 
-Une seule section ouverte à la fois.
+Only one section open at a time.
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-accordion" x-data="magmaAccordion({ open: 0 })">
@@ -26,26 +26,26 @@ Une seule section ouverte à la fois.
 </div>
 ```
 
-> L'animation d'ouverture est en CSS pur : `magma-disclosure` passe de
-> `grid-template-rows: 0fr` à `1fr`, sans greffon. Le contenu reste dans le DOM
-> (fermé avec `inert`) pour que la hauteur s'anime. `x-collapse` reste
-> compatible si vous préférez le greffon `@alpinejs/collapse`, mais n'est plus
-> nécessaire.
+> The opening animation is pure CSS: `magma-disclosure` goes from
+> `grid-template-rows: 0fr` to `1fr`, without any plugin. The content stays in
+> the DOM (closed with `inert`) so the height can animate. `x-collapse` remains
+> compatible if you prefer the `@alpinejs/collapse` plugin, but it is no longer
+> required.
 
-La classe `magma-disclosure` est générique : elle peut animer n'importe quel
-bloc repliable, avec la classe `is-open` sur le conteneur.
+The `magma-disclosure` class is generic: it can animate any collapsible block,
+with the `is-open` class on the container.
 
-## Options et méthodes
+## Options and methods
 
-| Membre | Défaut | Rôle |
+| Member | Default | Role |
 | --- | --- | --- |
-| `open` | `null` | Clé de la section ouverte. |
-| `isOpen(key)` | – | Test d'ouverture. |
-| `toggle(key)` | – | Ouvre, ou referme si déjà ouverte. |
-| `close()` | – | Referme tout. |
+| `open` | `null` | Key of the open section. |
+| `isOpen(key)` | – | Openness test. |
+| `toggle(key)` | – | Opens, or closes if already open. |
+| `close()` | – | Closes everything. |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-accordion:change` | `{ key, open }` |

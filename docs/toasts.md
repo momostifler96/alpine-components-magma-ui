@@ -1,9 +1,9 @@
-# `magmaToasts` — notifications flottantes
+# `magmaToasts` — floating notifications
 
-Pile de messages éphémères, pilotée par un événement global : n'importe quelle
-partie de l'application peut notifier sans connaître la pile.
+A stack of ephemeral messages, driven by a global event: any part of the
+application can notify without knowing about the stack.
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-toasts" x-data="magmaToasts({ duration: 5000 })"
@@ -11,63 +11,63 @@ partie de l'application peut notifier sans connaître la pile.
      aria-live="polite" aria-atomic="false">
 
     <template x-for="toast in items" :key="toast.id">
-        <!-- `toast.leaving` déclenche l'animation de sortie ; la notification
-             est retirée du tableau une fois l'animation jouée. -->
+        <!-- `toast.leaving` triggers the exit animation; the notification
+             is removed from the array once the animation has played. -->
         <div class="magma-toast" :class="[`magma-toast--${toast.type}`, toast.leaving ? 'is-leaving' : '']">
             <span class="magma-toast__icon">!</span>
             <span style="min-width:0">
                 <span class="magma-toast__title" x-text="toast.title"></span>
                 <span class="magma-toast__text" x-text="toast.message"></span>
             </span>
-            <button type="button" class="magma-modal__close" @click="remove(toast.id)" aria-label="Fermer">×</button>
+            <button type="button" class="magma-modal__close" @click="remove(toast.id)" aria-label="Close">×</button>
         </div>
     </template>
 </div>
 ```
 
-## Déclenchement
+## Triggering
 
-| Depuis | Code |
+| From | Code |
 | --- | --- |
-| Alpine | `$dispatch('magma-notify', { type: 'success', title: 'Enregistré' })` |
-| Livewire | `$this->dispatch('magma-notify', type: 'success', title: 'Enregistré');` |
+| Alpine | `$dispatch('magma-notify', { type: 'success', title: 'Saved' })` |
+| Livewire | `$this->dispatch('magma-notify', type: 'success', title: 'Saved');` |
 | JavaScript | `import { notify } from '@momoledev/alpine-magma-ui-component'; notify({ … })` |
-| Sans bundler | `window.MagmaUI.notify({ … })` |
+| Without bundler | `window.MagmaUI.notify({ … })` |
 
-## Charge utile
+## Payload
 
-| Champ | Défaut | Rôle |
+| Field | Default | Role |
 | --- | --- | --- |
-| `type` | `info` | `success`, `error`, `warning` ou `info`. |
-| `title` | `''` | Titre en gras. |
-| `message` | `''` | Texte secondaire. |
-| `duration` | valeur de l'option | Durée d'affichage en ms ; `0` pour un message permanent. |
+| `type` | `info` | `success`, `error`, `warning` or `info`. |
+| `title` | `''` | Bold title. |
+| `message` | `''` | Secondary text. |
+| `duration` | option value | Display duration in ms; `0` for a persistent message. |
 
-## Options et méthodes
+## Options and methods
 
-| Membre | Défaut | Rôle |
+| Member | Default | Role |
 | --- | --- | --- |
-| `duration` | `5000` | Durée d'affichage par défaut, en millisecondes. |
-| `leaveDuration` | `200` | Délai avant retrait effectif, aligné sur l'animation de sortie. |
-| `push(payload)` | – | Ajoute une notification et renvoie son identifiant. |
-| `remove(id)` | – | Retire une notification. |
-| `clear()` | – | Vide la pile. |
+| `duration` | `5000` | Default display duration, in milliseconds. |
+| `leaveDuration` | `200` | Delay before effective removal, aligned with the exit animation. |
+| `push(payload)` | – | Adds a notification and returns its identifier. |
+| `remove(id)` | – | Removes a notification. |
+| `clear()` | – | Empties the stack. |
 
 ## Animation
 
-L'entrée et la sortie sont des **animations CSS**, pas des transitions Alpine :
+Entry and exit are **CSS animations**, not Alpine transitions:
 
-- `.magma-toast` joue `magma-toast-in` (260 ms) à l'insertion ;
-- `remove()` marque la notification `leaving` — ce qui applique `.is-leaving` et
-  joue `magma-toast-out` (200 ms) — puis la retire du tableau.
+- `.magma-toast` plays `magma-toast-in` (260 ms) on insertion;
+- `remove()` marks the notification `leaving` — applying `.is-leaving` and
+  playing `magma-toast-out` (200 ms) — then removes it from the array.
 
-Ce détour est nécessaire : Alpine n'applique pas les directives `x-transition`
-portées par les enfants d'un `x-for` (les clones sont insérés et retirés sans
-passer par le moteur de transition). L'option `leaveDuration` (200 ms par défaut)
-doit rester alignée sur la durée de l'animation de sortie.
+This detour is necessary: Alpine does not apply `x-transition` directives carried
+by the children of an `x-for` (the clones are inserted and removed without going
+through the transition engine). The `leaveDuration` option (200 ms by default)
+must stay aligned with the exit animation duration.
 
-## Accessibilité
+## Accessibility
 
-- `aria-live="polite"` : les messages sont annoncés sans interrompre la lecture.
-- Le bouton de fermeture porte un `aria-label`.
-- `prefers-reduced-motion` neutralise l'animation d'entrée.
+- `aria-live="polite"`: messages are announced without interrupting reading.
+- The close button carries an `aria-label`.
+- `prefers-reduced-motion` neutralizes the entry animation.

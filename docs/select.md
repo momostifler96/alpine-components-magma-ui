@@ -1,16 +1,16 @@
-# `magmaSelect` — liste déroulante
+# `magmaSelect` — dropdown
 
-Liste déroulante à sélection unique. Fonctionne sur un tableau local **ou** sur un
-endpoint distant, avec recherche serveur, pagination et « charger plus ».
+Single-select dropdown. Works on a local array **or** on a remote endpoint, with
+server-side search, pagination and "load more".
 
-## Aperçu
+## Overview
 
 ```html
 <div
     class="magma-select"
     x-data="magmaSelect({
         value: 'ci',
-        placeholder: 'Sélectionnez un pays',
+        placeholder: 'Select a country',
         searchable: true,
         options: [
             { value: 'ci', label: "Côte d'Ivoire" },
@@ -28,14 +28,14 @@ endpoint distant, avec recherche serveur, pagination et « charger plus ».
              stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
     </button>
 
-    <!-- `:style="menuStyle"` applique l'option menuWidth -->
+    <!-- `:style="menuStyle"` applies the menuWidth option -->
     <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox"
          x-transition:enter="magma-fade-enter" x-transition:enter-start="magma-fade-enter-start"
          x-transition:leave="magma-fade-leave" x-transition:leave-end="magma-fade-leave-end">
 
         <div class="magma-select__search">
             <input type="text" x-model="searchTerm" @input="onSearchInput()" x-ref="search"
-                   placeholder="Rechercher" aria-label="Rechercher" />
+                   placeholder="Search" aria-label="Search" />
         </div>
 
         <ul class="magma-select__list" x-ref="list" @scroll="onListScroll($event)">
@@ -53,7 +53,7 @@ endpoint distant, avec recherche serveur, pagination et « charger plus ».
             </template>
         </ul>
 
-        <!-- États et pagination -->
+        <!-- States and pagination -->
         <div class="magma-select__foot">
             <p class="magma-select__state" x-show="loading" x-cloak>
                 <span class="magma-select__spinner"></span> <span x-text="loadingLabel"></span>
@@ -68,59 +68,59 @@ endpoint distant, avec recherche serveur, pagination et « charger plus ».
 ```
 
 
-> **Deux références sont nécessaires** pour le positionnement flottant :
-> `x-ref="trigger"` sur le bouton et `x-ref="menu"` sur le panneau. Sans elles,
-> le panneau retombe sur le positionnement absolu de la feuille de style.
+> **Two references are required** for floating positioning: `x-ref="trigger"`
+> on the button and `x-ref="menu"` on the panel. Without them, the panel falls
+> back to the stylesheet's absolute positioning.
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `options` | `[]` | Liste locale : `[{ value, label }]`. |
-| `value` | `null` | Valeur sélectionnée. |
-| `searchable` | `false` | Active le champ de recherche. En mode local, filtre sur `label`. |
-| `placeholder` | `''` | Libellé affiché sans sélection. |
-| `emptyLabel` | `'Aucun résultat'` | Message quand la liste est vide. |
-| `loadingLabel` | `'Chargement…'` | Message de chargement. |
-| `errorLabel` | `'Le chargement a échoué'` | Message en cas d'échec. |
-| `loadMoreLabel` | `'Charger plus'` | Libellé du bouton de pagination. |
-| `floating` | `true` | Pose le panneau dans le repère de la fenêtre (`position: fixed`) : il échappe ainsi aux `overflow` de ses ancêtres — modale, carte, cellule de tableau. |
-| `menuWidth` | `null` | Largeur du panneau : `'field'`, `'auto'`, un nombre de pixels ou une valeur CSS. Voir [theming](theming.md#largeur-des-panneaux-déroulants). |
+| `options` | `[]` | Local list: `[{ value, label }]`. |
+| `value` | `null` | Selected value. |
+| `searchable` | `false` | Enables the search field. In local mode, filters on `label`. |
+| `placeholder` | `''` | Label shown when nothing is selected. |
+| `emptyLabel` | `'No results'` | Message when the list is empty. |
+| `loadingLabel` | `'Loading…'` | Loading message. |
+| `errorLabel` | `'Loading failed'` | Failure message. |
+| `loadMoreLabel` | `'Load more'` | Label of the pagination button. |
+| `floating` | `true` | Lays out the panel in the window coordinate space (`position: fixed`): it thus escapes its ancestors' `overflow` — modal, card, table cell. |
+| `menuWidth` | `null` | Panel width: `'field'`, `'auto'`, a number of pixels or a CSS value. See [theming](theming.md#panel-width). |
 
-Toutes les [options distantes](../docs/remote.md) sont également acceptées :
-`url`, `perPage`, `pageParam`, `searchParam`, `debounce`, `minChars`, `params`,
-`fetchOptions`, `mapResponse`, `mapOption`, `valueKey`, `labelKey`.
+All the [remote options](../docs/remote.md) are also accepted: `url`, `perPage`,
+`pageParam`, `searchParam`, `debounce`, `minChars`, `params`, `fetchOptions`,
+`mapResponse`, `mapOption`, `valueKey`, `labelKey`.
 
-## État exposé
+## Exposed state
 
-| Propriété | Type | Description |
+| Property | Type | Description |
 | --- | --- | --- |
-| `open` | `boolean` | Panneau ouvert. |
-| `value` | `any` | Valeur sélectionnée. |
-| `options` | `array` | Options chargées ou fournies. |
-| `visibleOptions` | `array` | Options après filtrage local. |
-| `currentLabel` | `string` | Libellé de la valeur courante, ou le placeholder. |
-| `searchTerm` | `string` | Saisie de recherche. |
-| `activeIndex` | `number` | Index survolé ou sélectionné au clavier. |
-| `loading` / `error` / `hasMore` / `loaded` | `boolean` / `string` | État du chargement distant. |
-| `isEmpty` | `boolean` | Liste vide hors chargement. |
+| `open` | `boolean` | Panel open. |
+| `value` | `any` | Selected value. |
+| `options` | `array` | Loaded or provided options. |
+| `visibleOptions` | `array` | Options after local filtering. |
+| `currentLabel` | `string` | Label of the current value, or the placeholder. |
+| `searchTerm` | `string` | Search input. |
+| `activeIndex` | `number` | Index hovered or selected via keyboard. |
+| `loading` / `error` / `hasMore` / `loaded` | `boolean` / `string` | Remote loading state. |
+| `isEmpty` | `boolean` | Empty list outside loading. |
 
-## Méthodes
+## Methods
 
-| Méthode | Effet |
+| Method | Effect |
 | --- | --- |
-| `toggle()` | Ouvre ou ferme. |
-| `show()` / `close()` | Ouvre / ferme explicitement. |
-| `choose(option)` | Sélectionne une option et ferme. |
-| `onSearchInput()` | Filtre en direct ; en distant, temporise puis recharge. |
-| `onKeydown(event)` | Navigation clavier (`↓ ↑ Début Fin Entrée Échap`). |
-| `loadMore()` | Charge la page suivante. |
-| `load(reset)` | Recharge, en repartant de la page 1 si `reset` est vrai. |
-| `scrollActiveIntoView()` | Garde l'option active visible. |
+| `toggle()` | Opens or closes. |
+| `show()` / `close()` | Explicitly open / close. |
+| `choose(option)` | Selects an option and closes. |
+| `onSearchInput()` | Filters live; in remote mode, debounces then reloads. |
+| `onKeydown(event)` | Keyboard navigation (`↓ ↑ Home End Enter Escape`). |
+| `loadMore()` | Loads the next page. |
+| `load(reset)` | Reloads, restarting from page 1 if `reset` is true. |
+| `scrollActiveIntoView()` | Keeps the active option visible. |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-select:change` | `{ value, option }` |
 | `magma-select:loaded` | `{ page, count, hasMore }` |
@@ -130,7 +130,7 @@ Toutes les [options distantes](../docs/remote.md) sont également acceptées :
 @magma-select\:change.window="console.log($event.detail.value)"
 ```
 
-## Chargement distant
+## Remote loading
 
 ```js
 x-data="magmaSelect({
@@ -144,21 +144,21 @@ x-data="magmaSelect({
 })"
 ```
 
-Sans autre configuration, les pages suivantes se chargent au défilement et via le
-bouton « charger plus ». `checkOverflow()` enchaîne automatiquement les pages si
-la première ne remplit pas le panneau.
+Without further configuration, the next pages load on scroll and via the "load
+more" button. `checkOverflow()` automatically chains pages if the first one
+doesn't fill the panel.
 
-## Accessibilité
+## Accessibility
 
-- `aria-haspopup="listbox"` sur le déclencheur, `aria-expanded` mis à jour.
-- `role="listbox"` sur le panneau, `role="option"` + `aria-selected` sur chaque ligne.
-- Le champ de recherche reçoit le focus à l'ouverture.
-- La liste défile indépendamment de la recherche et du pied (voir
-  `magma-select__menu` en colonne, `.magma-select__list` seule zone défilante).
+- `aria-haspopup="listbox"` on the trigger, `aria-expanded` kept up to date.
+- `role="listbox"` on the panel, `role="option"` + `aria-selected` on each row.
+- The search field receives focus on open.
+- The list scrolls independently of the search and footer (see the
+  `magma-select__menu` column, `.magma-select__list` the only scrolling area).
 
 ## Notes
 
-- `currentLabel` s'appuie sur `options`. En mode distant avec une valeur
-  présélectionnée, `init()` charge la première page pour résoudre le libellé.
-- Le panneau se ferme au clic extérieur : ajoutez `@click.outside="close()"`.
-- Pour une sélection multiple, utilisez [`magmaMultiSelect`](multi-select.md).
+- `currentLabel` relies on `options`. In remote mode with a preselected value,
+  `init()` loads the first page to resolve the label.
+- The panel closes on outside click: add `@click.outside="close()"`.
+- For multiple selection, use [`magmaMultiSelect`](multi-select.md).

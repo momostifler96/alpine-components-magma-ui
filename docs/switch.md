@@ -1,32 +1,32 @@
-# `magmaSwitch` — interrupteur
+# `magmaSwitch` — switch
 
-Bascule binaire : mode test et production, activation d'une option.
+Binary toggle: test and production mode, enabling an option.
 
-## Aperçu
+## Overview
 
 ```html
 <button type="button" class="magma-switch" x-data="magmaSwitch({ on: true })"
         :class="on ? 'is-on' : ''" @click="toggle()"
-        role="switch" :aria-checked="on" aria-label="Mode test">
+        role="switch" :aria-checked="on" aria-label="Test mode">
     <span class="magma-switch__dot"></span>
 </button>
 ```
 
-## Options et méthodes
+## Options and methods
 
-| Membre | Défaut | Rôle |
+| Member | Default | Role |
 | --- | --- | --- |
-| `on` | `false` | État. |
-| `toggle()` | – | Bascule. |
-| `set(value)` | – | Force l'état. |
+| `on` | `false` | State. |
+| `toggle()` | – | Toggles. |
+| `set(value)` | – | Forces the state. |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-switch:change` | `{ value }` |
 
-## Accessibilité
+## Accessibility
 
-- `role="switch"` et `aria-checked` sur l'élément interactif : le lecteur
-  d'écran annonce « activé » ou « désactivé ».
+- `role="switch"` and `aria-checked` on the interactive element: the screen
+  reader announces "on" or "off".

@@ -1,12 +1,12 @@
-# `magmaRefresh` — bouton d'actualisation
+# `magmaRefresh` — refresh button
 
-Passe en état « en cours », exécute une action, puis notifie le résultat.
+Switches to an "in progress" state, runs an action, then notifies the result.
 
-## Aperçu
+## Overview
 
 ```html
 <button type="button" class="magma-btn magma-btn--ghost"
-        x-data="magmaRefresh({ title: 'Mis à jour', message: 'Les taux ont été actualisés.' })"
+        x-data="magmaRefresh({ title: 'Updated', message: 'Rates have been refreshed.' })"
         @click="run()"
         :disabled="spinning">
     <svg :class="spinning ? 'magma-spin' : ''" width="18" height="18" viewBox="0 0 24 24"
@@ -14,24 +14,24 @@ Passe en état « en cours », exécute une action, puis notifie le résultat.
         <path d="M20.5 11.5A8.5 8.5 0 0 0 6.3 6.3L3.5 8.8"/>
         <path d="M3.5 4.5v4.3h4.3"/>
     </svg>
-    Actualiser
+    Refresh
 </button>
 ```
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `action` | – | Fonction asynchrone exécutée au clic. Sans elle, une temporisation simulée. |
-| `duration` | `900` | Durée simulée, en millisecondes. |
-| `title` | – | Titre de la notification de fin. Sans titre, aucune notification. |
-| `message` | `''` | Texte de la notification. |
-| `type` | `'success'` | Type de la notification. |
+| `action` | – | Async function run on click. Without it, a simulated timeout. |
+| `duration` | `900` | Simulated duration, in milliseconds. |
+| `title` | – | Title of the completion notification. Without a title, no notification. |
+| `message` | `''` | Notification text. |
+| `type` | `'success'` | Notification type. |
 
-## État, méthodes et événements
+## State, methods and events
 
-| Membre | Rôle |
+| Member | Role |
 | --- | --- |
-| `spinning` | Vrai pendant l'exécution. |
-| `run()` | Lance l'action. Les appels concurrents sont ignorés. |
-| `magma-refresh:start` / `magma-refresh:done` | Bornes de l'exécution. |
+| `spinning` | True during execution. |
+| `run()` | Starts the action. Concurrent calls are ignored. |
+| `magma-refresh:start` / `magma-refresh:done` | Execution boundaries. |

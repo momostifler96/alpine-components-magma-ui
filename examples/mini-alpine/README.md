@@ -1,10 +1,10 @@
-# Mini projet Alpine — Magma UI
+# Alpine mini-project — Magma UI
 
-Banc d'essai autonome des 15 composants du paquet, avec Vite et une API paginée
-locale. Le paquet est installé depuis le dépôt (`file:../..`) et importé comme
-n'importe quelle dépendance npm.
+Self-contained test bed for the package's 16 components, with Vite and a local
+paginated API. The package is installed from the repository (`file:../..`) and
+imported like any npm dependency.
 
-## Lancer
+## Run
 
 ```bash
 cd examples/mini-alpine
@@ -12,36 +12,36 @@ npm install
 npm run dev
 ```
 
-Ouvrir <http://127.0.0.1:5173/>.
+Open <http://127.0.0.1:5173/>.
 
-L'API de démonstration est servie par Vite : `/api/countries?page=1&per_page=8&q=…`.
-Aucun service externe n'est nécessaire.
+The demo API is served by Vite: `/api/countries?page=1&per_page=8&q=…`.
+No external service is required.
 
-## Ce qui est vérifié
+## What is verified
 
-| Composant | Scénario |
+| Component | Scenario |
 | --- | --- |
-| `magmaSelect` local | ouverture, recherche « séné », sélection au clavier (`Entrée`), fermeture |
-| `magmaSelect` distant | chargement de la page 1, « charger plus », recherche serveur, sélection |
-| `magmaMultiSelect` | ajout cumulatif, « tout sélectionner » limité au filtre, recherche réinitialisée, navigation clavier, `Échap` |
-| `magmaPhonePrefix` | recherche par pays, choix de l'indicatif, effacement du numéro |
-| `magmaModal` | ouverture par `magma-open`, verrouillage du défilement, `Échap`, confirmation + notification |
-| `magmaDrawer` | ouverture depuis le bord droit, voile, focus, `Échap`, transition latérale |
-| `magmaSheet` | ouverture depuis le bas, glisser-fermer, retour élastique, transitions |
-| `magmaDropdown` | ouverture, positionnement `fixed`, fermeture au clic extérieur |
-| `magmaAccordion` | une seule section ouverte, `aria-expanded`, animation de disclosure sans greffon |
-| `magmaTabs` | changement d'onglet, `aria-selected` |
-| `magmaPagination` | page suivante, saut direct à la page 10, compteur |
-| `magmaToasts` | notification via `MagmaUI.notify()` et via événement |
-| `magmaRefresh` | état `spinning`, bouton désactivé, notification de fin |
-| `magmaSearch` | temporisation, soumission `Entrée`, effacement |
-| `magmaCopy` | copie, retour « Copié ! », événement `magma-copy:done` |
-| `magmaSwitch` | bascule, `aria-checked`, état visuel `is-on` |
+| `magmaSelect` local | open, search "séné", keyboard selection (`Enter`), close |
+| `magmaSelect` remote | loading page 1, "load more", server search, selection |
+| `magmaMultiSelect` | cumulative add, "select all" scoped to the filter, reset search, keyboard navigation, `Escape` |
+| `magmaPhonePrefix` | search by country, dial-code selection, clearing the number |
+| `magmaModal` | open via `magma-open`, scroll locking, `Escape`, confirmation + notification |
+| `magmaDrawer` | open from the right edge, backdrop, focus, `Escape`, lateral transition |
+| `magmaSheet` | open from the bottom, swipe-to-close, elastic return, transitions |
+| `magmaDropdown` | open, `fixed` positioning, close on outside click |
+| `magmaAccordion` | single open section, `aria-expanded`, disclosure animation without plugin |
+| `magmaTabs` | tab change, `aria-selected` |
+| `magmaPagination` | next page, direct jump to page 10, counter |
+| `magmaToasts` | notification via `MagmaUI.notify()` and via event |
+| `magmaRefresh` | `spinning` state, disabled button, completion notification |
+| `magmaSearch` | debounce, `Enter` submission, clear |
+| `magmaCopy` | copy, "Copied!" feedback, `magma-copy:done` event |
+| `magmaSwitch` | toggle, `aria-checked`, `is-on` visual state |
 
-Le journal en bas de page affiche tous les événements `magma-*` émis. La console
-doit rester vide (erreurs et avertissements compris).
+The log at the bottom of the page prints all the emitted `magma-*` events. The
+console must stay empty (errors and warnings included).
 
-## Installation utilisée
+## Installation used
 
 ```js
 import Alpine from 'alpinejs';
@@ -53,18 +53,18 @@ window.Alpine = Alpine;
 Alpine.start();
 ```
 
-`install()` s'enregistre sur `alpine:init` lorsque Alpine n'a pas encore démarré.
-Le paquet expose les 13 fabriques sur `window` et `window.MagmaUI`.
+`install()` registers on `alpine:init` when Alpine hasn't started yet. The
+package exposes the 16 factories on `window` and `window.MagmaUI`.
 
-## Notes de test
+## Test notes
 
-- Le paquet a aussi été vérifié via `npm pack` puis installé dans un projet
-  vierge : les bundles `dist/` et les 15 composants sont présents.
-- Défauts corrigés pendant la mise en place de ce banc d'essai :
-  - `magmaMultiSelect` manquait dans le registre des composants ;
-  - le multi-select n'avait ni navigation clavier ni réinitialisation de la
-    recherche, et « tout sélectionner » ignorait le filtre ;
-  - `.magma-select__menu` n'était pas une colonne flex, ce qui faisait défiler
-    toute la recherche et enchaînait toutes les pages distantes ;
-  - l'état `is-on` de `magmaSwitch` n'avait aucun style ;
-  - les disclosures n'avaient pas d'animation sans `x-collapse`.
+- The package was also verified via `npm pack` then installed in a blank
+  project: the `dist/` bundles and the 16 components are present.
+- Defects fixed while setting up this test bed:
+  - `magmaMultiSelect` was missing from the component registry;
+  - the multi-select had neither keyboard navigation nor search reset, and
+    "select all" ignored the filter;
+  - `.magma-select__menu` was not a flex column, which scrolled the whole search
+    and chained all the remote pages;
+  - the `is-on` state of `magmaSwitch` had no style;
+  - disclosures had no animation without `x-collapse`.

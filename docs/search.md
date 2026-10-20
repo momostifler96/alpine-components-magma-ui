@@ -1,43 +1,43 @@
-# `magmaSearch` — champ de recherche
+# `magmaSearch` — search field
 
-Temporisation, effacement et événements de soumission.
+Debouncing, clearing and submission events.
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-search" x-data="magmaSearch({ live: true, debounce: 300 })">
     <input type="search" x-model="term" @input="onInput()" @keydown.enter="submit()"
-           placeholder="Rechercher" aria-label="Rechercher" />
-    <button type="button" class="magma-search__icon" @click="submit()" aria-label="Rechercher">🔍</button>
+           placeholder="Search" aria-label="Search" />
+    <button type="button" class="magma-search__icon" @click="submit()" aria-label="Search">🔍</button>
 </div>
 ```
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `term` | `''` | Valeur initiale. |
-| `live` | `false` | Émet `magma-search` après temporisation, à chaque frappe. |
-| `debounce` | `300` | Temporisation, en millisecondes. |
-| `busyDuration` | `500` | Durée de l'état `busy` après soumission. |
+| `term` | `''` | Initial value. |
+| `live` | `false` | Emits `magma-search` after debounce, on each keystroke. |
+| `debounce` | `300` | Debounce, in milliseconds. |
+| `busyDuration` | `500` | Duration of the `busy` state after submission. |
 
-## État et méthodes
+## State and methods
 
-| Membre | Rôle |
+| Member | Role |
 | --- | --- |
-| `term` | Saisie courante. |
-| `busy` | Vrai juste après une soumission. |
-| `clear()` | Vide le champ, et émet si `live`. |
-| `submit()` | Émet `magma-search:submit`. |
-| `onInput()` | Programme l'émission différée si `live`. |
+| `term` | Current input. |
+| `busy` | True just after a submission. |
+| `clear()` | Empties the field, and emits if `live`. |
+| `submit()` | Emits `magma-search:submit`. |
+| `onInput()` | Schedules the deferred emission if `live`. |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
-| `magma-search` | `{ term }` — différé, à chaque frappe. |
-| `magma-search:submit` | `{ term }` — immédiat, sur Entrée ou clic. |
+| `magma-search` | `{ term }` — deferred, on each keystroke. |
+| `magma-search:submit` | `{ term }` — immediate, on Enter or click. |
 
 ## Notes
 
-- Avec Livewire, branchez `@magma-search.debounce.300ms="$wire.set('search', $event.detail.term)"`.
+- With Livewire, wire `@magma-search.debounce.300ms="$wire.set('search', $event.detail.term)"`.

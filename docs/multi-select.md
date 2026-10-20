@@ -1,13 +1,13 @@
-# `magmaMultiSelect` — sélection multiple
+# `magmaMultiSelect` — multi-select
 
-Même mécanique que [`magmaSelect`](select.md), avec une sélection cumulative.
+Same mechanic as [`magmaSelect`](select.md), with a cumulative selection.
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-select" x-data="magmaMultiSelect({
         values: ['ci'],
-        placeholder: 'Sélectionnez un ou plusieurs pays',
+        placeholder: 'Select one or more countries',
         options: [
             { value: 'ci', label: "Côte d'Ivoire" },
             { value: 'sn', label: 'Sénégal' },
@@ -25,7 +25,7 @@ Même mécanique que [`magmaSelect`](select.md), avec une sélection cumulative.
          role="listbox" aria-multiselectable="true">
         <div class="magma-select__search">
             <input type="text" x-model="searchTerm" @input="onSearchInput()" x-ref="search"
-                   placeholder="Rechercher" aria-label="Rechercher" />
+                   placeholder="Search" aria-label="Search" />
         </div>
 
         <ul class="magma-select__list" x-ref="list" @scroll="onListScroll($event)">
@@ -58,62 +58,62 @@ Même mécanique que [`magmaSelect`](select.md), avec une sélection cumulative.
 ```
 
 
-> **Deux références sont nécessaires** pour le positionnement flottant :
-> `x-ref="trigger"` sur le bouton et `x-ref="menu"` sur le panneau. Sans elles,
-> le panneau retombe sur le positionnement absolu de la feuille de style.
+> **Two references are required** for floating positioning: `x-ref="trigger"`
+> on the button and `x-ref="menu"` on the panel. Without them, the panel falls
+> back to the stylesheet's absolute positioning.
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `values` | `[]` | Valeurs sélectionnées. |
-| `searchable` | `true` | Recherche locale ou serveur. |
-| `placeholder` | `''` | Libellé sans sélection. |
-| `allLabel` | `'Tout sélectionner'` | Ligne de sélection globale. |
-| `selectedLabel` | `'sélectionnés'` | Suffixe du compteur : « 3 sélectionnés ». |
-| `emptyLabel` / `loadingLabel` / `errorLabel` / `loadMoreLabel` | – | Messages d'état. |
-| `menuWidth` | `null` | Largeur du panneau : `'field'`, `'auto'`, un nombre de pixels ou une valeur CSS. |
-| `floating` | `true` | Pose le panneau dans le repère de la fenêtre (`position: fixed`) : il échappe ainsi aux `overflow` de ses ancêtres — modale, carte, cellule de tableau. |
+| `values` | `[]` | Selected values. |
+| `searchable` | `true` | Local or server search. |
+| `placeholder` | `''` | Label when nothing is selected. |
+| `allLabel` | `'Select all'` | Global selection row. |
+| `selectedLabel` | `'selected'` | Counter suffix: "3 selected". |
+| `emptyLabel` / `loadingLabel` / `errorLabel` / `loadMoreLabel` | – | Status messages. |
+| `menuWidth` | `null` | Panel width: `'field'`, `'auto'`, a number of pixels or a CSS value. |
+| `floating` | `true` | Lays out the panel in the window coordinate space (`position: fixed`): it thus escapes its ancestors' `overflow` — modal, card, table cell. |
 
-Toutes les [options distantes](remote.md) sont acceptées.
+All the [remote options](remote.md) are accepted.
 
-## État et méthodes
+## State and methods
 
-| Membre | Rôle |
+| Member | Role |
 | --- | --- |
-| `values` | Tableau des valeurs retenues. |
-| `label` | Résumé : placeholder, libellé unique, ou compteur. |
-| `allSelected` | Toutes les options **visibles** (filtrées) sont retenues. |
-| `isSelected(value)` | Test d'appartenance. |
-| `choose(option)` | Ajoute ou retire une valeur. |
-| `toggleAll()` | Sélectionne ou désélectionne toutes les options visibles, sans toucher aux valeurs hors filtre. |
-| `onKeydown(event)` | Flèches, `Début` / `Fin`, `Entrée`, `Échap` et `Tab`. |
-| `clear()` | Vide la sélection. |
-| `visibleOptions`, `isEmpty`, `load*` | Voir [remote](remote.md). |
+| `values` | Array of retained values. |
+| `label` | Summary: placeholder, single label, or counter. |
+| `allSelected` | All **visible** (filtered) options are retained. |
+| `isSelected(value)` | Membership test. |
+| `choose(option)` | Adds or removes a value. |
+| `toggleAll()` | Selects or deselects all visible options, without touching values outside the filter. |
+| `onKeydown(event)` | Arrows, `Home` / `End`, `Enter`, `Escape` and `Tab`. |
+| `clear()` | Empties the selection. |
+| `visibleOptions`, `isEmpty`, `load*` | See [remote](remote.md). |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-multiselect:change` | `{ values }` |
 
-## Navigation clavier
+## Keyboard navigation
 
-- `↓` / `↑` déplacent l'option active, `Début` / `Fin` vont aux extrémités.
-- `Entrée` sélectionne ou désélectionne l'option active sans fermer le panneau.
-- `Échap` et `Tab` ferment le panneau.
-- La recherche garde le focus : la sélection se fait donc au clavier sans
-  quitter le champ.
+- `↓` / `↑` move the active option, `Home` / `End` go to the ends.
+- `Enter` selects or deselects the active option without closing the panel.
+- `Escape` and `Tab` close the panel.
+- The search keeps focus: selection is therefore done via keyboard without
+  leaving the field.
 
 ## Notes
 
-- La sélection n'est jamais écrasée par un rechargement : `values` est
-  indépendant de `options`.
-- La recherche est vidée à la fermeture ; en mode distant, la première page est
-  rechargée à l'ouverture pour ne pas rouvrir sur un ancien filtre.
-- Avec une recherche serveur, les valeurs déjà retenues restent sélectionnées
-  même si elles sortent du filtre.
-- `toggleAll()` n'agit que sur `visibleOptions` : une recherche « séné » ne
-  sélectionne pas les pays masqués par le filtre.
-- L'événement `magma-multiselect:change` transporte un vrai tableau dans
+- The selection is never overwritten by a reload: `values` is independent of
+  `options`.
+- The search is cleared on close; in remote mode, the first page is reloaded on
+  open so as not to reopen on an old filter.
+- With a server search, already-retained values stay selected even if they fall
+  out of the filter.
+- `toggleAll()` only acts on `visibleOptions`: a "séné" search does not select
+  countries hidden by the filter.
+- The `magma-multiselect:change` event carries a real array in
   `event.detail.values`.

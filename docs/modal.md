@@ -1,16 +1,16 @@
-# `magmaModal` — fenêtre modale
+# `magmaModal` — modal dialog
 
-Verrouille le défilement du document, se ferme avec `Échap` ou au clic sur le
-fond. Peut être ouverte à distance par événement.
+Locks document scrolling, closes with `Escape` or on backdrop click. Can be
+opened remotely via event.
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-modal" x-data="magmaModal({ name: 'edition' })"
      x-show="open" x-cloak
      @magma-open.window="if ($event.detail.name === name) show()"
      @keydown.escape.window="hide()"
-     role="dialog" aria-modal="true" aria-label="Modifier la fiche">
+     role="dialog" aria-modal="true" aria-label="Edit record">
 
     <div class="magma-modal__backdrop" x-show="open"
          x-transition:enter="magma-fade-enter" x-transition:enter-start="magma-fade-enter-start"
@@ -23,101 +23,101 @@ fond. Peut être ouverte à distance par événement.
 
         <header class="magma-modal__head">
             <div>
-                <h2 class="magma-modal__title">Modifier la fiche</h2>
-                <p class="magma-modal__subtitle">Les champs marqués sont obligatoires.</p>
+                <h2 class="magma-modal__title">Edit record</h2>
+                <p class="magma-modal__subtitle">Fields marked with an asterisk are required.</p>
             </div>
-            <button type="button" class="magma-modal__close" @click="hide()" aria-label="Fermer">×</button>
+            <button type="button" class="magma-modal__close" @click="hide()" aria-label="Close">×</button>
         </header>
 
         <div class="magma-modal__body">
-            <!-- contenu -->
+            <!-- content -->
         </div>
 
         <footer class="magma-modal__foot">
-            <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Annuler</button>
-            <button type="button" class="magma-btn magma-btn--primary" @click="hide()">Enregistrer</button>
+            <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Cancel</button>
+            <button type="button" class="magma-btn magma-btn--primary" @click="hide()">Save</button>
         </footer>
     </div>
 </div>
 ```
 
-## Ouverture
+## Opening
 
-| Depuis | Code |
+| From | Code |
 | --- | --- |
-| Un bouton de la page | `<button x-data @click="$dispatch('magma-open', { name: 'edition' })">` |
-| Une autre portée Alpine | `$dispatch('magma-open', { name: 'edition' })` |
+| A page button | `<button x-data @click="$dispatch('magma-open', { name: 'edition' })">` |
+| Another Alpine scope | `$dispatch('magma-open', { name: 'edition' })` |
 | Livewire | `$this->dispatch('magma-open', name: 'edition');` |
 
-> **Le `x-data` du bouton d'ouverture n'est pas décoratif.** Alpine n'initialise au
-> chargement de la page que les directives situées dans une portée `x-data` : un
-> `@click` posé sur un élément statique isolé n'est jamais branché et le clic reste
-> sans effet, sans message d'erreur. Comme le déclencheur est forcément en dehors de
-> la portée de la modale (elle est fermée au chargement), il lui faut la sienne.
+> **The opening button's `x-data` is not decorative.** On page load Alpine only
+> initializes directives located inside an `x-data` scope: an `@click` placed on
+> an isolated static element is never wired up and the click does nothing, with
+> no error message. Since the trigger is necessarily outside the modal's scope
+> (it is closed at load), it needs its own.
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `open` | `false` | État initial. |
-| `name` | `null` | Identifiant, comparé à `$event.detail.name`. |
-| `lockScroll` | `true` | Fige le défilement du document pendant l'ouverture. |
+| `open` | `false` | Initial state. |
+| `name` | `null` | Identifier, compared against `$event.detail.name`. |
+| `lockScroll` | `true` | Freezes document scrolling while open. |
 
-## Méthodes
+## Methods
 
-| Méthode | Effet |
+| Method | Effect |
 | --- | --- |
-| `show()` | Ouvre et verrouille le défilement. |
-| `hide()` | Ferme et rend le défilement. |
-| `toggle()` | Bascule. |
+| `show()` | Opens and locks scrolling. |
+| `hide()` | Closes and restores scrolling. |
+| `toggle()` | Toggles. |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-modal:opened` | `{ name }` |
 | `magma-modal:closed` | `{ name }` |
 
-## Classes de taille
+## Size classes
 
-| Classe | Largeur maximale |
+| Class | Maximum width |
 | --- | --- |
-| *(défaut)* | 620 px |
+| *(default)* | 620 px |
 | `magma-modal__panel--sm` | 460 px |
 | `magma-modal__panel--lg` | 860 px |
 
-## Structure du panneau
+## Panel structure
 
-Le panneau est une colonne à **trois zones** :
+The panel is a **three-zone** column:
 
-| Zone | Défilement |
+| Zone | Scrolling |
 | --- | --- |
-| `.magma-modal__head` | fixe — le titre reste visible pendant la lecture |
-| `.magma-modal__body` | **seule zone défilante** |
-| `.magma-modal__foot` | fixe — les actions restent accessibles |
+| `.magma-modal__head` | fixed — the title stays visible while reading |
+| `.magma-modal__body` | **only scrolling zone** |
+| `.magma-modal__foot` | fixed — actions stay accessible |
 
-Le panneau lui-même porte `overflow: hidden` : c'est le corps qui défile. Un
-panneau qui défile en entier emporterait son titre avec le contenu, et le titre
-passerait sous le premier champ.
+The panel itself carries `overflow: hidden`: it is the body that scrolls. A
+fully scrolling panel would drag its title along with the content, and the title
+would slip under the first field.
 
-### Menus déroulants dans une modale
+### Dropdowns inside a modal
 
-Un menu en `position: absolute` serait rogné par le corps défilant. Les
-sélecteurs règlent le problème par défaut : ils posent leur panneau en
-`position: fixed` et le repositionnent au défilement (`floating`, actif par
-défaut). Aucune configuration n'est nécessaire.
+A menu in `position: absolute` would be clipped by the scrolling body. The
+selectors solve the problem by default: they lay out their panel in
+`position: fixed` and reposition it on scroll (`floating`, enabled by default).
+No configuration is required.
 
-## Accessibilité
+## Accessibility
 
-- `role="dialog"` et `aria-modal="true"` sur le conteneur.
-- `aria-label` ou `aria-labelledby` doit décrire la fenêtre.
-- `Échap` ferme ; le clic sur le fond ferme.
-- Le défilement du document est restauré à la fermeture, même si la fenêtre est
-  fermée par un autre chemin.
+- `role="dialog"` and `aria-modal="true"` on the container.
+- `aria-label` or `aria-labelledby` must describe the dialog.
+- `Escape` closes; clicking the backdrop closes.
+- Document scrolling is restored on close, even if the dialog is closed through
+  another path.
 
 ## Notes
 
-- Le conteneur est monté en permanence dans le DOM (`x-show`), ce qui préserve
-  l'état des champs entre deux ouvertures. Pour repartir d'un formulaire vierge,
-  réinitialisez les champs dans un `@magma-modal:closed.window`.
-- Plusieurs modales peuvent cohabiter : `name` les distingue.
+- The container is always mounted in the DOM (`x-show`), preserving field state
+  between two opens. To start from a blank form, reset the fields in a
+  `@magma-modal:closed.window`.
+- Multiple modals can coexist: `name` distinguishes them.

@@ -1,15 +1,15 @@
-# `magmaSheet` — feuille (bottom sheet)
+# `magmaSheet` — bottom sheet
 
-Panneau ancré en bas, particulièrement adapté au mobile. Il monte à
-l'ouverture, se ferme au clic sur le voile ou avec `Échap`, et sa poignée permet
-de le tirer vers le bas.
+Panel anchored at the bottom, especially suited to mobile. It rises on open,
+closes on backdrop click or with `Escape`, and its grabber lets the user drag it
+down.
 
-## Aperçu
+## Overview
 
 ```html
 <button type="button" class="magma-btn magma-btn--primary" x-data
         @click="$dispatch('magma-sheet:open', { name: 'actions' })">
-    Ouvrir les actions
+    Open actions
 </button>
 
 <div class="magma-sheet"
@@ -39,18 +39,18 @@ de le tirer vers le bas.
 
         <header class="magma-sheet__head">
             <div>
-                <h2 class="magma-sheet__title">Actions rapides</h2>
-                <p class="magma-sheet__subtitle">Faites glisser la poignée vers le bas pour fermer.</p>
+                <h2 class="magma-sheet__title">Quick actions</h2>
+                <p class="magma-sheet__subtitle">Drag the grabber down to close.</p>
             </div>
         </header>
 
         <div class="magma-sheet__body">
-            <!-- contenu -->
+            <!-- content -->
         </div>
 
         <footer class="magma-sheet__foot">
-            <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Annuler</button>
-            <button type="button" class="magma-btn magma-btn--primary" @click="hide()">Confirmer</button>
+            <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Cancel</button>
+            <button type="button" class="magma-btn magma-btn--primary" @click="hide()">Confirm</button>
         </footer>
     </div>
 </div>
@@ -58,69 +58,69 @@ de le tirer vers le bas.
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `open` | `false` | État initial. |
-| `name` | `null` | Identifiant comparé aux commandes `magma-sheet:open` / `magma-sheet:close`. |
-| `lockScroll` | `true` | Fige le défilement du document pendant l'ouverture. |
-| `closeOnBackdrop` | `true` | Ferme au clic sur le voile. |
-| `swipeToClose` | `true` | Autorise le glisser-fermer depuis la poignée. |
-| `maxHeight` | `null` | Hauteur maximale. Nombre = pixels, chaîne = valeur CSS. Défaut CSS : `85vh`. |
+| `open` | `false` | Initial state. |
+| `name` | `null` | Identifier compared against the `magma-sheet:open` / `magma-sheet:close` commands. |
+| `lockScroll` | `true` | Freezes document scrolling while open. |
+| `closeOnBackdrop` | `true` | Closes on backdrop click. |
+| `swipeToClose` | `true` | Allows swipe-to-close from the grabber. |
+| `maxHeight` | `null` | Maximum height. Number = pixels, string = CSS value. CSS default: `85vh`. |
 
-## Méthodes
+## Methods
 
-| Méthode | Effet |
+| Method | Effect |
 | --- | --- |
-| `show()` | Ouvre, verrouille le défilement et place le focus sur le panneau. |
-| `hide()` | Ferme, rend le défilement et restaure le focus précédent. |
-| `toggle()` | Bascule. |
-| `onBackdrop()` | Ferme si `closeOnBackdrop` est actif. |
-| `startDrag(event)` | Démarre le glisser (appelé par la poignée). |
-| `onDragMove(event)` / `onDragEnd()` | Suivi et fin du glisser. |
+| `show()` | Opens, locks scrolling and places focus on the panel. |
+| `hide()` | Closes, restores scrolling and restores previous focus. |
+| `toggle()` | Toggles. |
+| `onBackdrop()` | Closes if `closeOnBackdrop` is enabled. |
+| `startDrag(event)` | Starts the drag (called by the grabber). |
+| `onDragMove(event)` / `onDragEnd()` | Drag tracking and end. |
 
-## Commandes et événements
+## Commands and events
 
-| Événement | Sens | Détail |
+| Event | Direction | Detail |
 | --- | --- | --- |
-| `magma-sheet:open` | écouté | `{ name }` |
-| `magma-sheet:close` | écouté | `{ name }` |
-| `magma-sheet:opened` | émis | `{ name }` |
-| `magma-sheet:closed` | émis | `{ name }` |
+| `magma-sheet:open` | listened | `{ name }` |
+| `magma-sheet:close` | listened | `{ name }` |
+| `magma-sheet:opened` | emitted | `{ name }` |
+| `magma-sheet:closed` | emitted | `{ name }` |
 
-## Glisser-fermer
+## Swipe-to-close
 
-- Le déplacement suit le doigt ou la souris en temps réel.
-- La feuille se ferme si le panneau est tiré de plus de 30 % de sa hauteur
-  (160 px maximum) **ou** si le geste dépasse 20 % de sa hauteur (48 px minimum)
-  avec une vitesse supérieure à 0,6 px/ms.
-- Une pause avant de relâcher annule la prise en compte de la vitesse : un
-  glissement court suivi d'un temps d'arrêt revient en place.
-- En dessous du seuil, elle revient en place avec la transition de la feuille.
-- `swipeToClose: false` désactive le geste ; la poignée reste décorative.
+- The movement follows the finger or mouse in real time.
+- The sheet closes if the panel is pulled more than 30 % of its height (160 px
+  max) **or** if the gesture exceeds 20 % of its height (48 px minimum) with a
+  velocity above 0.6 px/ms.
+- A pause before releasing cancels the velocity handling: a short slide followed
+  by a rest returns to place.
+- Below the threshold, it returns to place with the stylesheet transition.
+- `swipeToClose: false` disables the gesture; the grabber stays decorative.
 
 ## Classes
 
-| Classe | Rôle |
+| Class | Role |
 | --- | --- |
-| `magma-sheet` | Conteneur fixe, aligné en bas. |
-| `magma-sheet__backdrop` | Voile. |
-| `magma-sheet__panel` | Panneau ; `is-dragging` coupe la transition pendant le geste. |
-| `magma-sheet__grabber` | Poignée de glissement. |
-| `magma-sheet__head` / `__body` / `__foot` | En-tête, corps défilant et actions. |
-| `magma-sheet-enter` / `-enter-start` / `-leave` / `-leave-end` | Classes de transition Alpine. |
+| `magma-sheet` | Fixed container, bottom-aligned. |
+| `magma-sheet__backdrop` | Backdrop. |
+| `magma-sheet__panel` | Panel; `is-dragging` cuts the transition during the gesture. |
+| `magma-sheet__grabber` | Drag grabber. |
+| `magma-sheet__head` / `__body` / `__foot` | Head, scrolling body and actions. |
+| `magma-sheet-enter` / `-enter-start` / `-leave` / `-leave-end` | Alpine transition classes. |
 
-## Accessibilité
+## Accessibility
 
-- `role="dialog"` et `aria-modal="true"` sur le conteneur.
-- `Échap` ferme, le clic sur le voile ferme, le focus entre dans le panneau à
-  l'ouverture et revient au déclencheur à la fermeture.
-- La poignée est décorative (`aria-hidden`) : le geste est un confort, jamais le
-  seul moyen de fermer.
-- `prefers-reduced-motion` réduit les transitions à 1 ms.
-- `padding-bottom: env(safe-area-inset-bottom)` protège les actions sous les
-  barres système des téléphones.
+- `role="dialog"` and `aria-modal="true"` on the container.
+- `Escape` closes, backdrop click closes, focus enters the panel on open and
+  returns to the trigger on close.
+- The grabber is decorative (`aria-hidden`): the gesture is a comfort, never the
+  only means of closing.
+- `prefers-reduced-motion` reduces transitions to 1 ms.
+- `padding-bottom: env(safe-area-inset-bottom)` protects the actions under the
+  system bars of phones.
 
 ## Notes
 
-- Pour un panneau latéral, utilisez [`magmaDrawer`](drawer.md).
-- Le verrouillage du défilement est partagé entre modale, tiroir et feuille.
+- For a side panel, use [`magmaDrawer`](drawer.md).
+- Scroll locking is shared between modal, drawer and sheet.

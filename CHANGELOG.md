@@ -1,109 +1,105 @@
-# Journal des versions
+# Changelog
 
-Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le
-versionnage suit [SemVer](https://semver.org/lang/fr/).
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
+versioning follows [SemVer](https://semver.org/).
 
-## Non publié
+## Unreleased
 
-### Ajouts
+### Added
 
-- `magmaDrawer` — tiroir ancré à droite, à gauche, en haut ou en bas, avec voile,
-  verrouillage du défilement, focus et transitions directionnelles.
-- `magmaSheet` — feuille ancrée en bas, glisser-fermer depuis la poignée,
-  transitions d'entrée/sortie et hauteur maximale configurable.
-- Verrouillage du défilement partagé entre modale, tiroir et feuille : la page
-  ne redevient défilante qu'à la fermeture de la dernière couche.
-- `magma-disclosure` — animation d'ouverture/fermeture en CSS pur
-  (`grid-template-rows`), utilisée par l'accordéon ; plus besoin du greffon
-  `@alpinejs/collapse`.
+- `magmaDrawer` — drawer anchored to the right, left, top or bottom, with
+  backdrop, scroll locking, focus and directional transitions.
+- `magmaSheet` — sheet anchored at the bottom, swipe-to-close from the grabber,
+  enter/exit transitions and configurable maximum height.
+- Scroll locking shared between modal, drawer and sheet: the page only becomes
+  scrollable again once the last layer is closed.
+- `magma-disclosure` — pure-CSS open/close animation (`grid-template-rows`),
+  used by the accordion; the `@alpinejs/collapse` plugin is no longer needed.
 
-### Corrections
+### Fixed
 
-- `magmaMultiSelect` est enregistré avec les autres composants (il manquait dans
-  le registre) ; la navigation clavier, `Échap`, le défilement de l'option
-  active et la réinitialisation de la recherche sont pris en charge.
-- « Tout sélectionner » n'agit plus que sur les options visibles et ne modifie
-  pas les valeurs masquées par le filtre.
-- Les sélecteurs et l'indicatif téléphonique vident leur recherche à la
-  fermeture et rechargent la première page à la réouverture en mode distant.
-- L'événement `magma-multiselect:change` transporte un vrai tableau et
-  `magma-select:change` une copie simple de l'option.
-- `.magma-select__menu` est une colonne flex : la recherche et le pied restent
-  fixes, seule la liste défile ; le chargement distant n'enchaîne plus toutes
-  les pages automatiquement.
-- `magmaSwitch` possède enfin un style d'état activé (`is-on`) et un anneau de
-  focus visible.
+- `magmaMultiSelect` is registered with the other components (it was missing
+  from the registry); keyboard navigation, `Escape`, active-option scrolling and
+  search reset are handled.
+- "Select all" now only acts on visible options and does not modify values hidden
+  by the filter.
+- The selectors and the phone prefix clear their search on close and reload the
+  first page on reopen in remote mode.
+- The `magma-multiselect:change` event carries a real array and
+  `magma-select:change` a shallow copy of the option.
+- `.magma-select__menu` is a flex column: the search and the footer stay fixed,
+  only the list scrolls; remote loading no longer chains all pages
+  automatically.
+- `magmaSwitch` finally has an "on" state style (`is-on`) and a visible focus
+  ring.
 
 ## 1.0.0 — 2026-10-15
 
-Première version publiée sous le nom `@momoledev/alpine-magma-ui-component`.
+First published version under the name `@momoledev/alpine-magma-ui-component`.
 
-### Composants
+### Components
 
-- `magmaSelect` — liste déroulante à sélection unique, locale ou distante, avec
-  recherche, pagination et « charger plus ».
-- `magmaMultiSelect` — sélection multiple, sélection globale, compteur.
-- `magmaPhonePrefix` — indicatif téléphonique, recherche par pays, indicatif ou
-  région, effacement du numéro.
-- `magmaModal` — modale avec verrouillage du défilement, fermeture par `Échap` et
-  par clic sur le fond, ouverture à distance par `magma-open`.
-- `magmaDropdown` — panneau déroulant, base des menus de barre supérieure.
-- `magmaAccordion` — accordéon à ouverture unique.
-- `magmaTabs` — onglets locaux.
-- `magmaPagination` — compteur, saut direct, numéros calculés.
-- `magmaToasts` — pile de notifications pilotée par l'événement global
-  `magma-notify`.
-- `magmaRefresh` — bouton d'actualisation avec état d'exécution.
-- `magmaSearch` — recherche avec temporisation et événements de soumission.
-- `magmaCopy` — copie dans le presse-papiers avec repli `execCommand`.
-- `magmaSwitch` — interrupteur accessible.
+- `magmaSelect` — single-select dropdown, local or remote, with search,
+  pagination and "load more".
+- `magmaMultiSelect` — multiple selection, global selection, counter.
+- `magmaPhonePrefix` — phone prefix, search by country, dial code or region,
+  clearing the number.
+- `magmaModal` — modal with scroll locking, closing via `Escape` and backdrop
+  click, remote opening via `magma-open`.
+- `magmaDropdown` — dropdown panel, base of top-bar menus.
+- `magmaAccordion` — single-open accordion.
+- `magmaTabs` — local tabs.
+- `magmaPagination` — counter, direct jump, computed numbers.
+- `magmaToasts` — notification stack driven by the global `magma-notify` event.
+- `magmaRefresh` — refresh button with execution state.
+- `magmaSearch` — search with debounce and submission events.
+- `magmaCopy` — clipboard copy with `execCommand` fallback.
+- `magmaSwitch` — accessible switch.
 
-### Mécanique partagée
+### Shared mechanics
 
-- `createRemoteState` — chargement AJAX, recherche serveur temporisée, pagination
-  et « charger plus » au défilement.
-- `normalizeResponse` — prise en charge des tableaux simples, de `hasMore`, de la
-  pagination Laravel et de la pagination par total.
-- `emit` — émission d'événements tolérante à l'absence d'Alpine (tests, Node).
+- `createRemoteState` — AJAX loading, debounced server-side search, pagination
+  and "load more" on scroll.
+- `normalizeResponse` — support for plain arrays, `hasMore`, Laravel pagination
+  and total-based pagination.
+- `emit` — event emission tolerant of Alpine's absence (tests, Node).
 
-### Thème
+### Theme
 
-- Palette complète de variables CSS : accent, états, gris, surfaces, contrastes,
-  typographie, rayons, élévations, mouvement et largeur des panneaux. **Aucune
-  couleur en dur** ne subsiste dans la feuille de style.
-- `--magma-focus` est calculé à partir de `--magma-focus-ring`.
-- Exemple de thème sombre et référence complète dans `docs/theming.md`.
+- Complete palette of CSS variables: accent, states, grays, surfaces, contrasts,
+  typography, radii, elevations, motion and panel width. **No hard-coded color**
+  remains in the stylesheet.
+- `--magma-focus-ring` carries the full focus ring (applied as `box-shadow`).
+- Dark theme example and full reference in `docs/theming.md`.
 
-### Largeur des panneaux
+### Panel width
 
-- Nouvelle option `menuWidth` sur `magmaSelect`, `magmaMultiSelect`,
-  `magmaPhonePrefix` et `magmaDropdown` : `'field'` (largeur du champ), `'auto'`
-  (largeur du contenu, jamais plus étroit que le champ), un nombre de pixels ou
-  toute valeur CSS.
-- Les getters `menuStyle` et les classes `magma-select__menu--field` /
-  `--auto` couvrent les usages avec et sans JavaScript.
+- New `menuWidth` option on `magmaSelect`, `magmaMultiSelect`, `magmaPhonePrefix`
+  and `magmaDropdown`: `'field'` (field width), `'auto'` (content width, never
+  narrower than the field), a number of pixels or any CSS value.
+- The `menuStyle` getters and the `magma-select__menu--field` / `--auto` classes
+  cover both use cases, with and without JavaScript.
 
-### Corrections
+### Fixed
 
-- **Modale** : le panneau est désormais une colonne à trois zones — en-tête et
-  pied fixes, corps seul défilant. Le titre ne part plus avec le contenu.
-- **Menus déroulants** : positionnement flottant (`floating`, actif par défaut).
-  Le panneau est posé dans le repère de la fenêtre et suit son déclencheur au
-  défilement, au redimensionnement et au changement de taille. Il n'est plus
-  rogné par les `overflow` d'une modale, d'une carte ou d'une cellule, et bascule
-  au-dessus du champ quand la place manque en dessous.
+- **Modal**: the panel is now a three-zone column — fixed head and foot, body
+  alone scrolling. The title no longer scrolls away with the content.
+- **Dropdown menus**: floating positioning (`floating`, enabled by default). The
+  panel is laid out in the window coordinate space and follows its trigger on
+  scroll, resize and size change. It is no longer clipped by a modal's, card's or
+  cell's `overflow`, and flips above the field when there is no room underneath.
 
 
-- Les notifications s'animent de nouveau : l'entrée et la sortie sont des
-  animations CSS pilotées par l'état (`is-leaving`), car Alpine n'applique pas
-  les directives `x-transition` portées par les enfants d'un `x-for`. La
-  documentation ne recommandait plus ce motif.
+- Notifications animate again: entry and exit are state-driven CSS animations
+  (`is-leaving`), because Alpine does not apply `x-transition` directives carried
+  by the children of an `x-for`. The documentation no longer recommended that
+  pattern.
 
-### Points notables
+### Notable points
 
-- Aucune dépendance d'exécution ; Alpine est une `peerDependency` optionnelle.
-- Enregistrement compatible avec Alpine seul **et** avec Alpine embarqué par
-  Livewire, quel que soit l'ordre de chargement.
-- Feuille de style autonome, pilotée par variables CSS, préfixe `magma-`.
-- Le panneau des sélecteurs sépare la recherche, la liste et le pied : la
-  recherche reste visible pendant que seule la liste défile.
+- No runtime dependency; Alpine is an optional `peerDependency`.
+- Registration compatible with Alpine alone **and** with Alpine embedded by
+  Livewire, regardless of load order.
+- Standalone stylesheet, driven by CSS variables, `magma-` prefix.
+- The selector panel separates the search, the list and the footer: the search
+  stays visible while only the list scrolls.

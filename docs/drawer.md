@@ -1,15 +1,14 @@
-# `magmaDrawer` — tiroir latéral
+# `magmaDrawer` — side drawer
 
-Panneau ancré à un bord, posé au-dessus d'un voile. Il glisse depuis le côté
-demandé, verrouille le défilement du document et restaure le focus à la
-fermeture.
+Panel anchored to an edge, laid over a backdrop. It slides in from the requested
+side, locks document scrolling and restores focus on close.
 
-## Aperçu
+## Overview
 
 ```html
 <button type="button" class="magma-btn magma-btn--primary" x-data
         @click="$dispatch('magma-drawer:open', { name: 'filtres' })">
-    Ouvrir les filtres
+    Open filters
 </button>
 
 <div class="magma-drawer"
@@ -19,7 +18,7 @@ fermeture.
      @magma-drawer:open.window="if ($event.detail?.name === name) show()"
      @magma-drawer:close.window="if ($event.detail?.name === name) hide()"
      @keydown.escape="hide()"
-     role="dialog" aria-modal="true" aria-label="Filtres">
+     role="dialog" aria-modal="true" aria-label="Filters">
 
     <div class="magma-drawer__backdrop" x-show="open" @click="onBackdrop()"
          x-transition:enter="magma-overlay-enter"
@@ -35,57 +34,57 @@ fermeture.
 
         <header class="magma-drawer__head">
             <div>
-                <h2 class="magma-drawer__title">Filtres</h2>
-                <p class="magma-drawer__subtitle">Affinez la liste des transactions.</p>
+                <h2 class="magma-drawer__title">Filters</h2>
+                <p class="magma-drawer__subtitle">Refine the transactions list.</p>
             </div>
-            <button type="button" class="magma-modal__close" @click="hide()" aria-label="Fermer">×</button>
+            <button type="button" class="magma-modal__close" @click="hide()" aria-label="Close">×</button>
         </header>
 
         <div class="magma-drawer__body">
-            <!-- filtres -->
+            <!-- filters -->
         </div>
 
         <footer class="magma-drawer__foot">
-            <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Annuler</button>
-            <button type="button" class="magma-btn magma-btn--primary" @click="hide()">Appliquer</button>
+            <button type="button" class="magma-btn magma-btn--neutral" @click="hide()">Cancel</button>
+            <button type="button" class="magma-btn magma-btn--primary" @click="hide()">Apply</button>
         </footer>
     </aside>
 </div>
 ```
 
-Les classes `magma-drawer-enter` / `magma-drawer-leave` sont génériques : la
-classe de côté du conteneur (`magma-drawer--right`, `--left`, `--top`,
-`--bottom`) détermine le sens du glissement. Le balisage ci-dessus pose la
-classe de côté dynamiquement avec `:class`.
+The `magma-drawer-enter` / `magma-drawer-leave` classes are generic: the
+container's side class (`magma-drawer--right`, `--left`, `--top`, `--bottom`)
+determines the direction of the slide. The markup above sets the side class
+dynamically with `:class`.
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `open` | `false` | État initial. |
-| `name` | `null` | Identifiant comparé aux commandes `magma-drawer:open` / `magma-drawer:close`. |
-| `side` | `'right'` | Bord d'ancrage : `right`, `left`, `top`, `bottom`. |
-| `size` | `null` | Largeur (côtés) ou hauteur (haut/bas). Nombre = pixels, chaîne = valeur CSS. Défaut CSS : 420 px / 360 px. |
-| `lockScroll` | `true` | Fige le défilement du document pendant l'ouverture. |
-| `closeOnBackdrop` | `true` | Ferme au clic sur le voile. |
+| `open` | `false` | Initial state. |
+| `name` | `null` | Identifier compared against the `magma-drawer:open` / `magma-drawer:close` commands. |
+| `side` | `'right'` | Anchoring edge: `right`, `left`, `top`, `bottom`. |
+| `size` | `null` | Width (sides) or height (top/bottom). Number = pixels, string = CSS value. CSS default: 420 px / 360 px. |
+| `lockScroll` | `true` | Freezes document scrolling while open. |
+| `closeOnBackdrop` | `true` | Closes on backdrop click. |
 
-## Méthodes
+## Methods
 
-| Méthode | Effet |
+| Method | Effect |
 | --- | --- |
-| `show()` | Ouvre le tiroir, verrouille le défilement et place le focus sur le panneau. |
-| `hide()` | Ferme, rend le défilement et restaure le focus précédent. |
-| `toggle()` | Bascule. |
-| `onBackdrop()` | Ferme si `closeOnBackdrop` est actif. |
+| `show()` | Opens the drawer, locks scrolling and places focus on the panel. |
+| `hide()` | Closes, restores scrolling and restores previous focus. |
+| `toggle()` | Toggles. |
+| `onBackdrop()` | Closes if `closeOnBackdrop` is enabled. |
 
-## Commandes et événements
+## Commands and events
 
-| Événement | Sens | Détail |
+| Event | Direction | Detail |
 | --- | --- | --- |
-| `magma-drawer:open` | écouté | `{ name }` |
-| `magma-drawer:close` | écouté | `{ name }` |
-| `magma-drawer:opened` | émis | `{ name, side }` |
-| `magma-drawer:closed` | émis | `{ name, side }` |
+| `magma-drawer:open` | listened | `{ name }` |
+| `magma-drawer:close` | listened | `{ name }` |
+| `magma-drawer:opened` | emitted | `{ name, side }` |
+| `magma-drawer:closed` | emitted | `{ name, side }` |
 
 ```js
 document.addEventListener('magma-drawer:opened', (event) => {
@@ -95,28 +94,28 @@ document.addEventListener('magma-drawer:opened', (event) => {
 
 ## Classes
 
-| Classe | Rôle |
+| Class | Role |
 | --- | --- |
-| `magma-drawer` | Conteneur fixe. |
-| `magma-drawer--right` / `--left` / `--top` / `--bottom` | Bord d'ancrage et sens de la transition. |
-| `magma-drawer__backdrop` | Voile. |
-| `magma-drawer__panel` | Panneau, largeur/hauteur pilotée par `--magma-drawer-size`. |
-| `magma-drawer__head` / `__body` / `__foot` | En-tête et pied fixes, corps seul défilant. |
-| `magma-drawer-enter` / `-enter-start` / `-leave` / `-leave-end` | Classes de transition Alpine. |
+| `magma-drawer` | Fixed container. |
+| `magma-drawer--right` / `--left` / `--top` / `--bottom` | Anchoring edge and transition direction. |
+| `magma-drawer__backdrop` | Backdrop. |
+| `magma-drawer__panel` | Panel, width/height driven by `--magma-drawer-size`. |
+| `magma-drawer__head` / `__body` / `__foot` | Fixed head and foot, body alone scrolling. |
+| `magma-drawer-enter` / `-enter-start` / `-leave` / `-leave-end` | Alpine transition classes. |
 
-## Accessibilité
+## Accessibility
 
-- `role="dialog"` et `aria-modal="true"` sur le conteneur.
-- `aria-label` ou `aria-labelledby` doit décrire le tiroir.
-- `Échap` ferme, le clic sur le voile ferme, le focus entre dans le panneau à
-  l'ouverture et revient au déclencheur à la fermeture.
-- Le panneau est une colonne à trois zones : l'en-tête et les actions restent
-  visibles, seul le corps défile.
-- `prefers-reduced-motion` réduit les transitions à 1 ms.
+- `role="dialog"` and `aria-modal="true"` on the container.
+- `aria-label` or `aria-labelledby` must describe the drawer.
+- `Escape` closes, backdrop click closes, focus enters the panel on open and
+  returns to the trigger on close.
+- The panel is a three-zone column: the head and actions stay visible, only the
+  body scrolls.
+- `prefers-reduced-motion` reduces transitions to 1 ms.
 
 ## Notes
 
-- Le verrouillage du défilement est partagé avec `magmaModal` et `magmaSheet` :
-  plusieurs couches peuvent se superposer sans rendre la page défilante.
-- Pour un panneau qui monte depuis le bas avec glisser-fermer, utilisez
+- Scroll locking is shared with `magmaModal` and `magmaSheet`: several layers can
+  stack without making the page scrollable.
+- For a panel that rises from the bottom with swipe-to-close, use
   [`magmaSheet`](sheet.md).

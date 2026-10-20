@@ -1,9 +1,9 @@
-# `magmaPhonePrefix` — sélecteur d'indicatif téléphonique
+# `magmaPhonePrefix` — phone prefix selector
 
-Champ téléphone avec choix du pays et de son indicatif. Accepte une liste locale
-ou distante, avec recherche (nom de pays, indicatif, code) et « charger plus ».
+Phone field with country and dial-code selection. Accepts a local or remote list,
+with search (country name, dial code, code) and "load more".
 
-## Aperçu
+## Overview
 
 ```html
 <div class="magma-phone" x-data="magmaPhonePrefix({
@@ -21,7 +21,7 @@ ou distante, avec recherche (nom de pays, indicatif, code) et « charger plus »
 
     <div class="magma-phone__picker">
         <button type="button" class="magma-phone__trigger" x-ref="trigger" @click="toggle()"
-                :aria-expanded="open" aria-haspopup="listbox" aria-label="Indicatif téléphonique">
+                :aria-expanded="open" aria-haspopup="listbox" aria-label="Phone prefix">
             <span class="magma-phone__dial" x-text="currentDial"></span>
             <svg class="magma-phone__caret" width="16" height="16" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
@@ -30,7 +30,7 @@ ou distante, avec recherche (nom de pays, indicatif, code) et « charger plus »
         <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox">
             <div class="magma-select__search">
                 <input type="text" x-model="searchTerm" @input="onSearchInput()" x-ref="search"
-                       placeholder="Pays ou indicatif…" aria-label="Rechercher un pays ou un indicatif" />
+                       placeholder="Country or prefix…" aria-label="Search a country or prefix" />
             </div>
 
             <ul class="magma-select__list" x-ref="list" @scroll="onListScroll($event)">
@@ -61,58 +61,59 @@ ou distante, avec recherche (nom de pays, indicatif, code) et « charger plus »
 
     <input type="tel" name="phone" placeholder="07 00 000 000" autocomplete="tel" />
 
-    <button type="button" class="magma-phone__clear" @click="clear()" aria-label="Effacer le numéro">×</button>
+    <button type="button" class="magma-phone__clear" @click="clear()" aria-label="Clear the number">×</button>
 </div>
 ```
 
 
-> **Deux références sont nécessaires** pour le positionnement flottant :
-> `x-ref="trigger"` sur le bouton et `x-ref="menu"` sur le panneau. Sans elles,
-> le panneau retombe sur le positionnement absolu de la feuille de style.
+> **Two references are required** for floating positioning: `x-ref="trigger"`
+> on the button and `x-ref="menu"` on the panel. Without them, the panel falls
+> back to the stylesheet's absolute positioning.
 
 ## Options
 
-| Option | Défaut | Rôle |
+| Option | Default | Role |
 | --- | --- | --- |
-| `value` | `''` | Indicatif sélectionné (`+225`). |
-| `code` | `''` | Code pays associé (`ci`), pour afficher un drapeau. |
-| `options` | `[]` | Pays : `[{ value, label, code?, region? }]`. |
-| `searchable` | `true` | Active la recherche. |
-| `emptyLabel` | `'Aucun indicatif trouvé'` | Liste vide. |
-| `loadingLabel` / `errorLabel` / `loadMoreLabel` | – | Messages d'état. |
-| `menuWidth` | `null` | Largeur du panneau : `'field'`, `'auto'`, un nombre de pixels ou une valeur CSS. |
-| `floating` | `true` | Pose le panneau dans le repère de la fenêtre (`position: fixed`) : il échappe ainsi aux `overflow` de ses ancêtres — modale, carte, cellule de tableau. |
+| `value` | `''` | Selected prefix (`+225`). |
+| `code` | `''` | Associated country code (`ci`), to display a flag. |
+| `options` | `[]` | Countries: `[{ value, label, code?, region? }]`. |
+| `searchable` | `true` | Enables the search. |
+| `emptyLabel` | `'No prefix found'` | Empty list. |
+| `loadingLabel` / `errorLabel` / `loadMoreLabel` | – | Status messages. |
+| `menuWidth` | `null` | Panel width: `'field'`, `'auto'`, a number of pixels or a CSS value. |
+| `floating` | `true` | Lays out the panel in the window coordinate space (`position: fixed`): it thus escapes its ancestors' `overflow` — modal, card, table cell. |
 
-Toutes les [options distantes](remote.md) sont acceptées. Le renommage par défaut
-est `valueKey: 'dial'` et `labelKey: 'name'`.
+All the [remote options](remote.md) are accepted. The default renaming is
+`valueKey: 'dial'` and `labelKey: 'name'`.
 
-## Recherche locale
+## Local search
 
-Le filtre local cherche dans **le libellé, la valeur, le code pays et la région** :
+The local filter searches in **the label, the value, the country code and the
+region**:
 
-| Saisie | Trouve |
+| Input | Finds |
 | --- | --- |
 | `séné` | Sénégal |
 | `+254` | Kenya |
 | `CI` | Côte d'Ivoire |
-| `est` | tous les pays de la région « Afrique de l'Est » |
+| `est` | all countries of the "Afrique de l'Est" region |
 
-## État et méthodes
+## State and methods
 
-| Membre | Rôle |
+| Member | Role |
 | --- | --- |
-| `value` / `code` | Indicatif et code pays retenus. |
-| `currentDial` | Indicateur prêt à afficher. |
-| `currentOption` | Ligne retenue, avec ses champs propres (`code`, `region`…) : `flagSvg(currentOption?.code)`. |
-| `visibleOptions` | Liste filtrée. |
-| `choose(option)` | Retient l'option et ferme. |
-| `clear()` | Vide le numéro saisi sans toucher à l'indicatif. |
-| `onKeydown(event)` | Navigation clavier. |
-| `load*`, `onListScroll` | Voir [remote](remote.md). |
+| `value` / `code` | Retained prefix and country code. |
+| `currentDial` | Indicator ready to display. |
+| `currentOption` | Retained row, with its own fields (`code`, `region`…): `flagSvg(currentOption?.code)`. |
+| `visibleOptions` | Filtered list. |
+| `choose(option)` | Retains the option and closes. |
+| `clear()` | Clears the typed number without touching the prefix. |
+| `onKeydown(event)` | Keyboard navigation. |
+| `load*`, `onListScroll` | See [remote](remote.md). |
 
-## Événements
+## Events
 
-| Événement | Détail |
+| Event | Detail |
 | --- | --- |
 | `magma-phone:change` | `{ dial, code }` |
 | `magma-select:loaded` | `{ page, count, hasMore }` |
@@ -120,6 +121,6 @@ Le filtre local cherche dans **le libellé, la valeur, le code pays et la régio
 
 ## Notes
 
-- Le panneau réutilise les classes `magma-select__*` : une seule feuille de style
-  couvre les trois sélecteurs.
-- La recherche et le pied restent fixes ; seule `.magma-select__list` défile.
+- The panel reuses the `magma-select__*` classes: a single stylesheet covers the
+  three selectors.
+- The search and footer stay fixed; only `.magma-select__list` scrolls.
