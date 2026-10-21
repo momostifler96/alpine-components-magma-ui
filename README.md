@@ -27,6 +27,7 @@ dependencies: no CSS framework, no utilities, no remote font.
 - [Customization](#customization)
 - [Accessibility](#accessibility)
 - [Compatibility](#compatibility)
+- [AI agent skill](#ai-agent-skill)
 - [Development](#development)
 - [License](#license)
 
@@ -395,6 +396,25 @@ the boolean value as-is into the `class` attribute, producing a spurious `false`
 class on the element (`<div class="magma-toast false">`) that is absent in 3.15.
 The ternary returns an empty string in all versions:
 `scripts/fix-class-idioms.py` rewrites the `:class` attributes of a file.
+
+---
+
+## AI agent skill
+
+The package ships a `magma-ui` skill for Claude Code, ZCode and other agents
+that read `SKILL.md`. It covers installation, the markup contract, all 16
+factories, events, Livewire integration and the date/time picker (including
+double-month range and shortcuts).
+
+```bash
+PKG="$(npm root)/@momoledev/alpine-magma-ui-component"
+mkdir -p .claude/skills
+cp -R "$PKG/skills/magma-ui" .claude/skills/
+```
+
+The skill lives in [`skills/magma-ui`](skills/magma-ui). Project, global,
+from-source, update and uninstall instructions are in
+[`docs/skill.md`](docs/skill.md).
 
 ---
 

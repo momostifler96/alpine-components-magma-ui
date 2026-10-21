@@ -52,7 +52,7 @@ in [Datetime mode](#datetime-mode).
 
         <div class="magma-datepicker__weekdays"
              :class="mode === 'week' ? 'magma-datepicker__weekdays--weeks' : ''"
-             x-show="['date', 'multiple', 'range', 'week'].includes(mode)" aria-hidden="true">
+             x-show="['date', 'datetime', 'multiple', 'range', 'week'].includes(mode)" aria-hidden="true">
             <span x-show="mode === 'week'"></span>
             <template x-for="(name, index) in weekdayNames" :key="index">
                 <span class="magma-datepicker__weekday" x-text="name"></span>
@@ -124,6 +124,10 @@ in [Datetime mode](#datetime-mode).
 
 > `x-ref="trigger"` and `x-ref="panel"` are required by the floating
 > positioning. Without them the panel falls back to absolute positioning.
+
+The overview shows the date mode. Datetime adds the time widget below the day
+grid; range replaces the single day grid with the two-month block described in
+[Range: two months and shortcuts](#range-two-months-and-shortcuts).
 
 ## Datetime mode
 
@@ -248,7 +252,8 @@ panel is always visible and `close()` is a no-op.
 The panel uses `position: static`, fills its container and drops the shadow.
 Selecting a day only updates `value`; the calendar stays in place. This is the
 variant to use when the picker must live in a form or a card instead of a
-popover.
+popover. In datetime mode, omit the trigger, the dialog role and the Done
+button: edits commit immediately and there is nothing to close.
 
 ## Range: two months and shortcuts
 
@@ -282,8 +287,9 @@ magmaDateTimePicker({
 });
 ```
 
-Pass `shortcuts: false` to hide the rail. A shortcut is highlighted when its
-range equals the current value; applying one clamps the range to `min`/`max`
+Pass `shortcuts: false` to hide the rail. A supplied `shortcuts` array replaces
+the default entries rather than extending them. A shortcut is highlighted when
+its range equals the current value; applying one clamps the range to `min`/`max`
 and commits `magma-datepicker:change`.
 
 ```html
@@ -298,17 +304,43 @@ and commits `magma-datepicker:change`.
         </template>
     </div>
 
-    <div class="magma-datepicker__months">
+    <div class="magma-datepicker__months" @mouseleave="hoverDate = null">
         <template x-for="month in calendarMonths" :key="month.key">
             <div class="magma-datepicker__month">
                 <button type="button" class="magma-datepicker__month-title"
                         @click="showMonths(month.year)" x-text="month.title"></button>
-                <!-- weekday row + day grid over month.days -->
+
+                <div class="magma-datepicker__weekdays" aria-hidden="true">
+                    <template x-for="(name, index) in weekdayNames" :key="index">
+                        <span class="magma-datepicker__weekday" x-text="name"></span>
+                    </template>
+                </div>
+
+                <div class="magma-datepicker__grid" role="grid" :aria-label="month.title">
+                    <template x-for="day in month.days" :key="day.iso">
+                        <button type="button" class="magma-datepicker__day"
+                                :aria-hidden="day.inMonth ? null : 'true'"
+                                :tabindex="day.inMonth ? 0 : -1"
+                                :class="[day.inMonth ? '' : 'is-other', day.selected ? 'is-selected' : '', day.inRange ? 'is-in-range' : '', day.rangeStart ? 'is-range-start' : '', day.rangeEnd ? 'is-range-end' : '', day.today ? 'is-today' : '', day.active ? 'is-active' : '']"
+                                :disabled="day.disabled" :aria-label="day.label"
+                                :aria-pressed="day.selected"
+                                :aria-current="day.today ? 'date' : null"
+                                @click="selectDate(day.iso)"
+                                @mouseenter="hoverDate = day.inMonth ? day.iso : null"
+                                @focus="activeDate = day.iso" x-text="day.day"></button>
+                    </template>
+                </div>
             </div>
         </template>
     </div>
 </div>
 ```
+
+Keep this block inside `.magma-datepicker__panel`, replacing the single day
+grid. The shared head and footer stay. In range `days` view you can hide the
+header title group and rely on the two month-title buttons; keep it visible in
+the months/years views so the year selector remains reachable. Outside-month
+days are hidden automatically inside `.magma-datepicker__range`.
 
 ## Modes
 
@@ -376,6 +408,7 @@ magmaDateTimePicker({ mode: 'week', value: '2026-W43' })
 | `selectTime(value)` | Select a time slot (time mode). |
 | `selectHour(value)` / `selectMinute(value)` / `selectSecond(value)` | Set a time part programmatically. |
 | `onTimePartInput(part, value)` / `normalizeTimePart(part)` | Clamp/pad a numeric time field. |
+| `stepTimePart(part, direction)` | Step a time field by `±1`, wrapping at 24/60. |
 | `selectToday()` | Select today in the current mode. |
 | `selectNow()` | Set the current date and time in datetime mode. |
 | `showMonths()` / `showYears()` | Switch the calendar view inside the same panel. |

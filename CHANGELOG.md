@@ -26,6 +26,9 @@ versioning follows [SemVer](https://semver.org/).
   scrollable again once the last layer is closed.
 - `magma-disclosure` — pure-CSS open/close animation (`grid-template-rows`),
   used by the accordion; the `@alpinejs/collapse` plugin is no longer needed.
+- `skills/magma-ui` — distributable AI agent skill with installation, markup
+  contract, component API cards and date/time picker reference; install guide in
+  `docs/skill.md`.
 
 ### Fixed
 

@@ -45,13 +45,15 @@
         "src",
         "dist",
         "docs",
+        "skills",
         "README.md",
         "CHANGELOG.md",
         "LICENSE"
     ],
     "scripts": {
         "build": "node scripts/build.mjs",
-        "prepublishOnly": "node scripts/build.mjs"
+        "check:skill": "node scripts/check-skill.mjs",
+        "prepublishOnly": "node scripts/build.mjs && node scripts/check-skill.mjs"
     },
     "peerDependencies": {
         "alpinejs": "^3.12.0"
