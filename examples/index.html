@@ -221,6 +221,87 @@
             </p>
         </div>
 
+        <!-- ───────────────────────────────────── Couleur, taille, arrondi -->
+        <h2>Couleur, taille et arrondi du panneau</h2>
+        <div class="panel">
+            <div class="row">
+                <div class="magma-select" x-data="magmaSelect({
+                        color: '#0a7d55',
+                        size: 'md',
+                        radius: 'pill',
+                        placeholder: 'Vert, 280px, arrondi complet',
+                        options: [
+                            { value: '1', label: 'Vous pouvez écrire' },
+                            { value: '2', label: 'Ce que vous voulez' },
+                        ],
+                    })"
+                    @click.outside="close()" @keydown="onKeydown($event)" :class="open ? 'is-open' : ''">
+
+                    <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()"
+                            :aria-expanded="open" aria-haspopup="listbox">
+                        <span class="magma-select__value" x-text="currentLabel"></span>
+                        <svg class="magma-select__caret" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
+                    </button>
+
+                    <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox">
+                        <ul class="magma-select__list" x-ref="list">
+                            <template x-for="option in options" :key="option.value">
+                                <li>
+                                    <button type="button" class="magma-select__option" role="option"
+                                            :class="String(option.value) === String(value) ? 'is-selected' : ''"
+                                            @click="choose(option)">
+                                        <span class="magma-select__name" x-text="option.label"></span>
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="magma-select" x-data="magmaSelect({
+                        color: '#3d3dff',
+                        size: 360,
+                        radius: 'field',
+                        placeholder: 'Bleu, 360px, arrondi du champ',
+                        options: [
+                            { value: '1', label: 'Le panneau reprend l\'arrondi du champ' },
+                            { value: '2', label: 'Et son propre accent' },
+                        ],
+                    })"
+                    @click.outside="close()" @keydown="onKeydown($event)" :class="open ? 'is-open' : ''">
+
+                    <button type="button" class="magma-select__trigger" x-ref="trigger" @click="toggle()"
+                            :aria-expanded="open" aria-haspopup="listbox">
+                        <span class="magma-select__value" x-text="currentLabel"></span>
+                        <svg class="magma-select__caret" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="m6 9.5 6 6 6-6"/></svg>
+                    </button>
+
+                    <div class="magma-select__menu" x-ref="menu" :style="menuStyle" x-show="open" x-cloak role="listbox">
+                        <ul class="magma-select__list" x-ref="list">
+                            <template x-for="option in options" :key="option.value">
+                                <li>
+                                    <button type="button" class="magma-select__option" role="option"
+                                            :class="String(option.value) === String(value) ? 'is-selected' : ''"
+                                            @click="choose(option)">
+                                        <span class="magma-select__name" x-text="option.label"></span>
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <p class="muted">
+                <code>color</code> teinte uniquement le panneau (entrée survolée, coche, recherche),
+                <code>size</code> fixe sa largeur (<code>'xs'</code>…<code>'2xl'</code>, pixels ou valeur CSS)
+                et <code>radius</code> son arrondi (<code>'none'</code>…<code>'xl'</code>, <code>'pill'</code>,
+                ou <code>'field'</code> pour reprendre celui du champ).
+            </p>
+        </div>
+
         <!-- ─────────────────────────────────────────── Chargement AJAX simulé -->
         <h2>Chargement AJAX et « charger plus »</h2>
         <div class="panel">

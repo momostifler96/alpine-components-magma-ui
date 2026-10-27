@@ -89,6 +89,9 @@ values, they don't recompute on their own.
 | `--magma-r-sm` · `--magma-r-md` · `--magma-r-lg` · `--magma-r-xl` | `8px` · `12px` · `16px` · `20px` |
 | `--magma-r-pill` | `999px` |
 
+Radii feed the `radius` option as well: `radius: 'lg'` resolves to
+`--magma-r-lg`, so a theme change on the token propagates to the panels.
+
 ## Elevations and motion
 
 | Variable | Default |
@@ -102,8 +105,59 @@ values, they don't recompute on their own.
 
 | Variable | Default | Usage |
 | --- | --- | --- |
-| `--magma-menu-width` | `min(324px, calc(100vw - 48px))` | Width of a dropdown panel. Set automatically by the `menuWidth` option, or manually. |
+| `--magma-menu-width` | `min(324px, calc(100vw - 48px))` | Width of a dropdown panel. Set automatically by the `menuWidth` / `size` options, or manually. |
 | `--magma-menu-min-width` | `0` | Minimum width of selector menus (0 = none); the `magmaDropdown` panel sets its own minimum width to 240 px. |
+| `--magma-menu-max-height` | `300px` (`324px` for the phone prefix) | Maximum height before the list scrolls. |
+| `--magma-menu-padding` | `6px` (`8px` for the phone prefix) | Inner padding of the panel. |
+| `--magma-menu-radius` | `var(--magma-r-md)` | Corner radius of the panel. |
+
+## Panel appearance (`color`, `size`, `radius`)
+
+The three selectors (`magmaSelect`, `magmaMultiSelect`, `magmaPhonePrefix`) accept
+appearance options for a single instance. They are applied as CSS variables on
+the panel itself, so they never leak to the rest of the page:
+
+```html
+<div class="magma-select"
+     x-data="magmaSelect({
+         color: '#0a7d55',   // accent of this panel only
+         size: 'lg',         // width
+         radius: 'pill',     // corners
+         options: [ … ],
+     })">
+    …
+    <div class="magma-select__menu" :style="menuStyle" …>
+```
+
+| Option | Accepted values | Effect |
+| --- | --- | --- |
+| `color` | any CSS color (`#0a7d55`, `oklch(…)`, `var(--my-brand)`) | Panel accent: hovered/selected row background and text, check mark, search border. |
+| `size` | `'xs'` `160px` · `'sm'` `220px` · `'md'` `280px` · `'lg'` `340px` · `'xl'` `420px` · `'2xl'` `520px` · `'auto'` · a number of pixels · any CSS `width` | Panel width (`--magma-menu-width`). |
+| `radius` | `'none'` · `'sm'` · `'md'` · `'lg'` · `'xl'` · `'pill'` · `'field'` · a number of pixels · any CSS `border-radius` | Panel corners (`--magma-menu-radius`). `'field'` copies the field's radius. |
+
+`size` and `menuWidth` set the same variable: `size` takes precedence when both
+are given. `radius: 'field'` reads the radius of the field — set either on the
+component root (`.magma-select`, `.magma-phone`) or, for any other markup, on the
+trigger itself.
+
+The color is applied **only to the panel**. To recolor the trigger as well, set
+the same variable on the root or override it per instance:
+
+```html
+<div class="magma-select" style="--magma-menu-accent: #0a7d55"> … </div>
+```
+
+Derived shades are computed with `color-mix()`, so a custom `color` needs no
+matching `-soft` / `-tint` token. Without JavaScript or without options, the
+same result is obtained by setting the variables in a class:
+
+```css
+.magma-select--brand {
+    --magma-primary: #0a7d55;
+    --magma-menu-width: 340px;
+    --magma-menu-radius: 999px;
+}
+```
 
 ## Floating menus
 

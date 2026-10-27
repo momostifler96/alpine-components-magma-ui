@@ -350,6 +350,39 @@ dropdown panel (`magmaDropdown`) accept a `menuWidth` option:
 Without JavaScript, the same variants exist as classes:
 `magma-select__menu--field` and `magma-select__menu--auto`.
 
+### Panel color, size and radius
+
+The three selectors accept three further options that customize **one
+instance** only — the variables are set on that panel, never globally:
+
+| Option | Values | Effect |
+| --- | --- | --- |
+| `color` | any CSS color | Panel accent: hovered/selected row, its text, the check mark, the search border. |
+| `size` | `'xs'` `160px` · `'sm'` `220px` · `'md'` `280px` · `'lg'` `340px` · `'xl'` `420px` · `'2xl'` `520px` · `'auto'` · pixels · CSS width | Panel width. |
+| `radius` | `'none'` · `'sm'` · `'md'` · `'lg'` · `'xl'` · `'pill'` · `'field'` · pixels · CSS radius | Panel corners. `'field'` copies the field's radius. |
+
+```html
+<div class="magma-select"
+     x-data="magmaSelect({
+         color: '#0a7d55',
+         size: 'lg',
+         radius: 'pill',
+         options: [ { value: 'ci', label: "Côte d'Ivoire" } ],
+     })">
+```
+
+`size` and `menuWidth` write the same variable (`size` wins), and the shades
+derived from `color` are computed with `color-mix()` — no second token to
+maintain. The same result is available without JavaScript:
+
+```css
+.magma-select--brand {
+    --magma-primary: #0a7d55;      /* trigger and panel */
+    --magma-menu-width: 340px;
+    --magma-menu-radius: 999px;
+}
+```
+
 ## Accessibility
 
 - Triggers are real `<button>` elements with `aria-expanded` and

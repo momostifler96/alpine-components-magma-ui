@@ -82,6 +82,12 @@ with search (country name, dial code, code) and "load more".
 | `loadingLabel` / `errorLabel` / `loadMoreLabel` | – | Status messages. |
 | `menuWidth` | `null` | Panel width: `'field'`, `'auto'`, a number of pixels or a CSS value. |
 | `floating` | `true` | Lays out the panel in the window coordinate space (`position: fixed`): it thus escapes its ancestors' `overflow` — modal, card, table cell. |
+| `color` | `null` | Accent of the panel: hover/selection background, text, check mark. Any CSS color. |
+| `size` | `null` | Panel width: `'xs'`…`'2xl'`, `'auto'`, a number of pixels or a CSS value. Takes precedence over `menuWidth`. |
+| `radius` | `null` | Panel corners: `'none'`, `'sm'`, `'md'`, `'lg'`, `'xl'`, `'pill'`, `'field'`, a number of pixels or a CSS value. |
+
+`color`, `size` and `radius` only affect this instance; see
+[theming](theming.md#panel-appearance-color-size-radius).
 
 All the [remote options](remote.md) are accepted. The default renaming is
 `valueKey: 'dial'` and `labelKey: 'name'`.

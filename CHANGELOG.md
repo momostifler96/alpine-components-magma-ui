@@ -3,7 +3,7 @@
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 versioning follows [SemVer](https://semver.org/).
 
-## Unreleased
+## 1.1.0 — 2026-10-27
 
 ### Added
 
@@ -29,6 +29,12 @@ versioning follows [SemVer](https://semver.org/).
 - `skills/magma-ui` — distributable AI agent skill with installation, markup
   contract, component API cards and date/time picker reference; install guide in
   `docs/skill.md`.
+- Selector panels (`magmaSelect`, `magmaMultiSelect`, `magmaPhonePrefix`) accept
+  `color`, `size` and `radius` options to customize a single panel; shades
+  derived from `color` are computed with `color-mix()` and the new
+  `--magma-menu-radius`, `--magma-menu-max-height` and `--magma-menu-padding`
+  tokens join `--magma-menu-width` (`panelAppearanceStyle` exported from
+  `menu.js`).
 
 ### Fixed
 

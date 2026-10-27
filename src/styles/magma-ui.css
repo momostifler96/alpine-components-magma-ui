@@ -87,6 +87,9 @@
     --magma-slow: 420ms;
     --magma-menu-width: min(324px, calc(100vw - 48px));
     --magma-menu-min-width: 0px;
+    --magma-menu-max-height: 300px;
+    --magma-menu-padding: 6px;
+    --magma-menu-radius: var(--magma-r-md);
 }
 
 /* --------------------------------------------------------------------------
@@ -437,6 +440,7 @@
 .magma-select {
     position: relative;
     min-width: 196px;
+    border-radius: var(--magma-r-sm);
 }
 .magma-select__trigger {
     display: flex;
@@ -484,13 +488,22 @@
     width: var(--magma-menu-width, 100%);
     min-width: var(--magma-menu-min-width, 0);
     max-width: calc(100vw - 48px);
-    max-height: 300px;
+    max-height: var(--magma-menu-max-height, 300px);
     overflow: hidden;
-    padding: 6px;
+    padding: var(--magma-menu-padding, 6px);
     background: var(--magma-surface);
     border: 1px solid var(--magma-line);
-    border-radius: var(--magma-r-md);
+    border-radius: var(--magma-menu-radius, var(--magma-r-md));
     box-shadow: var(--magma-shadow-md);
+
+    /* Accent propre au panneau (`color`). Les vues dérivées — fonds d'entrée,
+       texte, coche, bordure de recherche — suivent l'accent sans que le
+       composant ait à connaître les mélanges. */
+    --magma-menu-accent: var(--magma-primary);
+    --magma-menu-accent-text: color-mix(in srgb, var(--magma-menu-accent) 78%, #000);
+    --magma-menu-accent-text-hover: color-mix(in srgb, var(--magma-menu-accent) 58%, #000);
+    --magma-menu-accent-soft: color-mix(in srgb, var(--magma-menu-accent) 14%, var(--magma-surface));
+    --magma-menu-accent-tint: color-mix(in srgb, var(--magma-menu-accent) 26%, var(--magma-surface));
 }
 .magma-select__option {
     display: flex;
@@ -505,12 +518,12 @@
     transition: background var(--magma-t-fast) var(--magma-ease), color var(--magma-t-fast) var(--magma-ease);
 }
 .magma-select__option:hover {
-    background: var(--magma-primary-soft);
-    color: var(--magma-primary);
+    background: var(--magma-menu-accent-soft);
+    color: var(--magma-menu-accent-text);
 }
 .magma-select__option.is-selected {
-    background: var(--magma-primary-soft);
-    color: var(--magma-primary);
+    background: var(--magma-menu-accent-soft);
+    color: var(--magma-menu-accent-text);
     font-weight: 700;
 }
 .magma-chips {
@@ -1999,6 +2012,7 @@
     gap: 10px;
     padding-left: 0;
     padding-right: 10px;
+    border-radius: var(--magma-r-sm);
 }
 .magma-phone__picker {
     position: relative;
@@ -2047,13 +2061,19 @@
     width: var(--magma-menu-width, min(324px, calc(100vw - 48px)));
     min-width: var(--magma-menu-min-width, 0);
     max-width: calc(100vw - 48px);
-    max-height: 324px;
+    max-height: var(--magma-menu-max-height, 324px);
     overflow: hidden;
-    padding: 8px;
+    padding: var(--magma-menu-padding, 8px);
     background: var(--magma-surface);
     border: 1px solid var(--magma-line);
-    border-radius: var(--magma-r-md);
+    border-radius: var(--magma-menu-radius, var(--magma-r-md));
     box-shadow: var(--magma-shadow-md);
+
+    /* Accent propre au panneau (`color`) — mêmes dérivées que le sélecteur. */
+    --magma-menu-accent: var(--magma-primary);
+    --magma-menu-accent-text: color-mix(in srgb, var(--magma-menu-accent) 78%, #000);
+    --magma-menu-accent-soft: color-mix(in srgb, var(--magma-menu-accent) 14%, var(--magma-surface));
+    --magma-menu-accent-tint: color-mix(in srgb, var(--magma-menu-accent) 26%, var(--magma-surface));
 }
 .magma-phone__search {
     display: flex;
@@ -2068,8 +2088,8 @@
     transition: border-color var(--magma-t-fast) var(--magma-ease), box-shadow var(--magma-t-fast) var(--magma-ease);
 }
 .magma-phone__search:focus-within {
-    border-color: var(--magma-primary);
-    box-shadow: var(--magma-focus-ring);
+    border-color: var(--magma-menu-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--magma-menu-accent) 18%, transparent);
 }
 .magma-phone__search svg {
     flex: none;
@@ -2114,7 +2134,7 @@
     background: var(--magma-line-soft);
 }
 .magma-phone__option.is-selected {
-    background: var(--magma-primary-soft);
+    background: var(--magma-menu-accent-soft);
 }
 .magma-phone__name {
     flex: 1 1 auto;
@@ -2131,17 +2151,17 @@
 }
 .magma-phone__option.is-selected .magma-phone__name {
     font-weight: 700;
-    color: var(--magma-primary);
+    color: var(--magma-menu-accent-text);
 }
 .magma-phone__option.is-selected .magma-phone__code {
-    color: var(--magma-primary);
+    color: var(--magma-menu-accent-text);
     font-weight: 700;
 }
 .magma-phone__check {
     display: grid;
     place-items: center;
     flex: none;
-    color: var(--magma-primary);
+    color: var(--magma-menu-accent);
 }
 .magma-phone__foot {
     flex: none;
@@ -2291,8 +2311,8 @@
     transition: border-color var(--magma-fast) var(--magma-ease), box-shadow var(--magma-fast) var(--magma-ease);
 }
 .magma-select__search:focus-within {
-    border-color: var(--magma-primary);
-    box-shadow: var(--magma-focus-ring);
+    border-color: var(--magma-menu-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--magma-menu-accent) 18%, transparent);
 }
 .magma-select__search svg {
     flex: none;
@@ -2346,7 +2366,7 @@
     display: grid;
     place-items: center;
     flex: none;
-    color: var(--magma-primary);
+    color: var(--magma-menu-accent);
 }
 .magma-select__foot {
     flex: none;
@@ -2367,8 +2387,8 @@
     transition: background var(--magma-fast) var(--magma-ease), color var(--magma-fast) var(--magma-ease);
 }
 .magma-select__more:hover {
-    background: var(--magma-primary-soft);
-    color: var(--magma-primary);
+    background: var(--magma-menu-accent-soft);
+    color: var(--magma-menu-accent-text);
 }
 .magma-select__more[disabled] {
     opacity: 0.6;

@@ -1,5 +1,5 @@
 import { createRemoteState } from '../remote.js';
-import { floatingMenu, menuPositionStyle, menuWidthStyle } from '../menu.js';
+import { floatingMenu, menuPositionStyle, menuWidthStyle, panelAppearanceStyle } from '../menu.js';
 import { emit } from '../emit.js';
 
 /**
@@ -25,12 +25,21 @@ export function createMultiSelect(config = {}) {
         /** Largeur du panneau : voir `menuWidthStyle` dans menu.js. */
         menuWidth: config.menuWidth ?? null,
 
+        /** Couleur, taille et arrondi du panneau : voir `panelAppearanceStyle`. */
+        menuColor: config.color ?? config.menuColor ?? null,
+        menuSize: config.size ?? null,
+        menuRadius: config.radius ?? null,
+
         // `floating` sort le panneau de la portée de ses ancêtres : sans
         // cela, un parent en overflow le rogne (modale, carte, tableau).
         ...floatingMenu.options(config),
 
         get menuStyle() {
-            return `${menuWidthStyle(this.menuWidth)} ${menuPositionStyle(this.anchor, this.menuWidth)}`.trim();
+            return `${menuWidthStyle(this.menuWidth)} ${panelAppearanceStyle({
+                color: this.menuColor,
+                size: this.menuSize,
+                radius: this.menuRadius,
+            })} ${menuPositionStyle(this.anchor, this.menuWidth)}`.trim();
         },
         emptyLabel: config.emptyLabel ?? 'Aucun résultat',
         allLabel: config.allLabel ?? 'Tout sélectionner',

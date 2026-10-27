@@ -41,7 +41,7 @@ export { createCopy } from './components/copy.js';
 export { createSwitch } from './components/switch.js';
 export { createRemoteState, normalizeResponse, mapOption } from './remote.js';
 export { emit } from './emit.js';
-export { MENU_GAP, computeMenuPosition, floatingMenu, menuPositionStyle, menuWidthStyle, menuWidthClass } from './menu.js';
+export { MENU_GAP, computeMenuPosition, floatingMenu, menuPositionStyle, menuWidthStyle, menuWidthClass, panelAppearanceStyle } from './menu.js';
 
 /**
  * Notifie la pile de notifications, où qu'elle soit dans la page.

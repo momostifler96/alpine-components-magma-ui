@@ -70,6 +70,82 @@ export function menuWidthClass(value) {
     return null;
 }
 
+/** Largeurs nommées, alignées sur les tailles de champ de la feuille de style. */
+const MENU_SIZE_PRESETS = {
+    auto: 'auto',
+    content: 'auto',
+    xs: '160px',
+    sm: '220px',
+    md: '280px',
+    lg: '340px',
+    xl: '420px',
+    '2xl': '520px',
+};
+
+/** Arrondis nommés, alignés sur les rayonnements du thème. */
+const MENU_RADIUS_PRESETS = {
+    none: '0',
+    sm: 'var(--magma-r-sm)',
+    md: 'var(--magma-r-md)',
+    lg: 'var(--magma-r-lg)',
+    xl: 'var(--magma-r-xl)',
+    pill: 'var(--magma-r-pill)',
+};
+
+/**
+ * Apparence des panneaux déroulants : couleur, taille et arrondi.
+ *
+ * Les trois options se traduisent en variables CSS posées sur le panneau, ce
+ * qui laisse la feuille de style maîtresse du reste : le composant ne connaît
+ * que la valeur demandée, jamais la règle finale.
+ *
+ * `radius: 'field'` reprend l'arrondi du champ — celui du thème
+ * (`--magma-r-sm`) ou celui de l'élément, si l'application a posé un
+ * `border-radius` propre sur le déclencheur.
+ *
+ * @param {object} config
+ * @param {string} [config.color]   couleur d'accent du panneau (fond des entrées
+ *                                  survolées ou retenues, texte, coche, bordure
+ *                                  interne) ; les vues dérivées sont calculées
+ *                                  avec `color-mix()` par la feuille de style
+ * @param {string|number} [config.size]    largeur : `'sm'`, `'lg'`, `'2xl'`,
+ *                                  `'auto'`, un nombre de pixels ou une valeur
+ *                                  CSS
+ * @param {string|number} [config.radius]  arrondi : `'none'`, `'sm'`, `'md'`,
+ *                                  `'lg'`, `'xl'`, `'field'`, `'pill'`, un
+ *                                  nombre de pixels ou une valeur CSS
+ * @returns {string} déclaration CSS à poser sur l'élément du panneau
+ */
+export function panelAppearanceStyle(config = {}) {
+    const parts = [];
+    const { color, size, radius } = config;
+
+    if (typeof color === 'string' && color.trim() !== '') {
+        parts.push(`--magma-menu-accent: ${color.trim()}`);
+    }
+
+    if (typeof size === 'number') {
+        parts.push(`--magma-menu-width: ${size}px`);
+    } else if (typeof size === 'string' && size.trim() !== '') {
+        const preset = MENU_SIZE_PRESETS[size.trim().toLowerCase()];
+
+        parts.push(`--magma-menu-width: ${preset ?? size.trim()}`);
+    }
+
+    if (radius === 'field') {
+        parts.push('--magma-menu-radius: inherit');
+    } else if (typeof radius === 'number') {
+        parts.push(`--magma-menu-radius: ${radius}px`);
+    } else if (typeof radius === 'string' && radius.trim() !== '') {
+        const key = radius.trim().toLowerCase();
+        const preset = MENU_RADIUS_PRESETS[key];
+
+        parts.push(`--magma-menu-radius: ${preset ?? radius.trim()}`);
+    }
+
+    return parts.length ? parts.join('; ') + ';' : '';
+}
+
 export const MENU_GAP = 8;
 
 /** Marge minimale conservée avec les bords de la fenêtre. */

@@ -86,6 +86,17 @@ server-side search, pagination and "load more".
 | `loadMoreLabel` | `'Load more'` | Label of the pagination button. |
 | `floating` | `true` | Lays out the panel in the window coordinate space (`position: fixed`): it thus escapes its ancestors' `overflow` — modal, card, table cell. |
 | `menuWidth` | `null` | Panel width: `'field'`, `'auto'`, a number of pixels or a CSS value. See [theming](theming.md#panel-width). |
+| `color` | `null` | Accent of the panel: hover/selection background, text, check mark. Any CSS color. |
+| `size` | `null` | Panel width: `'xs'`…`'2xl'`, `'auto'`, a number of pixels or a CSS value. Takes precedence over `menuWidth`. |
+| `radius` | `null` | Panel corners: `'none'`, `'sm'`, `'md'`, `'lg'`, `'xl'`, `'pill'`, `'field'`, a number of pixels or a CSS value. |
+
+```html
+<div class="magma-select"
+     x-data="magmaSelect({ color: '#0a7d55', size: 'lg', radius: 'pill', options: [ … ] })">
+```
+
+The three appearance options only affect this instance; see
+[theming](theming.md#panel-appearance-color-size-radius).
 
 All the [remote options](../docs/remote.md) are also accepted: `url`, `perPage`,
 `pageParam`, `searchParam`, `debounce`, `minChars`, `params`, `fetchOptions`,

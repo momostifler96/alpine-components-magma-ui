@@ -1,6 +1,6 @@
 {
     "name": "@momoledev/alpine-magma-ui-component",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Composants Alpine.js sans dépendance pour Magma : sélecteurs (local, distant, multiple, indicatif téléphonique), date picker, modale, tiroirs, accordéon, onglets, pagination, notifications.",
     "keywords": [
         "alpine",

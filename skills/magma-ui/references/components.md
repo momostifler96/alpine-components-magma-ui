@@ -6,11 +6,21 @@ required classes and refs.
 
 ## Selection
 
+Appearance of the three selector panels stays per instance: `color` (accent of
+hover/selection, check mark, search border), `size` (`'xs'`…`'2xl'`, `'auto'`,
+pixels, CSS width; same variable as `menuWidth`, which it overrides) and
+`radius` (`'none'`…`'xl'`, `'pill'`, `'field'`, pixels, CSS radius). They only
+set CSS variables on the panel via `:style="menuStyle"`, so keep that binding.
+For a global look, override `--magma-menu-accent`, `--magma-menu-width`,
+`--magma-menu-radius`, `--magma-menu-max-height` or `--magma-menu-padding`
+instead.
+
 ### `magmaSelect` — `docs/select.md`
 
 - Root: `.magma-select`; trigger `x-ref="trigger"`, panel `x-ref="menu"`.
 - Config: `options`, `value`, `searchable`, `placeholder`, `emptyLabel`,
-  `loadingLabel`, `errorLabel`, `loadMoreLabel`, `floating`, `menuWidth`.
+  `loadingLabel`, `errorLabel`, `loadMoreLabel`, `floating`, `menuWidth`,
+  `color`, `size`, `radius`.
 - Remote: `url`, `perPage`, `pageParam`, `searchParam`, `debounce`, `minChars`,
   `params`, `headers`, `credentials`, `mapResponse`, `mapOption`,
   `valueKey`, `labelKey`, `loadOnOpen`, `onError`.
@@ -25,7 +35,7 @@ required classes and refs.
 - Root: `.magma-select`; same refs as select.
 - Config: `options`, `values`, `searchable`, `placeholder`, `allLabel`,
   `selectedLabel`, `emptyLabel`, `loadingLabel`, `errorLabel`, `loadMoreLabel`,
-  `floating`, `menuWidth`, plus the remote options.
+  `floating`, `menuWidth`, `color`, `size`, `radius`, plus the remote options.
 - Methods: `choose(option)`, `toggleAll()`, `clear()`, `onKeydown(event)`.
 - State: `values`, `label`, `allSelected` (visible options only).
 - Event: `magma-multiselect:change` `{ values }`.
@@ -40,7 +50,7 @@ required classes and refs.
 - Root: `.magma-phone`; trigger `x-ref="trigger"`, panel `x-ref="menu"`.
 - Config: `value` (`+225`), `code` (`ci`), `options`, `searchable`,
   `emptyLabel`, `loadingLabel`, `errorLabel`, `loadMoreLabel`, `floating`,
-  `menuWidth`, plus remote options.
+  `menuWidth`, `color`, `size`, `radius`, plus remote options.
 - Methods: `choose(option)`, `clear()`, `onKeydown(event)`.
 - State: `currentDial`, `currentOption`, `visibleOptions`.
 - Event: `magma-phone:change` `{ dial, code }`.
